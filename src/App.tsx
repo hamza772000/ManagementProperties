@@ -9,7 +9,6 @@ import headerImg from "./assets/header.jpg";
 import footerImg from "./assets/footer.jpg";
 import ServicesFeesPage from "./pages/services";
 
-
 // Fix Leaflet's missing default marker assets in Vite by using CDN icons
 const markerIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
@@ -36,23 +35,169 @@ type Property = {
   baths: number;
   featured?: boolean;
   coord: [number, number];
+
+  // optional extras used in your mock
+  wifi?: boolean;
+  billsIncluded?: boolean;
+  description?: string;
   // images
   img?: string;          // legacy single image (fallback)
-  images?: string[];     // NEW: multiple images
+  images?: string[];     // multiple images (preferred)
 };
 
-// --- Mock dataset ---
-const PROPS: Property[] = [
-  { id: 1, title: "Extramead Road, Kensal Green", address: "NW10 5QD", area: "Kensal Green", price: 950, priceUnit: "pcm", status: "rent", beds: 1, baths: 1, wifi: true, billsIncluded: true, img: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1200&auto=format&fit=crop", featured: false, coord: [51.531, -0.226] },
-  { id: 2, title: "High Road, Willesden", address: "NW10 2DY", area: "Willesden", price: 450000, priceUnit: "pa", status: "sale", beds: 2, baths: 1, img: "https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop", featured: false, coord: [51.548, -0.232] },
-  { id: 3, title: "Brindley Close, Alperton", address: "HA0 1BT", area: "Alperton", price: 1295, priceUnit: "pcm", status: "rent", beds: 1, baths: 1, img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop", featured: true, coord: [51.538, -0.3006] },
-  { id: 4, title: "Lichfield Gardens, Willesden", address: "NW10 2LL", area: "Willesden", price: 2100, priceUnit: "pcm", status: "rent", beds: 3, baths: 2, img: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=1200&auto=format&fit=crop", featured: true, coord: [51.544, -0.225] },
-  { id: 6, title: "Weston Court, Paddington", address: "W2 1ED", area: "Paddington", price: 300000, priceUnit: "pa", status: "sale", beds: 1, baths: 1, img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1200&auto=format&fit=crop", featured: false, coord: [51.515, -0.176] },
-  { id: 7, title: "Broadway, West Hendon", address: "NW9 7YU", area: "West Hendon", price: 4400, priceUnit: "pcm", status: "rent", beds: 4, baths: 3, img: "https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop", featured: true, coord: [51.586, -0.238] },
-  { id: 8, title: "Dollis Hill House", address: "NW10 1ED", area: "Dollis Hill", price: 1700, priceUnit: "pcm", status: "rent", beds: 2, baths: 2, img: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=1200&auto=format&fit=crop", featured: false, coord: [51.564, -0.235] },
-  { id: 9, title: "Neasden Village Way", address: "NW10 0LH", area: "Neasden", price: 15000, priceUnit: "pa", status: "sale", beds: 3, baths: 2, img: "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?q=80&w=1200&auto=format&fit=crop", featured: true, coord: [51.561, -0.252] },
-  { id: 10, title: "Wembley Central Studio", address: "HA9 7AA", area: "Wembley", price: 1250, priceUnit: "pcm", status: "rent", beds: 1, baths: 1, img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop", featured: false, coord: [51.552, -0.296] },
+// --- Mock dataset (RAW) ---
+const PROPS_RAW: Property[] = [
+  {
+    id: 1,
+    title: "Extramead Road, Kensal Green",
+    address: "NW10 5QD",
+    area: "Kensal Green",
+    price: 950,
+    priceUnit: "pcm",
+    status: "rent",
+    beds: 1,
+    baths: 1,
+    wifi: true,
+    billsIncluded: true,
+    images: [
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505691723518-36a5ac3b2b8f?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
+    ],
+    featured: false,
+    coord: [51.531, -0.226],
+  },
+  {
+    id: 2,
+    title: "High Road, Willesden",
+    address: "NW10 2DY",
+    area: "Willesden",
+    price: 450000,
+    priceUnit: "pa",
+    status: "sale",
+    beds: 2,
+    baths: 1,
+    // single image fallback is fine too
+    img: "https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop",
+    featured: false,
+    coord: [51.548, -0.232],
+    description:
+    "Bright 1-bed with modern kitchen and a generous living area.\nClose to Kensal Green station, shops and cafes.\nBills included and ultra-fast Wi-Fi."
+  },
+  {
+    id: 3,
+    title: "Brindley Close, Alperton",
+    address: "HA0 1BT",
+    area: "Alperton",
+    price: 1295,
+    priceUnit: "pcm",
+    status: "rent",
+    beds: 1,
+    baths: 1,
+    images: [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505692794403-34d4982f88aa?q=80&w=1200&auto=format&fit=crop",
+    ],
+    featured: true,
+    coord: [51.538, -0.3006],
+  },
+  {
+    id: 4,
+    title: "Lichfield Gardens, Willesden",
+    address: "NW10 2LL",
+    area: "Willesden",
+    price: 2100,
+    priceUnit: "pcm",
+    status: "rent",
+    beds: 3,
+    baths: 2,
+    img: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=1200&auto=format&fit=crop",
+    featured: true,
+    coord: [51.544, -0.225],
+  },
+  {
+    id: 6,
+    title: "Weston Court, Paddington",
+    address: "W2 1ED",
+    area: "Paddington",
+    price: 300000,
+    priceUnit: "pa",
+    status: "sale",
+    beds: 1,
+    baths: 1,
+    images: [
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop",
+    ],
+    featured: false,
+    coord: [51.515, -0.176],
+  },
+  {
+    id: 7,
+    title: "Broadway, West Hendon",
+    address: "NW9 7YU",
+    area: "West Hendon",
+    price: 4400,
+    priceUnit: "pcm",
+    status: "rent",
+    beds: 4,
+    baths: 3,
+    img: "https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop",
+    featured: true,
+    coord: [51.586, -0.238],
+  },
+  {
+    id: 8,
+    title: "Dollis Hill House",
+    address: "NW10 1ED",
+    area: "Dollis Hill",
+    price: 1700,
+    priceUnit: "pcm",
+    status: "rent",
+    beds: 2,
+    baths: 2,
+    images: [
+      "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop",
+    ],
+    featured: false,
+    coord: [51.564, -0.235],
+  },
+  {
+    id: 9,
+    title: "Neasden Village Way",
+    address: "NW10 0LH",
+    area: "Neasden",
+    price: 15000,
+    priceUnit: "pa",
+    status: "sale",
+    beds: 3,
+    baths: 2,
+    img: "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?q=80&w=1200&auto=format&fit=crop",
+    featured: true,
+    coord: [51.561, -0.252],
+  },
+  {
+    id: 10,
+    title: "Wembley Central Studio",
+    address: "HA9 7AA",
+    area: "Wembley",
+    price: 1250,
+    priceUnit: "pcm",
+    status: "rent",
+    beds: 1,
+    baths: 1,
+    img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop",
+    featured: false,
+    coord: [51.552, -0.296],
+  },
 ];
+
+// Ensure every property has an images[] array (fallback to img if provided)
+const PROPS: Property[] = PROPS_RAW.map((p) => ({
+  ...p,
+  images: p.images?.length ? p.images : (p.img ? [p.img] : []),
+}));
 
 // --- Helpers ---
 function currency(n: number) {
@@ -69,7 +214,9 @@ function PriceTag({ value, unit }: { value: number; unit: "pcm" | "pa" }) {
 function Stat({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return <div className="inline-flex items-center gap-1 text-zinc-600 text-sm">{icon}{children}</div>;
 }
+const cover = (p: Property) => p.images?.[0] ?? p.img ?? "";
 
+// --- Header / Footer ---
 function Header() {
   const brandGreen = "#8CBF45";
 
@@ -78,10 +225,10 @@ function Header() {
       {/* Compact banner on white so it doesn't look bulky */}
       <div className="w-full" style={{ backgroundColor: "white" }}>
         <img
-          src={headerImg}                // <-- use imported image
+          src={headerImg}
           alt="Management Properties — Sales, Lettings & Management"
           className="mx-auto object-contain"
-          style={{ height: "90px" }}     // tweak this value if you want it smaller/larger
+          style={{ height: "90px" }}
         />
       </div>
 
@@ -145,7 +292,7 @@ function Footer() {
   );
 }
 
-
+// --- Filter Form ---
 function FilterForm({
   mode, setMode,
   q, setQ,
@@ -166,17 +313,13 @@ function FilterForm({
       <div className="flex items-center gap-3 mb-3">
         <button
           onClick={() => setMode("rent")}
-          className={`px-3 py-1.5 rounded-full text-sm border ${
-            mode === "rent" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"
-          }`}
+          className={`px-3 py-1.5 rounded-full text-sm border ${mode === "rent" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}
         >
           For Rent
         </button>
         <button
           onClick={() => setMode("sale")}
-          className={`px-3 py-1.5 rounded-full text-sm border ${
-            mode === "sale" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"
-          }`}
+          className={`px-3 py-1.5 rounded-full text-sm border ${mode === "sale" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}
         >
           For Sale
         </button>
@@ -196,49 +339,30 @@ function FilterForm({
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-xs font-medium text-zinc-600">Beds (min)</label>
-          <select
-            value={minBeds}
-            onChange={(e) => setMinBeds(Number(e.target.value))}
-            className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm"
-          >
+          <select value={minBeds} onChange={(e) => setMinBeds(Number(e.target.value))} className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm">
             {[0,1,2,3,4].map(n => <option key={n} value={n}>{n===0?"Any":n}</option>)}
           </select>
         </div>
         <div>
           <label className="block text-xs font-medium text-zinc-600">Baths (min)</label>
-          <select
-            value={minBaths}
-            onChange={(e) => setMinBaths(Number(e.target.value))}
-            className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm"
-          >
+          <select value={minBaths} onChange={(e) => setMinBaths(Number(e.target.value))} className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm">
             {[0,1,2,3].map(n => <option key={n} value={n}>{n===0?"Any":n}</option>)}
           </select>
         </div>
         <div>
           <label className="block text-xs font-medium text-zinc-600">Price From</label>
-          <input
-            type="number"
-            value={priceFrom}
-            onChange={(e) => setPriceFrom(e.target.value === "" ? "" : Number(e.target.value))}
-            placeholder="Any"
-            className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm"
-          />
+          <input type="number" value={priceFrom} onChange={(e) => setPriceFrom(e.target.value === "" ? "" : Number(e.target.value))} placeholder="Any" className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm" />
         </div>
         <div>
           <label className="block text-xs font-medium text-zinc-600">Price To</label>
-          <input
-            type="number"
-            value={priceTo}
-            onChange={(e) => setPriceTo(e.target.value === "" ? "" : Number(e.target.value))}
-            placeholder="Any"
-            className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm"
-          />
+          <input type="number" value={priceTo} onChange={(e) => setPriceTo(e.target.value === "" ? "" : Number(e.target.value))} placeholder="Any" className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm" />
         </div>
       </div>
     </>
   );
 }
 
+// --- Home Page ---
 function HomePage() {
   const [mode, setMode] = useState<Status>("rent");
   const [q, setQ] = useState("");
@@ -268,9 +392,7 @@ function HomePage() {
         {/* Mobile: show filters above the map */}
         <div className="lg:hidden px-4 pt-4">
           <div className="rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200 p-4">
-            <FilterForm
-              {...{ mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo }}
-            />
+            <FilterForm {...{ mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo }} />
             <div className="mt-3 text-right">
               <span className="text-xs text-zinc-500">{filtered.length} result(s)</span>
             </div>
@@ -301,9 +423,7 @@ function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             className="hidden lg:block absolute left-20 top-6 z-[1000] w-[320px] rounded-2xl bg-white/95 shadow-xl ring-1 ring-zinc-200 p-4"
           >
-            <FilterForm
-              {...{ mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo }}
-            />
+            <FilterForm {...{ mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo }} />
             <div className="mt-3 text-right">
               <span className="text-xs text-zinc-500">{filtered.length} result(s)</span>
             </div>
@@ -327,16 +447,12 @@ function HomePage() {
               >
                 <Link to={`/property/${p.id}`}>
                   <div className="aspect-[16/10] w-full overflow-hidden">
-                    <img src={p.img} alt={p.title} className="h-full w-full object-cover" />
+                    <img src={cover(p)} alt={p.title} className="h-full w-full object-cover" />
                   </div>
                 </Link>
                 <div className="p-4">
                   <div className="flex items-center justify-between">
-                    <span
-                      className={`text-xs font-semibold rounded px-2 py-1 ${
-                        p.status === "rent" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"
-                      }`}
-                    >
+                    <span className={`text-xs font-semibold rounded px-2 py-1 ${p.status === "rent" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}>
                       {p.status === "rent" ? "For Rent" : "For Sale"}
                     </span>
                     <PriceTag value={p.price} unit={p.priceUnit} />
@@ -363,12 +479,8 @@ function HomePage() {
           <h2 className="text-xl font-semibold mb-4">Featured Properties</h2>
           <div className="space-y-4">
             {PROPS.filter((p) => p.featured).map((p) => (
-              <Link
-                key={p.id}
-                to={`/property/${p.id}`}
-                className="flex gap-3 rounded-xl bg-white ring-1 ring-zinc-200 p-2 shadow-sm hover:ring-sky-300"
-              >
-                <img src={p.img} alt={p.title} className="h-20 w-28 object-cover rounded-lg" />
+              <Link key={p.id} to={`/property/${p.id}`} className="flex gap-3 rounded-xl bg-white ring-1 ring-zinc-200 p-2 shadow-sm hover:ring-sky-300">
+                <img src={cover(p)} alt={p.title} className="h-20 w-28 object-cover rounded-lg" />
                 <div className="flex-1">
                   <div className="text-xs text-zinc-500">{p.area}</div>
                   <div className="font-medium leading-tight">{p.title}</div>
@@ -397,7 +509,9 @@ function ListingByStatus({ status }: { status: Status }) {
           {items.map(p => (
             <article key={p.id} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200">
               <Link to={`/property/${p.id}`}>
-                <div className="aspect-[16/10] w-full overflow-hidden"><img src={p.img} alt={p.title} className="h-full w-full object-cover" /></div>
+                <div className="aspect-[16/10] w-full overflow-hidden">
+                  <img src={cover(p)} alt={p.title} className="h-full w-full object-cover" />
+                </div>
               </Link>
               <div className="p-4">
                 <Link to={`/property/${p.id}`} className="font-semibold text-lg hover:underline">{p.title}</Link>
@@ -407,7 +521,7 @@ function ListingByStatus({ status }: { status: Status }) {
           ))}
         </div>
       </section>
-      <aside><h2 className="text-xl font-semibold mb-4">Featured Properties</h2>{/* reuse sidebar if needed */}</aside>
+      <aside><h2 className="text-xl font-semibold mb-4">Featured Properties</h2></aside>
     </main>
   );
 }
@@ -415,34 +529,86 @@ function ListingByStatus({ status }: { status: Status }) {
 function ForSalePage(){ return <ListingByStatus status="sale"/> }
 function ForRentPage(){ return <ListingByStatus status="rent"/> }
 
-// --- Property detail page ---
+// --- Property detail page (with gallery + description) ---
 function PropertyDetailPage(){
   const { id } = useParams();
-  const property = PROPS.find(p=>p.id === Number(id));
-  if(!property){
-    return <main className="max-w-5xl mx-auto px-4 py-10"><p className="text-zinc-700">Property not found.</p><Link to="/" className="text-sky-600">Back to home</Link></main>;
+  const property = PROPS.find(p => p.id === Number(id));
+  const [idx, setIdx] = useState(0);
+
+  if (!property) {
+    return (
+      <main className="max-w-5xl mx-auto px-4 py-10">
+        <p className="text-zinc-700">Property not found.</p>
+        <Link to="/" className="text-sky-600">Back to home</Link>
+      </main>
+    );
   }
+
+  const imgs = property.images?.length ? property.images : [cover(property)];
+
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
       <div className="grid lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
-          <div className="aspect-[16/10] w-full overflow-hidden rounded-2xl"><img src={property.img} alt={property.title} className="h-full w-full object-cover" /></div>
-          <div className="mt-4 text-sm text-zinc-600">{property.area} • {property.address}</div>
+          <div className="aspect-[16/10] w-full overflow-hidden rounded-2xl">
+            <img
+              src={imgs[idx]}
+              alt={`${property.title} ${idx + 1}`}
+              className="h-full w-full object-cover"
+            />
+          </div>
+
+          {imgs.length > 1 && (
+            <div className="mt-3 flex gap-2 overflow-x-auto">
+              {imgs.map((u, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIdx(i)}
+                  className={`rounded-md overflow-hidden ring-2 ${i === idx ? "ring-sky-500" : "ring-transparent"}`}
+                  aria-label={`View image ${i + 1}`}
+                >
+                  <img src={u} alt="" className="h-16 w-24 object-cover" loading="lazy" />
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-4 text-sm text-zinc-600">
+            {property.area} • {property.address}
+          </div>
+
+          {property.description && (
+            <div className="mt-4 text-zinc-700 leading-relaxed whitespace-pre-line">
+              {property.description}
+            </div>
+          )}
         </div>
+
         <aside className="lg:col-span-2">
           <h1 className="text-2xl font-semibold">{property.title}</h1>
-          <div className="mt-3 text-lg font-medium">{currency(property.price)} {property.priceUnit}</div>
+          <div className="mt-3 text-lg font-medium">
+            {currency(property.price)} {property.priceUnit}
+          </div>
+
           <ul className="mt-4 space-y-1 text-zinc-700">
             <li>Bedrooms: {property.beds}</li>
             <li>Bathrooms: {property.baths}</li>
             <li>Status: {property.status === "rent" ? "For Rent" : "For Sale"}</li>
+            {property.wifi && <li>Wi-Fi included</li>}
+            {property.billsIncluded && <li>Bills included</li>}
           </ul>
-          <div className="mt-6"><Link to="/contact" className="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2">Arrange a viewing</Link></div>
+
+          <div className="mt-6">
+            <Link to="/contact" className="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2">
+              Arrange a viewing
+            </Link>
+          </div>
         </aside>
       </div>
     </main>
   );
 }
+
 
 // --- Simple placeholder page ---
 function Placeholder({ text }: { text: string }){
