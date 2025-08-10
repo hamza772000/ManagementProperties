@@ -1,4 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { google } from 'googleapis';
 
 const SHEET_ID   = (process.env.GOOGLE_SHEETS_ID   || '').trim();
@@ -35,10 +34,10 @@ async function getSheets() {
   return google.sheets({ version: 'v4', auth });
 }
 
-const ok  = (res: VercelResponse, data: any, status = 200) => res.status(status).json(data);
-const bad = (res: VercelResponse, msg: string, status = 400) => res.status(status).json({ error: msg });
+const ok  = (res: any, data: any, status = 200) => res.status(status).json(data);
+const bad = (res: any, msg: string, status = 400) => res.status(status).json({ error: msg });
 
-function authed(req: VercelRequest) {
+function authed(req: any) {
   const t = (req.headers.authorization || '').replace('Bearer ', '');
   return t && t === process.env.ADMIN_TOKEN;
 }
@@ -85,7 +84,7 @@ function normalize(row: Record<string, any>) {
   };
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,OPTIONS");
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
