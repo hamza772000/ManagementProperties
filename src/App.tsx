@@ -409,12 +409,16 @@ function HomePage() {
             {filtered.map((p) => (
               <Marker key={p.id} position={p.coord} icon={markerIcon}>
                 <Popup>
-                  <div className="font-medium">{p.title}</div>
-                  <div className="text-xs text-zinc-600 mb-1">{p.address}</div>
-                  <PriceTag value={p.price} unit={p.priceUnit} />
+                  <Link to={`/property/${p.id}`} className="block">
+                    <div className="font-medium">{p.title}</div>
+                    <div className="text-xs text-zinc-600 mb-1">{p.address}</div>
+                    <PriceTag value={p.price} unit={p.priceUnit} />
+                    <div className="mt-2 text-sky-600 underline text-xs">View details</div>
+                  </Link>
                 </Popup>
               </Marker>
             ))}
+
           </MapContainer>
 
           {/* Desktop: floating filter over the map */}
