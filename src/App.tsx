@@ -117,7 +117,6 @@ function Header() {
 }
 
 function Footer() {
-  const brandGreen = "#8CBF45";
   return (
     <footer
       className="border-t mt-8"
