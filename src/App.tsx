@@ -5,6 +5,9 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { motion } from "framer-motion";
 import { Search, MapPin, Home, Bath, BedDouble, PoundSterling } from "lucide-react";
+import headerImg from "./assets/header.jpg";
+import footerImg from "./assets/footer.jpg";
+
 
 // Fix Leaflet's missing default marker assets in Vite by using CDN icons
 const markerIcon = L.icon({
@@ -67,51 +70,46 @@ function Stat({ icon, children }: { icon: React.ReactNode; children: React.React
   return <div className="inline-flex items-center gap-1 text-zinc-600 text-sm">{icon}{children}</div>;
 }
 
-// --- Layout with top nav ---
-// function Header() {
-//   return (
-//     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-zinc-200">
-//       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-//         <Link to="/" className="flex items-center gap-3">
-//           <div className="text-2xl font-black tracking-tight text-sky-600">az</div>
-//           <div className="text-sm text-zinc-500">property services • demo</div>
-//         </Link>
-//         <nav className="hidden md:flex items-center gap-6 text-sm">
-//           <NavLink to="/" end className="hover:text-sky-600">Home</NavLink>
-//           <NavLink to="/for-sale" className="hover:text-sky-600">For Sale</NavLink>
-//           <NavLink to="/for-rent" className="hover:text-sky-600">For Rent</NavLink>
-//           <NavLink to="/landlords" className="hover:text-sky-600">Landlords</NavLink>
-//           <NavLink to="/contact" className="hover:text-sky-600">Contact</NavLink>
-//           <NavLink to="/list" className="ml-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 text-sm shadow-sm">List your property</NavLink>
-//         </nav>
-//       </div>
-//     </header>
-//   );
-// }
-
 function Header() {
-  const brandGreen = "#8CBF45"; // sampled from your header/footer line color
+  const brandGreen = "#8CBF45";
 
   return (
     <header className="sticky top-0 z-40" style={{ backgroundColor: brandGreen }}>
-      {/* Banner image with reduced height and no huge green block */}
+      {/* Compact banner on white so it doesn't look bulky */}
       <div className="w-full" style={{ backgroundColor: "white" }}>
         <img
-          src="./assets/header.jpg"
+          src={headerImg}                // <-- use imported image
           alt="Management Properties — Sales, Lettings & Management"
           className="mx-auto object-contain"
-          style={{ height: "100px" }}
+          style={{ height: "90px" }}     // tweak this value if you want it smaller/larger
         />
       </div>
 
-      {/* Nav bar */}
-      <nav className="max-w-7xl mx-auto px-4 py-2 flex items-center gap-6 text-sm text-white" style={{ backgroundColor: brandGreen }}>
-        <NavLink to="/" end className={({ isActive }) => isActive ? "underline" : "hover:underline"}>Home</NavLink>
-        <NavLink to="/for-sale" className={({ isActive }) => isActive ? "underline" : "hover:underline"}>For Sale</NavLink>
-        <NavLink to="/for-rent" className={({ isActive }) => isActive ? "underline" : "hover:underline"}>For Rent</NavLink>
-        <NavLink to="/landlords" className={({ isActive }) => isActive ? "underline" : "hover:underline"}>Landlords</NavLink>
-        <NavLink to="/contact" className={({ isActive }) => isActive ? "underline" : "hover:underline"}>Contact</NavLink>
-        <NavLink to="/list" className="ml-auto rounded-xl bg-white px-3 py-1" style={{ color: brandGreen }}>
+      {/* Nav bar in brand green */}
+      <nav
+        className="max-w-7xl mx-auto px-4 py-2 flex items-center gap-6 text-sm text-white"
+        style={{ backgroundColor: brandGreen }}
+      >
+        <NavLink to="/" end className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          Home
+        </NavLink>
+        <NavLink to="/for-sale" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          For Sale
+        </NavLink>
+        <NavLink to="/for-rent" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          For Rent
+        </NavLink>
+        <NavLink to="/landlords" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          Landlords
+        </NavLink>
+        <NavLink to="/contact" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          Contact
+        </NavLink>
+        <NavLink
+          to="/list"
+          className="ml-auto rounded-xl bg-white px-3 py-1"
+          style={{ color: brandGreen }}
+        >
           List your property
         </NavLink>
       </nav>
@@ -120,6 +118,24 @@ function Header() {
 }
 
 
+function Footer() {
+  const brandGreen = "#8CBF45";
+  return (
+    <footer
+      className="border-t mt-8 text-white"
+      style={{ backgroundColor: brandGreen, borderColor: brandGreen }}
+    >
+      <div className="w-full">
+        <img
+          src={footerImg}                 // <-- use imported image
+          alt="Management Properties — Contact details"
+          className="w-full object-cover"
+          style={{ minHeight: "140px" }}  // adjust as you like
+        />
+      </div>
+    </footer>
+  );
+}
 
 // --- Home Page (map + filters + recent + featured) ---
 function HomePage() {
@@ -246,21 +262,6 @@ function HomePage() {
           </div>
         </aside>
       </main>
-
-      {/* <footer className="border-t border-zinc-200 py-10 mt-8">
-        <div className="max-w-7xl mx-auto px-4 text-sm text-zinc-500">Demo app built with React, Tailwind & Leaflet. No backend yet; data is mocked.</div>
-      </footer> */}
-
-    <footer className="border-t border-green-700 mt-8 bg-green-700 text-white">
-      <div className="w-full">
-        <img
-          src="./assets/footer.jpg"
-          alt="Management Properties — Contact details"
-          className="w-full object-cover"
-          style={{ minHeight: "150px" }}
-        />
-      </div>
-    </footer>
     </>
   );
 }
@@ -344,6 +345,7 @@ export default function App(){
           <Route path="/list" element={<Placeholder text="List your property form (todo)" />} />
           <Route path="*" element={<Placeholder text="404 – Page not found" />} />
         </Routes>
+        <Footer />
       </div>
     </BrowserRouter>
   );
