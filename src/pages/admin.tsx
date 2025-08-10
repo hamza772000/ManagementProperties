@@ -16,7 +16,7 @@ type ApiProperty = {
   images: string[];
   img?: string;
   description?: string;
-  active?: boolean; // <-- we use this for show/hide
+  active?: boolean; // used for show/hide
 };
 
 type NewProp = {
@@ -28,11 +28,11 @@ type NewProp = {
   description?: string;
 };
 
-// ---------- util ----------
+// ---------- UI utils ----------
 const clsInput =
   "w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500";
 
-// Upload helper (Vercel Blob presigned route)
+// ---------- Upload helper (Vercel Blob) ----------
 async function uploadFiles(files: File[], token: string) {
   const out: string[] = [];
   for (const f of files) {
@@ -41,11 +41,12 @@ async function uploadFiles(files: File[], token: string) {
       headers: {
         Authorization: `Bearer ${token}`,
         "content-type": f.type || "application/octet-stream",
+        "x-content-length": String(f.size), // required by Vercel Blob
       },
       body: f,
     });
     if (!res.ok) throw new Error(await res.text());
-    const j = await res.json(); // { url, pathname, size, ... }
+    const j = await res.json(); // { url, ... }
     out.push(j.url);
   }
   return out;
@@ -57,17 +58,15 @@ function useAdminToken() {
   const [token, setToken] = useState<string>(
     localStorage.getItem("admin_token") || buildToken
   );
-  const [authed, setAuthed] = useState<boolean>(false);
-  const [checking, setChecking] = useState<boolean>(false);
-  const [err, setErr] = useState<string>("");
+  const [authed, setAuthed] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [err, setErr] = useState("");
 
   const validate = async (candidate: string) => {
     setChecking(true);
     setErr("");
     try {
-      // We call POST with an empty body on purpose:
-      // - if token OK => 400 "missing required fields" (that's success for us)
-      // - if token bad => 401 "unauthorized"
+      // POST with empty body: 401 => invalid, 400 (missing fields) => token OK
       const r = await fetch("/api/properties", {
         method: "POST",
         headers: {
@@ -96,7 +95,6 @@ function useAdminToken() {
 
   useEffect(() => {
     if (!token) return;
-    // silent validate on load
     validate(token);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -107,7 +105,7 @@ function useAdminToken() {
     setAuthed(false);
   };
 
-  return { token, setToken, authed, checking, err, validate, logout };
+  return { token, authed, checking, err, validate, logout };
 }
 
 // ---------- Admin Page ----------
@@ -124,6 +122,23 @@ export default function AdminPage() {
     beds: 0, baths: 0, lat: 0, lng: 0,
     imagesText: "", featured: false, description: ""
   });
+
+  // Add form uploads
+  const [newImages, setNewImages] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+
+  const handlePickedNew = async (files: FileList | null) => {
+    if (!files?.length) return;
+    setUploading(true);
+    try {
+      const urls = await uploadFiles(Array.from(files), token);
+      setNewImages(prev => [...prev, ...urls].slice(0, 6));
+    } catch (e: any) {
+      alert("Upload failed: " + e.message);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   // Edit modal state
   const [editing, setEditing] = useState<ApiProperty | null>(null);
@@ -143,7 +158,9 @@ export default function AdminPage() {
   // Create
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const images = form.imagesText.split(/[,|\n]/).map(s => s.trim()).filter(Boolean);
+    const urlImages = form.imagesText.split(/[,|\n]/).map(s => s.trim()).filter(Boolean);
+    const images = [...newImages, ...urlImages].slice(0, 6);
+
     const payload = {
       title: form.title, address: form.address, area: form.area,
       price: Number(form.price), priceUnit: form.priceUnit, status: form.status,
@@ -151,7 +168,7 @@ export default function AdminPage() {
       coord: [Number(form.lat), Number(form.lng)],
       featured: !!form.featured,
       description: form.description || "",
-      images
+      images,
     };
 
     const res = await fetch("/api/properties", {
@@ -172,6 +189,7 @@ export default function AdminPage() {
       beds: 0, baths: 0, lat: 0, lng: 0,
       imagesText: "", featured: false, description: ""
     });
+    setNewImages([]);
     load();
   };
 
@@ -196,7 +214,7 @@ export default function AdminPage() {
     setEditImages(p.images?.length ? [...p.images] : (p.img ? [p.img] : []));
   };
 
-  // Upload new images to Blob
+  // Upload new images to Blob (Edit)
   const onDropFiles = async (files: FileList | null) => {
     if (!files || !editing) return;
     setSaving(true);
@@ -243,7 +261,7 @@ export default function AdminPage() {
     load();
   };
 
-  // Better list ordering (active first, then area/title)
+  // Ordering (active first -> area -> title)
   const sorted = useMemo(() => {
     return rows.slice().sort((a, b) => {
       const aActive = a.active !== false ? 0 : 1;
@@ -300,6 +318,47 @@ export default function AdminPage() {
             <input className={clsInput} type="number" placeholder="Baths" value={form.baths || ""} onChange={e=>setForm(f=>({...f, baths: Number(e.target.value)}))}/>
             <input className={clsInput} type="number" placeholder="Lat" value={form.lat || ""} onChange={e=>setForm(f=>({...f, lat: Number(e.target.value)}))}/>
             <input className={clsInput} type="number" placeholder="Lng" value={form.lng || ""} onChange={e=>setForm(f=>({...f, lng: Number(e.target.value)}))}/>
+
+            {/* Drag & drop uploader */}
+            <div
+              className="md:col-span-2 rounded-lg border-2 border-dashed border-zinc-300 bg-zinc-50 p-5 text-sm text-zinc-600 flex flex-col items-center justify-center"
+              onDragOver={(e)=>e.preventDefault()}
+              onDrop={(e)=>{ e.preventDefault(); handlePickedNew(e.dataTransfer.files); }}
+            >
+              <div className="text-center">
+                {uploading ? "Uploading…" : "Drag & drop images here,"}{" "}
+                <label className="underline cursor-pointer">
+                  <input type="file" multiple accept="image/*" className="hidden" onChange={(e)=>handlePickedNew(e.target.files)} />
+                  or browse to upload
+                </label>
+              </div>
+
+              {!!newImages.length && (
+                <div className="w-full mt-3 grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {newImages.map((u, i) => (
+                    <div key={u+i} className="relative group rounded overflow-hidden ring-1 ring-zinc-200">
+                      <img src={u} className="w-full h-20 object-cover" />
+                      <button
+                        type="button"
+                        className="absolute top-1 right-1 bg-black/70 text-white text-xs px-1 rounded opacity-0 group-hover:opacity-100 transition"
+                        onClick={()=>setNewImages(arr=>arr.filter((_,idx)=>idx!==i))}
+                      >
+                        ✕
+                      </button>
+                      {i === 0 && (
+                        <span className="absolute bottom-1 left-1 text-[10px] px-1.5 py-0.5 rounded bg-emerald-600 text-white">Cover</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <p className="text-xs text-zinc-500 mt-2">
+                You can also paste image URLs below. We’ll combine both (max 6).
+              </p>
+            </div>
+
+            {/* Optional URL fallback */}
             <textarea className={`${clsInput} md:col-span-2`} rows={2} placeholder="Image URLs (one per line or comma separated)" value={form.imagesText} onChange={e=>setForm(f=>({...f, imagesText: e.target.value}))}/>
             <textarea className={`${clsInput} md:col-span-2`} rows={3} placeholder="Description" value={form.description} onChange={e=>setForm(f=>({...f, description: e.target.value}))}/>
             <label className="inline-flex items-center gap-2">
@@ -307,7 +366,9 @@ export default function AdminPage() {
               Featured
             </label>
           </div>
-          <button className="rounded-lg bg-sky-600 text-white px-4 py-2 w-fit">Add property</button>
+          <button className="rounded-lg bg-sky-600 text-white px-4 py-2 w-fit disabled:opacity-60" disabled={uploading}>
+            {uploading ? "Uploading…" : "Add property"}
+          </button>
         </form>
       </section>
 
@@ -382,28 +443,25 @@ export default function AdminPage() {
               </label>
             </div>
 
-            {/* IMAGES */}
+            {/* Images */}
             <div className="mt-5">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="font-medium">Images</h4>
                 <input type="file" multiple accept="image/*" onChange={(e)=>onDropFiles(e.target.files)} />
               </div>
 
-              {/* Drop zone */}
               <div
                 className="rounded-lg border border-dashed border-zinc-300 p-3 text-sm text-zinc-600"
                 onDragOver={(e)=>e.preventDefault()}
                 onDrop={async (e) => {
                   e.preventDefault();
-                  const files = Array.from(e.dataTransfer.files || []);
-                  if (!files.length) return;
+                  if (!e.dataTransfer.files?.length) return;
                   await onDropFiles(e.dataTransfer.files);
                 }}
               >
                 Drag & drop images here (or use the file picker). Max 6 images.
               </div>
 
-              {/* Thumbs (reorder + remove) */}
               <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {editImages.map((u, i) => (
                   <div
