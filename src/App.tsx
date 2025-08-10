@@ -97,7 +97,7 @@ function Header() {
       {/* Banner image with reduced height and no huge green block */}
       <div className="w-full" style={{ backgroundColor: "white" }}>
         <img
-          src="/src/header.jpg"
+          src="./assets/header.jpg"
           alt="Management Properties — Sales, Lettings & Management"
           className="mx-auto object-contain"
           style={{ height: "100px" }}
@@ -254,7 +254,7 @@ function HomePage() {
     <footer className="border-t border-green-700 mt-8 bg-green-700 text-white">
       <div className="w-full">
         <img
-          src="/footer.jpg"
+          src="./assets/footer.jpg"
           alt="Management Properties — Contact details"
           className="w-full object-cover"
           style={{ minHeight: "150px" }}
