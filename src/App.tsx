@@ -116,25 +116,28 @@ function Header() {
   );
 }
 
-
 function Footer() {
   const brandGreen = "#8CBF45";
   return (
     <footer
-      className="border-t mt-8 text-white"
-      style={{ backgroundColor: brandGreen, borderColor: brandGreen }}
+      className="border-t mt-8"
+      style={{ backgroundColor: "white", borderColor: "white" }}
     >
-      <div className="w-full">
         <img
-          src={footerImg}                 // <-- use imported image
+          src={footerImg}
           alt="Management Properties — Contact details"
-          className="w-full object-cover"
-          style={{ height: "auto" }}  // adjust as you like
+          className="w-full"
+          style={{
+            height: "120px",          // fixed strip height
+            objectFit: "contain", // ✅ shows entire image, no crop
+            objectPosition: "center" // or "top"/"bottom" if you want to bias it
+          }}
         />
-      </div>
     </footer>
   );
 }
+
+
 
 function FilterForm({
   mode, setMode,
