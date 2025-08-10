@@ -9,7 +9,7 @@ import headerImg from "./assets/header.jpg";
 import footerImg from "./assets/footer.jpg";
 import ServicesFeesPage from "./pages/services";
 import AdminPage from "./pages/admin";
-import ContactPage from "./pages/Contact";
+import ContactPage from "./pages/contact";
 
 // Fix Leaflet's missing default marker assets in Vite by using CDN icons
 const markerIcon = L.icon({
@@ -250,7 +250,7 @@ function Header() {
         {/* <NavLink to="/landlords" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Landlords</NavLink> */}
         <NavLink to="/contact" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Contact</NavLink>
         <NavLink to="/services" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Services & Fees</NavLink>
-        <NavLink to="/admin" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Admin</NavLink>
+        {/* <NavLink to="/admin" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Admin</NavLink> */}
       </nav>
     </header>
   );

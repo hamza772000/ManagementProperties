@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vercel/blob": "^1.1.1",
     "framer-motion": "^12.23.12",
     "googleapis": "^155.0.1",
     "leaflet": "^1.9.4",

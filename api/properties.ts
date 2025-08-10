@@ -87,29 +87,27 @@ function normalize(row: Record<string, any>) {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,OPTIONS');
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,OPTIONS");
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const sheets = await getSheets(); // ← ensures we’re authenticated
 
-  if (req.method === 'GET') {
-    try {
-      const range = `${SHEET_NAME}!A1:Z10000`;
-      const r = await sheets.spreadsheets.values.get({ spreadsheetId: SHEET_ID, range });
-      const values = r.data.values || [];
-      const [header, ...rows] = values;
-      const items = rows.map((row) => {
-        const o: Record<string, any> = {};
-        header.forEach((h, i) => (o[h] = row[i]));
-        return normalize(o);
-      });
-      return ok(res, items.filter(i => i.active));
-    } catch (e: any) {
-      console.error('Sheets GET failed:', e?.response?.data || e);
-      return bad(res, 'sheets_get_failed', 500);
-    }
-  }
+  if (req.method === "GET") {
+    const range = `${SHEET_NAME}!A1:Z10000`;
+    const r = await sheets.spreadsheets.values.get({ spreadsheetId: SHEET_ID, range });
+    const values = r.data.values || [];
+    const [header, ...rows] = values;
+  
+    const items = rows.map((row) => {
+      const o: Record<string, any> = {};
+      header.forEach((h, i) => (o[h] = row[i]));
+      return normalize(o);
+    });
+  
+    const all = String(req.query.all || "").trim() === "1";
+    return ok(res, all ? items : items.filter(i => i.active));
+  }  
 
   if (req.method === 'POST') {
     if (!authed(req)) return bad(res, 'unauthorized', 401);
@@ -149,32 +147,108 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return ok(res, { id }, 201);
   }
 
-  if (req.method === 'PATCH') {
-    if (!authed(req)) return bad(res, 'unauthorized', 401);
-    const id = String((req.body || {}).id || req.query.id || '');
-    if (!id) return bad(res, 'missing id');
+    if (req.method === "PATCH") {
+    if (!authed(req)) return bad(res, "unauthorized", 401);
 
+    const id = String((req.body || {}).id || req.query.id || "");
+    if (!id) return bad(res, "missing id");
+
+    // read sheet
     const r = await sheets.spreadsheets.values.get({ spreadsheetId: SHEET_ID, range: `${SHEET_NAME}!A1:Z10000` });
     const values = r.data.values || [];
     const [header, ...rows] = values;
-    const idIdx = header.indexOf('id');
-    const activeIdx = header.indexOf('active');
-    if (idIdx < 0 || activeIdx < 0) return bad(res, 'sheet missing id/active columns', 500);
 
-    const rowIndex = rows.findIndex((row) => String(row[idIdx]) === id);
-    if (rowIndex < 0) return bad(res, 'id not found', 404);
+    const idIdx = header.indexOf("id");
+    const activeIdx = header.indexOf("active");
+    if (idIdx < 0 || activeIdx < 0) return bad(res, "sheet missing id/active columns", 500);
+
+    const rowIndex = rows.findIndex(row => String(row[idIdx]) === id);
+    if (rowIndex < 0) return bad(res, "id not found", 404);
+
+    const desired = (req.body && typeof req.body.active !== "undefined")
+        ? (String(req.body.active).toLowerCase() === "true")
+        : false; // default stays "hide"
 
     const colLetter = String.fromCharCode(65 + activeIdx);
     const targetRange = `${SHEET_NAME}!${colLetter}${rowIndex + 2}`;
+
     await sheets.spreadsheets.values.update({
-      spreadsheetId: SHEET_ID,
-      range: targetRange,
-      valueInputOption: 'USER_ENTERED',
-      requestBody: { values: [['FALSE']] },
+        spreadsheetId: SHEET_ID,
+        range: targetRange,
+        valueInputOption: "USER_ENTERED",
+        requestBody: { values: [[ desired ? "TRUE" : "FALSE" ]] },
     });
 
-    return ok(res, { id, active: false });
+    return ok(res, { id, active: desired });
+    }
+
+
+  // helper: A1 column letters for any width
+// helper: convert index -> A1 column
+const toA1 = (n: number) => {
+    let s = "";
+    while (n > 0) { const r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = Math.floor((n - 1) / 26); }
+    return s;
+  };
+  
+  if (req.method === "PUT") {
+    if (!authed(req)) return bad(res, "unauthorized", 401);
+    const u = req.body || {};
+    const id = String(u.id || req.query.id || "");
+    if (!id) return bad(res, "missing id");
+  
+    const r = await sheets.spreadsheets.values.get({ spreadsheetId: SHEET_ID, range: `${SHEET_NAME}!A1:Z10000` });
+    const values = r.data.values || [];
+    const [header, ...rows] = values;
+  
+    const idIdx = header.indexOf("id");
+    if (idIdx < 0) return bad(res, "sheet missing id column", 500);
+  
+    const rowIndex = rows.findIndex(row => String(row[idIdx]) === id);
+    if (rowIndex < 0) return bad(res, "id not found", 404);
+  
+    const current: Record<string, any> = {};
+    header.forEach((h, i) => (current[h] = rows[rowIndex][i] ?? ""));
+  
+    const set = (k: string, v: any) => { if (v !== undefined) current[k] = v; };
+    set("title", u.title);
+    set("address", u.address);
+    set("area", u.area);
+    set("price", u.price);
+    set("price_unit", u.priceUnit);
+    set("status", u.status);
+    set("beds", u.beds);
+    set("baths", u.baths);
+    if (u.coord) { set("lat", u.coord[0]); set("lng", u.coord[1]); }
+    if (typeof u.featured !== "undefined") set("featured", u.featured ? "TRUE" : "FALSE");
+    set("description", u.description);
+  
+    if (Array.isArray(u.images)) {
+      const imgs: string[] = (u.images as string[]).slice(0, 6);
+      ["image_url","image_url_2","image_url_3","image_url_4","image_url_5","image_url_6"].forEach((k, i) => {
+        current[k] = imgs[i] || "";
+      });
+      current["images_csv"] = "";
+    }
+  
+    const updatedRow = header.map(h => {
+      if (["price","beds","baths","lat","lng"].includes(h)) return Number(current[h] || 0);
+      return current[h] ?? "";
+    });
+  
+    const lastCol = toA1(header.length);
+    const writeRange = `${SHEET_NAME}!A${rowIndex + 2}:${lastCol}${rowIndex + 2}`;
+  
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SHEET_ID,
+      range: writeRange,
+      valueInputOption: "USER_ENTERED",
+      requestBody: { values: [updatedRow] },
+    });
+  
+    return ok(res, { id, updated: true });
   }
+  
 
   return bad(res, 'method not allowed', 405);
 }
