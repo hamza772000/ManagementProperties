@@ -3,14 +3,11 @@ import { google } from 'googleapis';
 const SHEET_ID   = (process.env.GOOGLE_SHEETS_ID   || '').trim();
 const SHEET_NAME = (process.env.GOOGLE_SHEET_NAME  || 'properties').trim();
 const SA_EMAIL   = (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '').trim();
-const SA_KEY_RAW = "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCdV3H7PGr+HTRm\n8M+1VEUlqM2K7utL05jxSz0+MUMJsoDk4ef/uNtQC1q3lVC+rFG9ExE9fduzpr+7\nwH8LtidxNuE/eHdzvuLUM8hQbcRXqjWKxM20DzIblNcCezbgf5d+b5EN9uYgxCfn\n9qSmsGv8eY/wSoInRj2+JzglHcduWnV5/MEy54dFxI/KdynAyU+Tk0yUCn37TZBx\nTug7kAGpVnuCm2f98mnYCBs8heNJR+PO/DwVL6XjeL3JOnJ3jOUpVnwUSnOs7D6w\n5upQ0VFjQEAakHQWGwkkHQQlwOCWwmGQ4ilBP3mvxDr+TYQKb93X8t2ljdElwEQW\nfOh11RA9AgMBAAECggEAAzu86gMiZKB2kf6KbxIRQwnbyT+tOYPMcggTrgCBYSu/\nWpE1AL/B3ZHKm8qHZtAlSd5ncRJj08L1XmOWo3JrK/hSMHPUv7Mr97JlnKX00b/t\nlYbKfn6pANaK9tAzZipR9v/5C+pOplyeB4uEkD4kG7x1HjoEauwy8GX77bg5RteT\nsFN2R/c8YiNZPrpGnvSBxvrxA9VUyEU2rTI6QvAU0fKmIo6KD+PYtumKVqx5aqB1\n/CYPGx2dV9Moaa6dlubjYThFi0BgaOgMvI+ZQAkM8uqnUT9hVO/RfytjgmgoqPDU\nM8OgAgVN5fVQxnkN9hT+SSOZ3f3k3MNxLU7qkBq1/QKBgQDI4uaZ/83aHZQf16m6\ndg4mB/knJvhDVrqDGxuNNMx6hsEH98T/fGy/EXy0parwDNyNfEJeJOYXs4YGFpAK\nKHiNRI3dqPxtIpEUa8wutmdcO1RK1QSdPKd9uOQhR+q3/3SXFVuZBSa3udNDMHz6\n6un4tzFhKZldbNysTEJdSnTr8wKBgQDIgjZJ3H4005b3nHgQNNN6/5s+0DUxZ472\n/3o7pwCRy5r9gPOl3Q3XiIH/KhQl59sC0vXn8AYNT87aLPfjguGkpUx52Eel8gh7\nvemfI542YcLwqkNvIWFBpc+OfL70qIIvPZzIe3Y7DqdZzOrqvJUt/TtUGE/o68Cb\nmMoPVjgPDwKBgHAd+zgeBeTjN0WiVw9DTlg5gPwyCsOChywfF/xyaGFGDjwFNASn\njAYDm4czIzlA5GNu45epnmXCA14of5G7zrSBe3AoHWJHtZMhKt8zXHKkhkIRq7aa\nIJzRcTmF6uFwiMC94daAgoBuDRPl3wsnyxfOHpgs4HS9Clh7Y1qv8JuzAoGBAIhD\nRZWojPRln0EjSszouZfrQZvMb3nlwNjHAlCry81JK0mAaxSbR57kHERGWm7wRHyE\n1a0MB3Dgfdjzmns5JRN5aqGbhAWYmH9PrwcBc7HNemeHrlBFxQySHJ3e1P77zY1B\nN91fWhgEe2KhyjxAcLlSURFzfEr0fG7BxP/rPimtAoGAN4rshh0mtb890ADPbztt\nKp9NwwzesEqV27pBzCYGrP+EhRz0h+92g8tR1lnVjte+iugTaKKCBKVo+Dh1Lt5U\nh0V5p+Tt3bJ0O6868+MU9iLhY1P0Y55G22S2m5kA/+Tvs6+GTIjiNid24W4K5S4D\nZdx+K0HUvhC8TUdTgcNc+C0=\n-----END PRIVATE KEY-----\n"
+const SA_KEY_RAW = (process.env.GOOGLE_PRIVATE_KEY || '').trim();
 
 if (!SA_EMAIL)  throw new Error('Missing GOOGLE_SERVICE_ACCOUNT_EMAIL');
 if (!SA_KEY_RAW) throw new Error('Missing GOOGLE_PRIVATE_KEY');
 if (!SHEET_ID)  throw new Error('Missing GOOGLE_SHEETS_ID');
-console.log(SA_KEY_RAW)
-console.log('key header?', SA_KEY_RAW.startsWith('-----BEGIN PRIVATE KEY-----'));
-console.log('has newline?', SA_KEY_RAW.includes('\n'));
 
 const auth = new google.auth.JWT({
   email: SA_EMAIL,
