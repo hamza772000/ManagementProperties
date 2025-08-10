@@ -162,7 +162,7 @@ export default function ServicesFeesPage() {
           <p className="text-sm text-zinc-600">
             One of our friendly experienced staff can answer all your questions. Call us today on{" "}
             <a href="tel:02076247665" className="font-medium underline">
-              020 8451 8888
+                020 7624 7665
             </a>
             .
           </p>
