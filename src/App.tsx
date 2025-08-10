@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useContext, createContext } from "react";
-import { BrowserRouter, Routes, Route, Link, NavLink, useParams } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Link, NavLink, useParams } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -588,7 +588,7 @@ export default function App(){
   const DATA = live ?? PROPS;
 
   return (
-    <BrowserRouter>
+    <Router>
       <DataContext.Provider value={DATA}>
         <div className="min-h-screen bg-zinc-50 text-zinc-900">
           <Header />
@@ -607,6 +607,6 @@ export default function App(){
           <Footer />
         </div>
       </DataContext.Provider>
-    </BrowserRouter>
+    </Router>
   );
 }
