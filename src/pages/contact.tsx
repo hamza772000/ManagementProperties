@@ -28,23 +28,23 @@ export default function ContactPage() {
 
     setBusy(true);
     try {
-      const r = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          message: form.message,
-          ref,
-        }),
-      });
-      if (!r.ok) throw new Error("bad status");
-      setDone("ok");
-      setForm({ name: "", email: "", phone: "", message: ref ? `I'm interested in property: ${ref}` : "", honeypot: "" });
-    } catch {
-      setDone("err");
-    } finally {
+        const r = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, message: form.message, ref }),
+        });
+      
+        if (!r.ok) {
+          const { error } = await r.json().catch(() => ({ error: "Unknown error" }));
+          throw new Error(error || "bad status");
+        }
+      
+        setDone("ok");
+        setForm({ name: "", email: "", phone: "", message: ref ? `I'm interested in property: ${ref}` : "", honeypot: "" });
+      } catch (e: any) {
+        console.error("GOT THIS ERROR",e);
+        setDone("err");
+      }finally {
       setBusy(false);
     }
   }

@@ -10,6 +10,7 @@ import footerImg from "./assets/footer.jpg";
 import ServicesFeesPage from "./pages/services";
 import AdminPage from "./pages/admin";
 import ContactPage from "./pages/contact";
+import ImageGallery from "./components/ImageGallery";
 
 // Fix Leaflet's missing default marker assets in Vite by using CDN icons
 const markerIcon = L.icon({
@@ -50,149 +51,6 @@ type Property = {
 
 // --- Mock dataset (RAW) ---
 const PROPS_RAW: Property[] = [
-  // {
-  //   id: 1,
-  //   title: "Extramead Road, Kensal Green",
-  //   address: "NW10 5QD",
-  //   area: "Kensal Green",
-  //   price: 950,
-  //   priceUnit: "pcm",
-  //   status: "rent",
-  //   beds: 1,
-  //   baths: 1,
-  //   wifi: true,
-  //   billsIncluded: true,
-  //   images: [
-  //     "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1200&auto=format&fit=crop",
-  //     "https://images.unsplash.com/photo-1505691723518-36a5ac3b2b8f?q=80&w=1200&auto=format&fit=crop",
-  //     "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
-  //   ],
-  //   featured: false,
-  //   coord: [51.531, -0.226],
-  // },
-  // {
-  //   id: 2,
-  //   title: "High Road, Willesden",
-  //   address: "NW10 2DY",
-  //   area: "Willesden",
-  //   price: 450000,
-  //   priceUnit: "pa",
-  //   status: "sale",
-  //   beds: 2,
-  //   baths: 1,
-  //   img: "https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop",
-  //   featured: false,
-  //   coord: [51.548, -0.232],
-  //   description:
-  //     "Bright 1-bed with modern kitchen and a generous living area.\nClose to Kensal Green station, shops and cafes.\nBills included and ultra-fast Wi-Fi.",
-  // },
-  // {
-  //   id: 3,
-  //   title: "Brindley Close, Alperton",
-  //   address: "HA0 1BT",
-  //   area: "Alperton",
-  //   price: 1295,
-  //   priceUnit: "pcm",
-  //   status: "rent",
-  //   beds: 1,
-  //   baths: 1,
-  //   images: [
-  //     "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop",
-  //     "https://images.unsplash.com/photo-1505692794403-34d4982f88aa?q=80&w=1200&auto=format&fit=crop",
-  //   ],
-  //   featured: true,
-  //   coord: [51.538, -0.3006],
-  // },
-  // {
-  //   id: 4,
-  //   title: "Lichfield Gardens, Willesden",
-  //   address: "NW10 2LL",
-  //   area: "Willesden",
-  //   price: 2100,
-  //   priceUnit: "pcm",
-  //   status: "rent",
-  //   beds: 3,
-  //   baths: 2,
-  //   img: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=1200&auto=format&fit=crop",
-  //   featured: true,
-  //   coord: [51.544, -0.225],
-  // },
-  // {
-  //   id: 6,
-  //   title: "Weston Court, Paddington",
-  //   address: "W2 1ED",
-  //   area: "Paddington",
-  //   price: 300000,
-  //   priceUnit: "pa",
-  //   status: "sale",
-  //   beds: 1,
-  //   baths: 1,
-  //   images: [
-  //     "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1200&auto=format&fit=crop",
-  //     "https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop",
-  //   ],
-  //   featured: false,
-  //   coord: [51.515, -0.176],
-  // },
-  // {
-  //   id: 7,
-  //   title: "Broadway, West Hendon",
-  //   address: "NW9 7YU",
-  //   area: "West Hendon",
-  //   price: 4400,
-  //   priceUnit: "pcm",
-  //   status: "rent",
-  //   beds: 4,
-  //   baths: 3,
-  //   img: "https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop",
-  //   featured: true,
-  //   coord: [51.586, -0.238],
-  // },
-  // {
-  //   id: 8,
-  //   title: "Dollis Hill House",
-  //   address: "NW10 1ED",
-  //   area: "Dollis Hill",
-  //   price: 1700,
-  //   priceUnit: "pcm",
-  //   status: "rent",
-  //   beds: 2,
-  //   baths: 2,
-  //   images: [
-  //     "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=1200&auto=format&fit=crop",
-  //     "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop",
-  //   ],
-  //   featured: false,
-  //   coord: [51.564, -0.235],
-  // },
-  // {
-  //   id: 9,
-  //   title: "Neasden Village Way",
-  //   address: "NW10 0LH",
-  //   area: "Neasden",
-  //   price: 15000,
-  //   priceUnit: "pa",
-  //   status: "sale",
-  //   beds: 3,
-  //   baths: 2,
-  //   img: "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?q=80&w=1200&auto=format&fit=crop",
-  //   featured: true,
-  //   coord: [51.561, -0.252],
-  // },
-  // {
-  //   id: 10,
-  //   title: "Wembley Central Studio",
-  //   address: "HA9 7AA",
-  //   area: "Wembley",
-  //   price: 1250,
-  //   priceUnit: "pcm",
-  //   status: "rent",
-  //   beds: 1,
-  //   baths: 1,
-  //   img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop",
-  //   featured: false,
-  //   coord: [51.552, -0.296],
-  // },
 ];
 
 // Ensure every property has an images[] array (fallback to img if provided)
@@ -490,7 +348,6 @@ function PropertyDetailPage(){
   const DATA = useProperties();
   const { id } = useParams();
   const property = DATA.find(p => p.id === Number(id));
-  const [idx, setIdx] = useState(0);
 
   if (!property) {
     return (
@@ -507,26 +364,12 @@ function PropertyDetailPage(){
     <main className="max-w-5xl mx-auto px-4 py-8">
       <div className="grid lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
-          <div className="aspect-[16/10] w-full overflow-hidden rounded-2xl">
-            <img src={imgs[idx]} alt={`${property.title} ${idx + 1}`} className="h-full w-full object-cover" />
+          {/* 🔽 Replace your hero + thumbs with this */}
+          <ImageGallery images={imgs} />
+
+          <div className="mt-4 text-sm text-zinc-600">
+            {property.area} • {property.address}
           </div>
-
-          {imgs.length > 1 && (
-            <div className="mt-3 flex gap-2 overflow-x-auto">
-              {imgs.map((u, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIdx(i)}
-                  className={`rounded-md overflow-hidden ring-2 ${i === idx ? "ring-sky-500" : "ring-transparent"}`}
-                  aria-label={`View image ${i + 1}`}
-                >
-                  <img src={u} alt="" className="h-16 w-24 object-cover" loading="lazy" />
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div className="mt-4 text-sm text-zinc-600">{property.area} • {property.address}</div>
 
           {property.description && (
             <div className="mt-4 text-zinc-700 leading-relaxed whitespace-pre-line">
@@ -537,7 +380,9 @@ function PropertyDetailPage(){
 
         <aside className="lg:col-span-2">
           <h1 className="text-2xl font-semibold">{property.title}</h1>
-          <div className="mt-3 text-lg font-medium">{currency(property.price)} {property.priceUnit}</div>
+          <div className="mt-3 text-lg font-medium">
+            {currency(property.price)} {property.priceUnit}
+          </div>
           <ul className="mt-4 space-y-1 text-zinc-700">
             <li>Bedrooms: {property.beds}</li>
             <li>Bathrooms: {property.baths}</li>
@@ -545,7 +390,11 @@ function PropertyDetailPage(){
             {property.wifi && <li>Wi-Fi included</li>}
             {property.billsIncluded && <li>Bills included</li>}
           </ul>
-          <div className="mt-6"><Link to="/contact" className="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2">Arrange a viewing</Link></div>
+          <div className="mt-6">
+            <Link to="/contact" className="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2">
+              Arrange a viewing
+            </Link>
+          </div>
         </aside>
       </div>
     </main>
