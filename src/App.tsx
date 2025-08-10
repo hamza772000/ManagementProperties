@@ -28,17 +28,17 @@ type Property = {
   id: number;
   title: string;
   address: string;
-  area: string; // e.g. Kensal Green
-  price: number; // integer
-  priceUnit: "pcm" | "pa"; // per calendar month / per annum
-  status: Status;
+  area: string;
+  price: number;
+  priceUnit: "pcm" | "pa";
+  status: "rent" | "sale";
   beds: number;
   baths: number;
-  wifi?: boolean;
-  billsIncluded?: boolean;
-  img: string;
   featured?: boolean;
-  coord: [number, number]; // [lat, lng]
+  coord: [number, number];
+  // images
+  img?: string;          // legacy single image (fallback)
+  images?: string[];     // NEW: multiple images
 };
 
 // --- Mock dataset ---
@@ -123,23 +123,27 @@ function Header() {
 function Footer() {
   return (
     <footer
-      className="border-t mt-8"
-      style={{ backgroundColor: "white", borderColor: "white" }}
+      className="border-t mt-auto" // Changed from mt-8 to mt-auto
+      style={{ 
+        backgroundColor: "white", 
+        borderColor: "white",
+        position: "sticky", // Add this
+        top: "100vh" // Add this
+      }}
     >
-        <img
-          src={footerImg}
-          alt="Management Properties — Contact details"
-          className="w-full"
-          style={{
-            height: "120px",          // fixed strip height
-            objectFit: "contain", // ✅ shows entire image, no crop
-            objectPosition: "center" // or "top"/"bottom" if you want to bias it
-          }}
-        />
+      <img
+        src={footerImg}
+        alt="Management Properties — Contact details"
+        className="w-full"
+        style={{
+          height: "120px",
+          objectFit: "contain",
+          objectPosition: "center"
+        }}
+      />
     </footer>
   );
 }
-
 
 
 function FilterForm({
