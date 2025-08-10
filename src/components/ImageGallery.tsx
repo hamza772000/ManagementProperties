@@ -1,5 +1,3 @@
-import React, { useEffect, useState, useCallback } from "react";
-
 type Props = {
   images: string[];
   startInFullscreen?: boolean;
