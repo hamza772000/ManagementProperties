@@ -86,7 +86,7 @@ function normalize(row: Record<string, any>) {
 
 export default async function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
@@ -146,40 +146,86 @@ export default async function handler(req: any, res: any) {
     return ok(res, { id }, 201);
   }
 
-    if (req.method === "PATCH") {
-    if (!authed(req)) return bad(res, "unauthorized", 401);
-
-    const id = String((req.body || {}).id || req.query.id || "");
-    if (!id) return bad(res, "missing id");
-
-    // read sheet
-    const r = await sheets.spreadsheets.values.get({ spreadsheetId: SHEET_ID, range: `${SHEET_NAME}!A1:Z10000` });
+  if (req.method === 'PATCH') {
+    if (!authed(req)) return bad(res, 'unauthorized', 401);
+  
+    const id = String((req.body || {}).id || req.query.id || '');
+    const active = (req.body || {}).active;
+    if (!id) return bad(res, 'missing id');
+  
+    const r = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: `${SHEET_NAME}!A1:Z10000`,
+    });
     const values = r.data.values || [];
     const [header, ...rows] = values;
-
-    const idIdx = header.indexOf("id");
-    const activeIdx = header.indexOf("active");
-    if (idIdx < 0 || activeIdx < 0) return bad(res, "sheet missing id/active columns", 500);
-
-    const rowIndex = rows.findIndex(row => String(row[idIdx]) === id);
-    if (rowIndex < 0) return bad(res, "id not found", 404);
-
-    const desired = (req.body && typeof req.body.active !== "undefined")
-        ? (String(req.body.active).toLowerCase() === "true")
-        : false; // default stays "hide"
-
+  
+    const idIdx = header.indexOf('id');
+    const activeIdx = header.indexOf('active');
+    if (idIdx < 0 || activeIdx < 0) return bad(res, 'sheet missing id/active columns', 500);
+  
+    const rowIndex = rows.findIndex((row) => String(row[idIdx]) === id);
+    if (rowIndex < 0) return bad(res, 'id not found', 404);
+  
     const colLetter = String.fromCharCode(65 + activeIdx);
     const targetRange = `${SHEET_NAME}!${colLetter}${rowIndex + 2}`;
-
+  
     await sheets.spreadsheets.values.update({
-        spreadsheetId: SHEET_ID,
-        range: targetRange,
-        valueInputOption: "USER_ENTERED",
-        requestBody: { values: [[ desired ? "TRUE" : "FALSE" ]] },
+      spreadsheetId: SHEET_ID,
+      range: targetRange,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values: [[active ? 'TRUE' : 'FALSE']] },
     });
-
-    return ok(res, { id, active: desired });
-    }
+  
+    return ok(res, { id, active: !!active });
+  }
+  
+  if (req.method === 'DELETE') {
+    if (!authed(req)) return bad(res, 'unauthorized', 401);
+  
+    const id = String((req.body || {}).id || req.query.id || '');
+    if (!id) return bad(res, 'missing id');
+  
+    // Find row to delete
+    const r = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: `${SHEET_NAME}!A1:Z10000`,
+    });
+    const values = r.data.values || [];
+    const [header, ...rows] = values;
+  
+    const idIdx = header.indexOf('id');
+    if (idIdx < 0) return bad(res, 'sheet missing id column', 500);
+  
+    const rowIndex = rows.findIndex((row) => String(row[idIdx]) === id);
+    if (rowIndex < 0) return bad(res, 'id not found', 404);
+  
+    // We need the sheetId (gid) for batchUpdate
+    const meta = await sheets.spreadsheets.get({ spreadsheetId: SHEET_ID });
+    const sheet = meta.data.sheets?.find(s => s.properties?.title === SHEET_NAME);
+    const sheetId = sheet?.properties?.sheetId;
+    if (sheetId == null) return bad(res, 'sheet not found by name', 500);
+  
+    // Delete the data row (+1 because header is row 0 in the grid)
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId: SHEET_ID,
+      requestBody: {
+        requests: [{
+          deleteDimension: {
+            range: {
+              sheetId,
+              dimension: 'ROWS',
+              startIndex: rowIndex + 1,
+              endIndex: rowIndex + 2,
+            }
+          }
+        }]
+      }
+    });
+  
+    return ok(res, { id, deleted: true });
+  }
+  
 
 
   // helper: A1 column letters for any width

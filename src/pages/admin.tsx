@@ -273,6 +273,17 @@ export default function AdminPage() {
     });
   }, [rows]);
 
+  const deleteProp = async (id: number) => {
+    if (!confirm("Delete permanently? This cannot be undone.")) return;
+    const res = await fetch(`/api/properties?id=${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) { alert("Failed: " + (await res.text())); return; }
+    load();
+  };
+  
+
   // --------------- UI ---------------
   if (!authed) {
     return (
@@ -405,6 +416,9 @@ export default function AdminPage() {
                   ) : (
                     <button onClick={() => setActive(p.id, false)} className="rounded px-2 py-1 ring-1 ring-red-200 text-red-700 text-sm">Hide</button>
                   )}
+                <button onClick={() => deleteProp(p.id)} className="rounded px-2 py-1 ring-1 ring-red-300 text-red-700 text-sm">
+                    Delete
+                </button>
                 </div>
               </div>
             ))}
