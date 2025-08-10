@@ -1,18 +1,41 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { google } from 'googleapis';
 
-const SHEET_ID = process.env.GOOGLE_SHEETS_ID!;
-const SHEET_NAME = process.env.GOOGLE_SHEET_NAME || 'properties';
+const SHEET_ID   = (process.env.GOOGLE_SHEETS_ID   || '').trim();
+const SHEET_NAME = (process.env.GOOGLE_SHEET_NAME  || 'properties').trim();
+const SA_EMAIL   = (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '').trim();
+const SA_KEY_RAW = "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCdV3H7PGr+HTRm\n8M+1VEUlqM2K7utL05jxSz0+MUMJsoDk4ef/uNtQC1q3lVC+rFG9ExE9fduzpr+7\nwH8LtidxNuE/eHdzvuLUM8hQbcRXqjWKxM20DzIblNcCezbgf5d+b5EN9uYgxCfn\n9qSmsGv8eY/wSoInRj2+JzglHcduWnV5/MEy54dFxI/KdynAyU+Tk0yUCn37TZBx\nTug7kAGpVnuCm2f98mnYCBs8heNJR+PO/DwVL6XjeL3JOnJ3jOUpVnwUSnOs7D6w\n5upQ0VFjQEAakHQWGwkkHQQlwOCWwmGQ4ilBP3mvxDr+TYQKb93X8t2ljdElwEQW\nfOh11RA9AgMBAAECggEAAzu86gMiZKB2kf6KbxIRQwnbyT+tOYPMcggTrgCBYSu/\nWpE1AL/B3ZHKm8qHZtAlSd5ncRJj08L1XmOWo3JrK/hSMHPUv7Mr97JlnKX00b/t\nlYbKfn6pANaK9tAzZipR9v/5C+pOplyeB4uEkD4kG7x1HjoEauwy8GX77bg5RteT\nsFN2R/c8YiNZPrpGnvSBxvrxA9VUyEU2rTI6QvAU0fKmIo6KD+PYtumKVqx5aqB1\n/CYPGx2dV9Moaa6dlubjYThFi0BgaOgMvI+ZQAkM8uqnUT9hVO/RfytjgmgoqPDU\nM8OgAgVN5fVQxnkN9hT+SSOZ3f3k3MNxLU7qkBq1/QKBgQDI4uaZ/83aHZQf16m6\ndg4mB/knJvhDVrqDGxuNNMx6hsEH98T/fGy/EXy0parwDNyNfEJeJOYXs4YGFpAK\nKHiNRI3dqPxtIpEUa8wutmdcO1RK1QSdPKd9uOQhR+q3/3SXFVuZBSa3udNDMHz6\n6un4tzFhKZldbNysTEJdSnTr8wKBgQDIgjZJ3H4005b3nHgQNNN6/5s+0DUxZ472\n/3o7pwCRy5r9gPOl3Q3XiIH/KhQl59sC0vXn8AYNT87aLPfjguGkpUx52Eel8gh7\nvemfI542YcLwqkNvIWFBpc+OfL70qIIvPZzIe3Y7DqdZzOrqvJUt/TtUGE/o68Cb\nmMoPVjgPDwKBgHAd+zgeBeTjN0WiVw9DTlg5gPwyCsOChywfF/xyaGFGDjwFNASn\njAYDm4czIzlA5GNu45epnmXCA14of5G7zrSBe3AoHWJHtZMhKt8zXHKkhkIRq7aa\nIJzRcTmF6uFwiMC94daAgoBuDRPl3wsnyxfOHpgs4HS9Clh7Y1qv8JuzAoGBAIhD\nRZWojPRln0EjSszouZfrQZvMb3nlwNjHAlCry81JK0mAaxSbR57kHERGWm7wRHyE\n1a0MB3Dgfdjzmns5JRN5aqGbhAWYmH9PrwcBc7HNemeHrlBFxQySHJ3e1P77zY1B\nN91fWhgEe2KhyjxAcLlSURFzfEr0fG7BxP/rPimtAoGAN4rshh0mtb890ADPbztt\nKp9NwwzesEqV27pBzCYGrP+EhRz0h+92g8tR1lnVjte+iugTaKKCBKVo+Dh1Lt5U\nh0V5p+Tt3bJ0O6868+MU9iLhY1P0Y55G22S2m5kA/+Tvs6+GTIjiNid24W4K5S4D\nZdx+K0HUvhC8TUdTgcNc+C0=\n-----END PRIVATE KEY-----\n"
 
-const auth = new google.auth.JWT(
-  process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  undefined,
-  (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
-  ['https://www.googleapis.com/auth/spreadsheets']
-);
-const sheets = google.sheets({ version: 'v4', auth });
+if (!SA_EMAIL)  throw new Error('Missing GOOGLE_SERVICE_ACCOUNT_EMAIL');
+if (!SA_KEY_RAW) throw new Error('Missing GOOGLE_PRIVATE_KEY');
+if (!SHEET_ID)  throw new Error('Missing GOOGLE_SHEETS_ID');
+console.log(SA_KEY_RAW)
+console.log('key header?', SA_KEY_RAW.startsWith('-----BEGIN PRIVATE KEY-----'));
+console.log('has newline?', SA_KEY_RAW.includes('\n'));
 
-const ok = (res: VercelResponse, data: any, status = 200) => res.status(status).json(data);
+const auth = new google.auth.JWT({
+  email: SA_EMAIL,
+  key: SA_KEY_RAW,
+  scopes: [
+    'https://www.googleapis.com/auth/spreadsheets',
+    // optional but useful if you later pull Drive-hosted images:
+    'https://www.googleapis.com/auth/drive.readonly',
+  ],
+});
+
+async function getSheets() {
+  // 🔎 Force a token now so we fail here (not later)
+  await auth.authorize().catch((e: any) => {
+    console.error('Service account auth failed:', e?.response?.data || e);
+    throw e;
+  });
+
+  // Globally set auth (avoids any per-client weirdness)
+  google.options({ auth });
+  return google.sheets({ version: 'v4', auth });
+}
+
+const ok  = (res: VercelResponse, data: any, status = 200) => res.status(status).json(data);
 const bad = (res: VercelResponse, msg: string, status = 400) => res.status(status).json({ error: msg });
 
 function authed(req: VercelRequest) {
@@ -20,20 +43,19 @@ function authed(req: VercelRequest) {
   return t && t === process.env.ADMIN_TOKEN;
 }
 
-const toBool = (v: any) => String(v).trim().toLowerCase() === 'true' || v === '1' || v === 'yes';
-
+function toBool(v: any) {
+  return String(v).trim().toLowerCase() === 'true' || v === '1' || v === 'yes';
+}
 function toDirectDriveUrl(u?: string) {
   if (!u) return u;
-  const m = u.match(/\/d\/([^/]+)/); // https://drive.google.com/file/d/<id>/view
+  const m = u.match(/\/d\/([^/]+)/);
   return m?.[1] ? `https://drive.google.com/uc?export=view&id=${m[1]}` : u;
 }
-
 function splitUrls(s?: string) {
   if (!s) return [];
   return s.split(/[,|\n]/).map(x => x.trim()).filter(Boolean);
 }
 
-// Normalize row -> your frontend camelCase structure
 function normalize(row: Record<string, any>) {
   const images: string[] = [];
   for (let i = 1; i <= 6; i++) {
@@ -55,10 +77,8 @@ function normalize(row: Record<string, any>) {
     baths: Number(row.baths || 0),
     featured: toBool(row.featured),
     coord: [Number(row.lat || 0), Number(row.lng || 0)] as [number, number],
-    // images
     images: dedup,
     img: dedup[0] || '',
-    // extra fields
     active: row.active === undefined ? true : toBool(row.active),
     createdAt: row.created_at || new Date().toISOString(),
     description: row.description || '',
@@ -66,23 +86,29 @@ function normalize(row: Record<string, any>) {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS (handy if you ever admin from another origin)
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
+  const sheets = await getSheets(); // ← ensures we’re authenticated
+
   if (req.method === 'GET') {
-    const range = `${SHEET_NAME}!A1:Z10000`;
-    const r = await sheets.spreadsheets.values.get({ spreadsheetId: SHEET_ID, range });
-    const values = r.data.values || [];
-    const [header, ...rows] = values;
-    const items = rows.map((row) => {
-      const o: Record<string, any> = {};
-      header.forEach((h, i) => (o[h] = row[i]));
-      return normalize(o);
-    });
-    return ok(res, items.filter(i => i.active));
+    try {
+      const range = `${SHEET_NAME}!A1:Z10000`;
+      const r = await sheets.spreadsheets.values.get({ spreadsheetId: SHEET_ID, range });
+      const values = r.data.values || [];
+      const [header, ...rows] = values;
+      const items = rows.map((row) => {
+        const o: Record<string, any> = {};
+        header.forEach((h, i) => (o[h] = row[i]));
+        return normalize(o);
+      });
+      return ok(res, items.filter(i => i.active));
+    } catch (e: any) {
+      console.error('Sheets GET failed:', e?.response?.data || e);
+      return bad(res, 'sheets_get_failed', 500);
+    }
   }
 
   if (req.method === 'POST') {
@@ -90,14 +116,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const payload = req.body || {};
     if (!payload.title || !payload.price || !payload.status || !payload.priceUnit)
       return bad(res, 'missing required fields: title, price, status, priceUnit');
-
-    // map back to sheet columns
-    const header = [
-      'id','title','address','area','price','price_unit','status',
-      'beds','baths','featured','lat','lng',
-      'image_url','image_url_2','image_url_3','image_url_4','image_url_5','image_url_6',
-      'images_csv','active','created_at','description'
-    ];
 
     const id = payload.id || Date.now();
     const images: string[] = (payload.images || []).slice(0, 6);
@@ -115,7 +133,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       Number(payload.coord?.[0] ?? payload.lat ?? 0),
       Number(payload.coord?.[1] ?? payload.lng ?? 0),
       images[0] || '', images[1] || '', images[2] || '', images[3] || '', images[4] || '', images[5] || '',
-      '', // images_csv not used on POST
+      '',
       'TRUE',
       new Date().toISOString(),
       payload.description || ''
@@ -132,7 +150,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (req.method === 'PATCH') {
-    // Soft delete: set active = FALSE by id
     if (!authed(req)) return bad(res, 'unauthorized', 401);
     const id = String((req.body || {}).id || req.query.id || '');
     if (!id) return bad(res, 'missing id');
@@ -147,7 +164,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const rowIndex = rows.findIndex((row) => String(row[idIdx]) === id);
     if (rowIndex < 0) return bad(res, 'id not found', 404);
 
-    const colLetter = String.fromCharCode(65 + activeIdx); // crude A..Z (fits our headers)
+    const colLetter = String.fromCharCode(65 + activeIdx);
     const targetRange = `${SHEET_NAME}!${colLetter}${rowIndex + 2}`;
     await sheets.spreadsheets.values.update({
       spreadsheetId: SHEET_ID,
