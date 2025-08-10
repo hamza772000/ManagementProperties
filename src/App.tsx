@@ -9,6 +9,7 @@ import headerImg from "./assets/header.jpg";
 import footerImg from "./assets/footer.jpg";
 import ServicesFeesPage from "./pages/services";
 import AdminPage from "./pages/admin";
+import ContactPage from "./pages/Contact";
 
 // Fix Leaflet's missing default marker assets in Vite by using CDN icons
 const markerIcon = L.icon({
@@ -246,10 +247,10 @@ function Header() {
         <NavLink to="/" end className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Home</NavLink>
         <NavLink to="/for-sale" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>For Sale</NavLink>
         <NavLink to="/for-rent" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>For Rent</NavLink>
-        <NavLink to="/landlords" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Landlords</NavLink>
+        {/* <NavLink to="/landlords" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Landlords</NavLink> */}
         <NavLink to="/contact" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Contact</NavLink>
         <NavLink to="/services" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Services & Fees</NavLink>
-        {/* <NavLink to="/admin" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Admin</NavLink> */}
+        <NavLink to="/admin" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Admin</NavLink>
       </nav>
     </header>
   );
@@ -597,7 +598,7 @@ export default function App(){
             <Route path="/for-rent" element={<ForRentPage />} />
             <Route path="/property/:id" element={<PropertyDetailPage />} />
             <Route path="/landlords" element={<Placeholder text="Landlords page (todo)" />} />
-            <Route path="/contact" element={<Placeholder text="Contact page (todo)" />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/services" element={<ServicesFeesPage />} />
             <Route path="/list" element={<Placeholder text="List your property form (todo)" />} />
             <Route path="/admin" element={<AdminPage />} />
