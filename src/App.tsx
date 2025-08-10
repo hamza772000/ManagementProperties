@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useContext, createContext } from "react";
 import { BrowserRouter, Routes, Route, Link, NavLink, useParams } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -8,6 +8,7 @@ import { Search, MapPin, Home, Bath, BedDouble, PoundSterling } from "lucide-rea
 import headerImg from "./assets/header.jpg";
 import footerImg from "./assets/footer.jpg";
 import ServicesFeesPage from "./pages/services";
+import AdminPage from "./pages/admin";
 
 // Fix Leaflet's missing default marker assets in Vite by using CDN icons
 const markerIcon = L.icon({
@@ -36,10 +37,11 @@ type Property = {
   featured?: boolean;
   coord: [number, number];
 
-  // optional extras used in your mock
+  // optional extras
   wifi?: boolean;
   billsIncluded?: boolean;
   description?: string;
+
   // images
   img?: string;          // legacy single image (fallback)
   images?: string[];     // multiple images (preferred)
@@ -77,12 +79,11 @@ const PROPS_RAW: Property[] = [
     status: "sale",
     beds: 2,
     baths: 1,
-    // single image fallback is fine too
     img: "https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop",
     featured: false,
     coord: [51.548, -0.232],
     description:
-    "Bright 1-bed with modern kitchen and a generous living area.\nClose to Kensal Green station, shops and cafes.\nBills included and ultra-fast Wi-Fi."
+      "Bright 1-bed with modern kitchen and a generous living area.\nClose to Kensal Green station, shops and cafes.\nBills included and ultra-fast Wi-Fi.",
   },
   {
     id: 3,
@@ -199,6 +200,13 @@ const PROPS: Property[] = PROPS_RAW.map((p) => ({
   images: p.images?.length ? p.images : (p.img ? [p.img] : []),
 }));
 
+// --- Data context (live data with fallback to PROPS) ---
+const DataContext = createContext<Property[]>(PROPS);
+
+function useProperties() {
+  return useContext(DataContext);
+}
+
 // --- Helpers ---
 function currency(n: number) {
   return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(n);
@@ -222,7 +230,6 @@ function Header() {
 
   return (
     <header className="sticky top-0 z-40" style={{ backgroundColor: brandGreen }}>
-      {/* Compact banner on white so it doesn't look bulky */}
       <div className="w-full" style={{ backgroundColor: "white" }}>
         <img
           src={headerImg}
@@ -232,36 +239,17 @@ function Header() {
         />
       </div>
 
-      {/* Nav bar in brand green */}
       <nav
         className="max-w-7xl mx-auto px-4 py-2 flex items-center gap-6 text-sm text-white"
         style={{ backgroundColor: brandGreen }}
       >
-        <NavLink to="/" end className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
-          Home
-        </NavLink>
-        <NavLink to="/for-sale" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
-          For Sale
-        </NavLink>
-        <NavLink to="/for-rent" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
-          For Rent
-        </NavLink>
-        <NavLink to="/landlords" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
-          Landlords
-        </NavLink>
-        <NavLink to="/contact" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
-          Contact
-        </NavLink>
-        <NavLink to="/services" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
-          Services & Fees
-        </NavLink>
-        <NavLink
-          to="/list"
-          className="ml-auto rounded-xl bg-white px-3 py-1"
-          style={{ color: brandGreen }}
-        >
-          List your property
-        </NavLink>
+        <NavLink to="/" end className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Home</NavLink>
+        <NavLink to="/for-sale" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>For Sale</NavLink>
+        <NavLink to="/for-rent" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>For Rent</NavLink>
+        <NavLink to="/landlords" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Landlords</NavLink>
+        <NavLink to="/contact" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Contact</NavLink>
+        <NavLink to="/services" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Services & Fees</NavLink>
+        {/* <NavLink to="/admin" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>Admin</NavLink> */}
       </nav>
     </header>
   );
@@ -270,23 +258,14 @@ function Header() {
 function Footer() {
   return (
     <footer
-      className="border-t mt-auto" // Changed from mt-8 to mt-auto
-      style={{ 
-        backgroundColor: "white", 
-        borderColor: "white",
-        position: "sticky", // Add this
-        top: "100vh" // Add this
-      }}
+      className="border-t mt-auto"
+      style={{ backgroundColor: "white", borderColor: "white", position: "sticky", top: "100vh" }}
     >
       <img
         src={footerImg}
         alt="Management Properties — Contact details"
         className="w-full"
-        style={{
-          height: "120px",
-          objectFit: "contain",
-          objectPosition: "center"
-        }}
+        style={{ height: "120px", objectFit: "contain", objectPosition: "center" }}
       />
     </footer>
   );
@@ -294,12 +273,7 @@ function Footer() {
 
 // --- Filter Form ---
 function FilterForm({
-  mode, setMode,
-  q, setQ,
-  minBeds, setMinBeds,
-  minBaths, setMinBaths,
-  priceFrom, setPriceFrom,
-  priceTo, setPriceTo,
+  mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo,
 }: {
   mode: Status; setMode: (s: Status) => void;
   q: string; setQ: (v: string) => void;
@@ -311,18 +285,8 @@ function FilterForm({
   return (
     <>
       <div className="flex items-center gap-3 mb-3">
-        <button
-          onClick={() => setMode("rent")}
-          className={`px-3 py-1.5 rounded-full text-sm border ${mode === "rent" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}
-        >
-          For Rent
-        </button>
-        <button
-          onClick={() => setMode("sale")}
-          className={`px-3 py-1.5 rounded-full text-sm border ${mode === "sale" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}
-        >
-          For Sale
-        </button>
+        <button onClick={() => setMode("rent")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "rent" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>For Rent</button>
+        <button onClick={() => setMode("sale")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "sale" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>For Sale</button>
       </div>
 
       <label className="block text-xs font-medium text-zinc-600">Location</label>
@@ -364,6 +328,8 @@ function FilterForm({
 
 // --- Home Page ---
 function HomePage() {
+  const DATA = useProperties();
+
   const [mode, setMode] = useState<Status>("rent");
   const [q, setQ] = useState("");
   const [minBeds, setMinBeds] = useState(0);
@@ -372,7 +338,7 @@ function HomePage() {
   const [priceTo, setPriceTo] = useState<number | "">("");
 
   const filtered = useMemo(() => {
-    return PROPS.filter((p) => {
+    return DATA.filter((p) => {
       if (p.status !== mode) return false;
       if (q && !(p.area + " " + p.title + " " + p.address).toLowerCase().includes(q.toLowerCase())) return false;
       if (minBeds && p.beds < minBeds) return false;
@@ -381,7 +347,7 @@ function HomePage() {
       if (priceTo !== "" && p.price > Number(priceTo)) return false;
       return true;
     });
-  }, [mode, q, minBeds, minBaths, priceFrom, priceTo]);
+  }, [DATA, mode, q, minBeds, minBaths, priceFrom, priceTo]);
 
   const center: [number, number] = [51.544, -0.23];
 
@@ -402,10 +368,7 @@ function HomePage() {
         {/* Map */}
         <div className="relative h-[360px] md:h-[420px] lg:h-[480px] w-full">
           <MapContainer center={center} zoom={12} scrollWheelZoom={false} className="h-full w-full">
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
+            <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {filtered.map((p) => (
               <Marker key={p.id} position={p.coord} icon={markerIcon}>
                 <Popup>
@@ -418,7 +381,6 @@ function HomePage() {
                 </Popup>
               </Marker>
             ))}
-
           </MapContainer>
 
           {/* Desktop: floating filter over the map */}
@@ -442,13 +404,7 @@ function HomePage() {
           <h2 className="text-xl font-semibold mb-4">Recent Properties</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {filtered.map((p) => (
-              <motion.article
-                key={p.id}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200"
-              >
+              <motion.article key={p.id} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200">
                 <Link to={`/property/${p.id}`}>
                   <div className="aspect-[16/10] w-full overflow-hidden">
                     <img src={cover(p)} alt={p.title} className="h-full w-full object-cover" />
@@ -461,12 +417,8 @@ function HomePage() {
                     </span>
                     <PriceTag value={p.price} unit={p.priceUnit} />
                   </div>
-                  <Link to={`/property/${p.id}`} className="mt-2 block font-semibold text-lg hover:underline">
-                    {p.title}
-                  </Link>
-                  <div className="flex items-center gap-1 text-sm text-zinc-600">
-                    <MapPin className="h-4 w-4" /> {p.area}, {p.address}
-                  </div>
+                  <Link to={`/property/${p.id}`} className="mt-2 block font-semibold text-lg hover:underline">{p.title}</Link>
+                  <div className="flex items-center gap-1 text-sm text-zinc-600"><MapPin className="h-4 w-4" /> {p.area}, {p.address}</div>
                   <div className="mt-3 flex items-center gap-4">
                     <Stat icon={<BedDouble className="h-4 w-4" />}>{p.beds}</Stat>
                     <Stat icon={<Bath className="h-4 w-4" />}>{p.baths}</Stat>
@@ -482,16 +434,14 @@ function HomePage() {
         <aside>
           <h2 className="text-xl font-semibold mb-4">Featured Properties</h2>
           <div className="space-y-4">
-            {PROPS.filter((p) => p.featured).map((p) => (
+            {DATA.filter((p) => p.featured).map((p) => (
               <Link key={p.id} to={`/property/${p.id}`} className="flex gap-3 rounded-xl bg-white ring-1 ring-zinc-200 p-2 shadow-sm hover:ring-sky-300">
                 <img src={cover(p)} alt={p.title} className="h-20 w-28 object-cover rounded-lg" />
                 <div className="flex-1">
                   <div className="text-xs text-zinc-500">{p.area}</div>
                   <div className="font-medium leading-tight">{p.title}</div>
                   <div className="text-xs text-zinc-500">{p.address}</div>
-                  <div className="mt-1">
-                    <PriceTag value={p.price} unit={p.priceUnit} />
-                  </div>
+                  <div className="mt-1"><PriceTag value={p.price} unit={p.priceUnit} /></div>
                 </div>
               </Link>
             ))}
@@ -504,7 +454,8 @@ function HomePage() {
 
 // --- Listing pages by status ---
 function ListingByStatus({ status }: { status: Status }) {
-  const items = useMemo(() => PROPS.filter(p => p.status === status), [status]);
+  const DATA = useProperties();
+  const items = useMemo(() => DATA.filter(p => p.status === status), [DATA, status]);
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
       <section className="lg:col-span-2">
@@ -535,8 +486,9 @@ function ForRentPage(){ return <ListingByStatus status="rent"/> }
 
 // --- Property detail page (with gallery + description) ---
 function PropertyDetailPage(){
+  const DATA = useProperties();
   const { id } = useParams();
-  const property = PROPS.find(p => p.id === Number(id));
+  const property = DATA.find(p => p.id === Number(id));
   const [idx, setIdx] = useState(0);
 
   if (!property) {
@@ -555,11 +507,7 @@ function PropertyDetailPage(){
       <div className="grid lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
           <div className="aspect-[16/10] w-full overflow-hidden rounded-2xl">
-            <img
-              src={imgs[idx]}
-              alt={`${property.title} ${idx + 1}`}
-              className="h-full w-full object-cover"
-            />
+            <img src={imgs[idx]} alt={`${property.title} ${idx + 1}`} className="h-full w-full object-cover" />
           </div>
 
           {imgs.length > 1 && (
@@ -577,9 +525,7 @@ function PropertyDetailPage(){
             </div>
           )}
 
-          <div className="mt-4 text-sm text-zinc-600">
-            {property.area} • {property.address}
-          </div>
+          <div className="mt-4 text-sm text-zinc-600">{property.area} • {property.address}</div>
 
           {property.description && (
             <div className="mt-4 text-zinc-700 leading-relaxed whitespace-pre-line">
@@ -590,10 +536,7 @@ function PropertyDetailPage(){
 
         <aside className="lg:col-span-2">
           <h1 className="text-2xl font-semibold">{property.title}</h1>
-          <div className="mt-3 text-lg font-medium">
-            {currency(property.price)} {property.priceUnit}
-          </div>
-
+          <div className="mt-3 text-lg font-medium">{currency(property.price)} {property.priceUnit}</div>
           <ul className="mt-4 space-y-1 text-zinc-700">
             <li>Bedrooms: {property.beds}</li>
             <li>Bathrooms: {property.baths}</li>
@@ -601,18 +544,12 @@ function PropertyDetailPage(){
             {property.wifi && <li>Wi-Fi included</li>}
             {property.billsIncluded && <li>Bills included</li>}
           </ul>
-
-          <div className="mt-6">
-            <Link to="/contact" className="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2">
-              Arrange a viewing
-            </Link>
-          </div>
+          <div className="mt-6"><Link to="/contact" className="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2">Arrange a viewing</Link></div>
         </aside>
       </div>
     </main>
   );
 }
-
 
 // --- Simple placeholder page ---
 function Placeholder({ text }: { text: string }){
@@ -621,23 +558,54 @@ function Placeholder({ text }: { text: string }){
 
 // --- App Router (default export for canvas preview) ---
 export default function App(){
+  // Fetch live data once; fall back to PROPS
+  const [live, setLive] = useState<Property[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/properties");
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        if (!cancelled) {
+          // ensure images[] exists for safety
+          const safe: Property[] = (data as Property[]).map(p => ({
+            ...p,
+            images: p.images?.length ? p.images : (p.img ? [p.img] : []),
+          }));
+          setLive(safe);
+        }
+      } catch (e) {
+        console.warn("Using fallback PROPS. Live fetch failed:", e);
+        if (!cancelled) setLive(null);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  const DATA = live ?? PROPS;
+
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-zinc-50 text-zinc-900">
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/for-sale" element={<ForSalePage />} />
-          <Route path="/for-rent" element={<ForRentPage />} />
-          <Route path="/property/:id" element={<PropertyDetailPage />} />
-          <Route path="/landlords" element={<Placeholder text="Landlords page (todo)" />} />
-          <Route path="/contact" element={<Placeholder text="Contact page (todo)" />} />
-          <Route path="/services" element={<ServicesFeesPage />} />
-          <Route path="/list" element={<Placeholder text="List your property form (todo)" />} />
-          <Route path="*" element={<Placeholder text="404 – Page not found" />} />
-        </Routes>
-        <Footer />
-      </div>
+      <DataContext.Provider value={DATA}>
+        <div className="min-h-screen bg-zinc-50 text-zinc-900">
+          <Header />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/for-sale" element={<ForSalePage />} />
+            <Route path="/for-rent" element={<ForRentPage />} />
+            <Route path="/property/:id" element={<PropertyDetailPage />} />
+            <Route path="/landlords" element={<Placeholder text="Landlords page (todo)" />} />
+            <Route path="/contact" element={<Placeholder text="Contact page (todo)" />} />
+            <Route path="/services" element={<ServicesFeesPage />} />
+            <Route path="/list" element={<Placeholder text="List your property form (todo)" />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="*" element={<Placeholder text="404 – Page not found" />} />
+          </Routes>
+          <Footer />
+        </div>
+      </DataContext.Provider>
     </BrowserRouter>
   );
 }
