@@ -142,7 +142,7 @@ function HomePage() {
     });
   }, [mode, q, minBeds, minBaths, priceFrom, priceTo]);
 
-  const featured = useMemo(() => PROPS.filter((p) => p.featured), []);
+  // const featured = useMemo(() => PROPS.filter((p) => p.featured), []);
   const center: [number, number] = [51.544, -0.23];
 
   return (
