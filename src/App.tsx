@@ -129,14 +129,106 @@ function Footer() {
           src={footerImg}                 // <-- use imported image
           alt="Management Properties — Contact details"
           className="w-full object-cover"
-          style={{ minHeight: "140px" }}  // adjust as you like
+          style={{ height: "auto" }}  // adjust as you like
         />
       </div>
     </footer>
   );
 }
 
-// --- Home Page (map + filters + recent + featured) ---
+function FilterForm({
+  mode, setMode,
+  q, setQ,
+  minBeds, setMinBeds,
+  minBaths, setMinBaths,
+  priceFrom, setPriceFrom,
+  priceTo, setPriceTo,
+}: {
+  mode: Status; setMode: (s: Status) => void;
+  q: string; setQ: (v: string) => void;
+  minBeds: number; setMinBeds: (n: number) => void;
+  minBaths: number; setMinBaths: (n: number) => void;
+  priceFrom: number | ""; setPriceFrom: (v: number | "") => void;
+  priceTo: number | ""; setPriceTo: (v: number | "") => void;
+}) {
+  return (
+    <>
+      <div className="flex items-center gap-3 mb-3">
+        <button
+          onClick={() => setMode("rent")}
+          className={`px-3 py-1.5 rounded-full text-sm border ${
+            mode === "rent" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"
+          }`}
+        >
+          For Rent
+        </button>
+        <button
+          onClick={() => setMode("sale")}
+          className={`px-3 py-1.5 rounded-full text-sm border ${
+            mode === "sale" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"
+          }`}
+        >
+          For Sale
+        </button>
+      </div>
+
+      <label className="block text-xs font-medium text-zinc-600">Location</label>
+      <div className="relative mt-1 mb-3">
+        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Search area, street or code"
+          className="w-full rounded-lg border border-zinc-300 pl-8 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs font-medium text-zinc-600">Beds (min)</label>
+          <select
+            value={minBeds}
+            onChange={(e) => setMinBeds(Number(e.target.value))}
+            className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm"
+          >
+            {[0,1,2,3,4].map(n => <option key={n} value={n}>{n===0?"Any":n}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-zinc-600">Baths (min)</label>
+          <select
+            value={minBaths}
+            onChange={(e) => setMinBaths(Number(e.target.value))}
+            className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm"
+          >
+            {[0,1,2,3].map(n => <option key={n} value={n}>{n===0?"Any":n}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-zinc-600">Price From</label>
+          <input
+            type="number"
+            value={priceFrom}
+            onChange={(e) => setPriceFrom(e.target.value === "" ? "" : Number(e.target.value))}
+            placeholder="Any"
+            className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-zinc-600">Price To</label>
+          <input
+            type="number"
+            value={priceTo}
+            onChange={(e) => setPriceTo(e.target.value === "" ? "" : Number(e.target.value))}
+            placeholder="Any"
+            className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm"
+          />
+        </div>
+      </div>
+    </>
+  );
+}
+
 function HomePage() {
   const [mode, setMode] = useState<Status>("rent");
   const [q, setQ] = useState("");
@@ -157,16 +249,31 @@ function HomePage() {
     });
   }, [mode, q, minBeds, minBaths, priceFrom, priceTo]);
 
-  // const featured = useMemo(() => PROPS.filter((p) => p.featured), []);
   const center: [number, number] = [51.544, -0.23];
 
   return (
     <>
       {/* Map & Filters */}
       <section className="relative">
-        <div className="h-[420px] w-full">
+        {/* Mobile: show filters above the map */}
+        <div className="lg:hidden px-4 pt-4">
+          <div className="rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200 p-4">
+            <FilterForm
+              {...{ mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo }}
+            />
+            <div className="mt-3 text-right">
+              <span className="text-xs text-zinc-500">{filtered.length} result(s)</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Map */}
+        <div className="relative h-[360px] md:h-[420px] lg:h-[480px] w-full">
           <MapContainer center={center} zoom={12} scrollWheelZoom={false} className="h-full w-full">
-            <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
             {filtered.map((p) => (
               <Marker key={p.id} position={p.coord} icon={markerIcon}>
                 <Popup>
@@ -177,39 +284,21 @@ function HomePage() {
               </Marker>
             ))}
           </MapContainer>
-        </div>
 
-        {/* Floating filter card */}
-        <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="absolute left-6 top-6 w-[320px] rounded-2xl bg-white/95 shadow-xl ring-1 ring-zinc-200 p-4">
-          <div className="flex items-center gap-3 mb-3">
-            <button onClick={() => setMode("rent")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "rent" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>For Rent</button>
-            <button onClick={() => setMode("sale")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "sale" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>For Sale</button>
-          </div>
-          <label className="block text-xs font-medium text-zinc-600">Location</label>
-          <div className="relative mt-1 mb-3">
-            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search area, street or code" className="w-full rounded-lg border border-zinc-300 pl-8 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-zinc-600">Beds (min)</label>
-              <select value={minBeds} onChange={(e) => setMinBeds(Number(e.target.value))} className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm">{[0,1,2,3,4].map(n => <option key={n} value={n}>{n===0?"Any":n}</option>)}</select>
+          {/* Desktop: floating filter over the map */}
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="hidden lg:block absolute left-20 top-6 z-[1000] w-[320px] rounded-2xl bg-white/95 shadow-xl ring-1 ring-zinc-200 p-4"
+          >
+            <FilterForm
+              {...{ mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo }}
+            />
+            <div className="mt-3 text-right">
+              <span className="text-xs text-zinc-500">{filtered.length} result(s)</span>
             </div>
-            <div>
-              <label className="block text-xs font-medium text-zinc-600">Baths (min)</label>
-              <select value={minBaths} onChange={(e) => setMinBaths(Number(e.target.value))} className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm">{[0,1,2,3].map(n => <option key={n} value={n}>{n===0?"Any":n}</option>)}</select>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-zinc-600">Price From</label>
-              <input type="number" value={priceFrom} onChange={(e) => setPriceFrom(e.target.value === "" ? "" : Number(e.target.value))} placeholder="Any" className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm" />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-zinc-600">Price To</label>
-              <input type="number" value={priceTo} onChange={(e) => setPriceTo(e.target.value === "" ? "" : Number(e.target.value))} placeholder="Any" className="w-full rounded-lg border border-zinc-300 px-2 py-2 text-sm" />
-            </div>
-          </div>
-          <div className="mt-3 text-right"><span className="text-xs text-zinc-500">{filtered.length} result(s)</span></div>
-        </motion.div>
+          </motion.div>
+        </div>
       </section>
 
       {/* Body */}
@@ -219,7 +308,13 @@ function HomePage() {
           <h2 className="text-xl font-semibold mb-4">Recent Properties</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {filtered.map((p) => (
-              <motion.article key={p.id} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200">
+              <motion.article
+                key={p.id}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200"
+              >
                 <Link to={`/property/${p.id}`}>
                   <div className="aspect-[16/10] w-full overflow-hidden">
                     <img src={p.img} alt={p.title} className="h-full w-full object-cover" />
@@ -227,11 +322,21 @@ function HomePage() {
                 </Link>
                 <div className="p-4">
                   <div className="flex items-center justify-between">
-                    <span className={`text-xs font-semibold rounded px-2 py-1 ${p.status === "rent" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}>{p.status === "rent" ? "For Rent" : "For Sale"}</span>
+                    <span
+                      className={`text-xs font-semibold rounded px-2 py-1 ${
+                        p.status === "rent" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"
+                      }`}
+                    >
+                      {p.status === "rent" ? "For Rent" : "For Sale"}
+                    </span>
                     <PriceTag value={p.price} unit={p.priceUnit} />
                   </div>
-                  <Link to={`/property/${p.id}`} className="mt-2 block font-semibold text-lg hover:underline">{p.title}</Link>
-                  <div className="flex items-center gap-1 text-sm text-zinc-600"><MapPin className="h-4 w-4" /> {p.area}, {p.address}</div>
+                  <Link to={`/property/${p.id}`} className="mt-2 block font-semibold text-lg hover:underline">
+                    {p.title}
+                  </Link>
+                  <div className="flex items-center gap-1 text-sm text-zinc-600">
+                    <MapPin className="h-4 w-4" /> {p.area}, {p.address}
+                  </div>
                   <div className="mt-3 flex items-center gap-4">
                     <Stat icon={<BedDouble className="h-4 w-4" />}>{p.beds}</Stat>
                     <Stat icon={<Bath className="h-4 w-4" />}>{p.baths}</Stat>
@@ -247,14 +352,20 @@ function HomePage() {
         <aside>
           <h2 className="text-xl font-semibold mb-4">Featured Properties</h2>
           <div className="space-y-4">
-            {PROPS.filter(p=>p.featured).map((p) => (
-              <Link key={p.id} to={`/property/${p.id}`} className="flex gap-3 rounded-xl bg-white ring-1 ring-zinc-200 p-2 shadow-sm hover:ring-sky-300">
+            {PROPS.filter((p) => p.featured).map((p) => (
+              <Link
+                key={p.id}
+                to={`/property/${p.id}`}
+                className="flex gap-3 rounded-xl bg-white ring-1 ring-zinc-200 p-2 shadow-sm hover:ring-sky-300"
+              >
                 <img src={p.img} alt={p.title} className="h-20 w-28 object-cover rounded-lg" />
                 <div className="flex-1">
                   <div className="text-xs text-zinc-500">{p.area}</div>
                   <div className="font-medium leading-tight">{p.title}</div>
                   <div className="text-xs text-zinc-500">{p.address}</div>
-                  <div className="mt-1"><PriceTag value={p.price} unit={p.priceUnit} /></div>
+                  <div className="mt-1">
+                    <PriceTag value={p.price} unit={p.priceUnit} />
+                  </div>
                 </div>
               </Link>
             ))}
