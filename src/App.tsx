@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { Search, MapPin, Home, Bath, BedDouble, PoundSterling } from "lucide-react";
 import headerImg from "./assets/header.jpg";
 import footerImg from "./assets/footer.jpg";
+import ServicesFeesPage from "./pages/services";
 
 
 // Fix Leaflet's missing default marker assets in Vite by using CDN icons
@@ -103,6 +104,9 @@ function Header() {
         </NavLink>
         <NavLink to="/contact" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
           Contact
+        </NavLink>
+        <NavLink to="/services" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          Services & Fees
         </NavLink>
         <NavLink
           to="/list"
@@ -454,6 +458,7 @@ export default function App(){
           <Route path="/property/:id" element={<PropertyDetailPage />} />
           <Route path="/landlords" element={<Placeholder text="Landlords page (todo)" />} />
           <Route path="/contact" element={<Placeholder text="Contact page (todo)" />} />
+          <Route path="/services" element={<ServicesFeesPage />} />
           <Route path="/list" element={<Placeholder text="List your property form (todo)" />} />
           <Route path="*" element={<Placeholder text="404 – Page not found" />} />
         </Routes>
