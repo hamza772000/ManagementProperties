@@ -143,7 +143,7 @@ function MembershipStrip() {
   return (
     <section className="bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-xl font-semibold text mb-4">Management Properties are Members Of:</h2>
+        <h2 className="text-xl font-semibold text mb-4">Management Properties is a Member of:</h2>
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
           {MEMBERSHIP_LOGOS.map((l) => (
             <a
