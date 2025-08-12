@@ -35,7 +35,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { data, error } = await resend.emails.send({
       from: FROM,
       to: CONTACT_TO,
-      reply_to: email || undefined,
+      replyTo: email || undefined,
       subject,
       text: textLines.join("\n"),
     });
