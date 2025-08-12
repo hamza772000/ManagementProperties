@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import type { Status } from "../types/Property";
+import type { LatLngTuple } from "leaflet";
 import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -8,7 +10,6 @@ import { useProperties } from "../context/DataContext";
 import FilterForm from "../components/ui/FilterForm";
 import PriceTag from "../components/ui/PriceTag";
 import Stat from "../components/ui/Stat";
-import MembershipStrip from "../components/ui/MembershipStrip";
 
 const markerIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
@@ -24,12 +25,12 @@ const cover = (p: any) => p.images?.[0] ?? p.img ?? "";
 
 export default function HomePage() {
   const DATA = useProperties();
-  const [mode, setMode] = useState("rent");
-  const [q, setQ] = useState("");
-  const [minBeds, setMinBeds] = useState(0);
-  const [minBaths, setMinBaths] = useState(0);
-  const [priceFrom, setPriceFrom] = useState("");
-  const [priceTo, setPriceTo] = useState("");
+  const [mode, setMode] = useState<Status>("rent");
+  const [q, setQ] = useState<string>("");
+  const [minBeds, setMinBeds] = useState<number>(0);
+  const [minBaths, setMinBaths] = useState<number>(0);
+  const [priceFrom, setPriceFrom] = useState<number | "">("");
+  const [priceTo, setPriceTo] = useState<number | "">("");
 
   const filtered = useMemo(() => {
     return DATA.filter((p) => {
@@ -43,7 +44,7 @@ export default function HomePage() {
     });
   }, [DATA, mode, q, minBeds, minBaths, priceFrom, priceTo]);
 
-  const center = [51.544, -0.23];
+  const center: LatLngTuple = [51.544, -0.23];
 
   return (
     <>
@@ -127,7 +128,6 @@ export default function HomePage() {
           </div>
         </aside>
       </main>
-      <MembershipStrip />
     </>
   );
 }

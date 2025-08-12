@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useProperties } from "../context/DataContext";
 import ImageGallery from "../components/ImageGallery";

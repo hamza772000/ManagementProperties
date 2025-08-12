@@ -1,4 +1,3 @@
-import React from "react";
 import cmpLogo from "../../assets/logos/cmp.png";
 import dpsLogo from "../../assets/logos/dps.png";
 import prsLogo from "../../assets/logos/prs.jpg";

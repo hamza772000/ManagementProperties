@@ -1,4 +1,3 @@
-import React from "react";
 import { PoundSterling } from "lucide-react";
 
 function currency(n: number) {

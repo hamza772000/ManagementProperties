@@ -1,4 +1,3 @@
-import React from "react";
 import headerImg from "../../assets/header.jpg";
 import { NavLink } from "react-router-dom";
 
