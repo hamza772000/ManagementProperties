@@ -54,7 +54,7 @@ export default tseslint.config([
       // Other configs...
       // Enable lint rules for React
       reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
+      // Enable lint rule s for React DOM
       reactDom.configs.recommended,
     ],
     languageOptions: {
