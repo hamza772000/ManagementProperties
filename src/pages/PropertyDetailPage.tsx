@@ -262,10 +262,6 @@ export default function PropertyDetailPage() {
                         </h4>
                         <p className="text-gray-700 text-lg">{property.address}</p>
                       </div>
-                      <div className="p-6 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-100">
-                        <h4 className="font-semibold text-blue-800 mb-2">🚇 Transport Links</h4>
-                        <p className="text-gray-700">Perfectly positioned just seconds from West Harrow Underground Station and within easy walking distance of local shops.</p>
-                      </div>
                       <div className="p-6 rounded-xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100">
                         <h4 className="font-semibold text-purple-800 mb-2">🏢 Area</h4>
                         <p className="text-gray-700">{property.area} - A vibrant area with excellent amenities and transport connections.</p>
