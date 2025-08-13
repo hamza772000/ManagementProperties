@@ -188,26 +188,6 @@ export default function PropertyDetailPage() {
                         <p className="text-gray-500 italic">No description provided for this property.</p>
                       )}
                     </div>
-
-                    {/* Key Features Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-                      <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-100">
-                        <h4 className="font-semibold text-emerald-800 mb-2">🏠 Property Type</h4>
-                        <p className="text-gray-700">Modern Apartment</p>
-                      </div>
-                      <div className="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-100">
-                        <h4 className="font-semibold text-blue-800 mb-2">🚗 Parking</h4>
-                        <p className="text-gray-700">Allocated Space</p>
-                      </div>
-                      <div className="p-4 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100">
-                        <h4 className="font-semibold text-purple-800 mb-2">⚡ EPC Rating</h4>
-                        <p className="text-gray-700">C (77)</p>
-                      </div>
-                      <div className="p-4 rounded-xl bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-100">
-                        <h4 className="font-semibold text-yellow-800 mb-2">🔑 Availability</h4>
-                        <p className="text-gray-700">Available Now</p>
-                      </div>
-                    </div>
                   </div>
                 )}
 
