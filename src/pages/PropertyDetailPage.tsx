@@ -401,23 +401,6 @@ export default function PropertyDetailPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Similar Properties Teaser */}
-              <div className="rounded-3xl border border-white/20 bg-gradient-to-br from-emerald-50 to-green-50 p-6 shadow-xl">
-                <h3 className="text-lg font-bold text-emerald-800 mb-3 flex items-center gap-2">
-                  <span className="text-2xl">🏘️</span>
-                  Similar Properties
-                </h3>
-                <p className="text-sm text-emerald-700 mb-4">
-                  Discover more properties in {property.area}
-                </p>
-                <Link
-                  to={`/search?area=${encodeURIComponent(property.area)}`}
-                  className="inline-flex w-full items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 transition-colors"
-                >
-                  View Similar Properties
-                </Link>
-              </div>
             </div>
           </aside>
         </div>
