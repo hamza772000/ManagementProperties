@@ -1,102 +1,141 @@
-import { useState, useEffect, useCallback } from "react";
+// components/ImageGallery.tsx
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
-type Props = {
-  images: string[];
-  startInFullscreen?: boolean;
-  className?: string;          // for the thumbnail container
-  imageClassName?: string;     // for each thumbnail
-};
+type Props = { images: string[] };
 
-export default function ImageGallery({
-  images,
-  startInFullscreen = false,
-  className = "grid grid-cols-2 gap-2 sm:grid-cols-3",
-  imageClassName = "h-36 w-full object-cover rounded-lg cursor-pointer"
-}: Props) {
-  const [open, setOpen] = useState(startInFullscreen);
-  const [index, setIndex] = useState(0);
+export default function ImageGallery({ images }: Props) {
+  const [open, setOpen] = useState(false);
+  const [idx, setIdx] = useState(0);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
 
-  const close = useCallback(() => setOpen(false), []);
-  const prev = useCallback(() => setIndex(i => (i - 1 + images.length) % images.length), [images.length]);
-  const next = useCallback(() => setIndex(i => (i + 1) % images.length), [images.length]);
+  const openAt = (i: number) => {
+    setIdx(i);
+    setOpen(true);
+  };
 
+  const next = () => setIdx((i) => (i + 1) % images.length);
+  const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
+
+  // lock body scroll + focus management
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const t = setTimeout(() => closeBtnRef.current?.focus(), 0);
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      clearTimeout(t);
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, close, next, prev]);
+  }, [open]);
+
+  // keyboard controls: ArrowLeft, ArrowRight, Escape (and optional Home/End)
+  useEffect(() => {
+    if (!open) return;
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        next();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        prev();
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        setIdx(0);
+      } else if (e.key === "End") {
+        e.preventDefault();
+        setIdx(images.length - 1);
+      }
+    };
+
+    window.addEventListener("keydown", onKey, { passive: false });
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, images.length]);
 
   return (
     <>
-      {/* Thumbnails */}
-      <div className={className} aria-label="Property photos">
+      {/* Inline gallery */}
+      <div className="grid grid-cols-4 gap-2">
         {images.map((src, i) => (
-          <img
+          <button
             key={src + i}
-            src={src}
-            alt={`Photo ${i + 1}`}
-            className={imageClassName}
-            onClick={() => { setIndex(i); setOpen(true); }}
-            loading="lazy"
-          />
+            onClick={() => openAt(i)}
+            className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100"
+            aria-label={`Open photo ${i + 1} of ${images.length}`}
+          >
+            <img
+              src={src}
+              alt={`Photo ${i + 1}`}
+              className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+              loading="lazy"
+            />
+          </button>
         ))}
       </div>
 
-      {/* Full-screen overlay */}
-      {open && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center"
-        >
-          <button
-            onClick={close}
-            aria-label="Close"
-            className="absolute top-4 right-4 text-white/90 hover:text-white text-3xl"
+      {/* Lightbox */}
+      {open &&
+        createPortal(
+          <div
+            aria-modal="true"
+            role="dialog"
+            aria-label="Image viewer"
+            className="fixed inset-0 z-[9999] flex items-center justify-center"
           >
-            ×
-          </button>
+            {/* Backdrop */}
+            <button
+              aria-label="Close"
+              onClick={() => setOpen(false)}
+              className="absolute inset-0 bg-black/80"
+            />
 
-          <button
-            onClick={prev}
-            aria-label="Previous image"
-            className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 text-white/90 hover:text-white text-4xl"
-          >
-            ‹
-          </button>
-
-          <img
-            src={images[index]}
-            alt={`Photo ${index + 1}`}
-            className="max-h-[90vh] max-w-[95vw] object-contain shadow-2xl rounded-xl"
-          />
-
-          <button
-            onClick={next}
-            aria-label="Next image"
-            className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 text-white/90 hover:text-white text-4xl"
-          >
-            ›
-          </button>
-
-          {/* Dots */}
-          <div className="absolute bottom-5 flex gap-2">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                aria-label={`Go to image ${i + 1}`}
-                onClick={() => setIndex(i)}
-                className={`h-2.5 w-2.5 rounded-full ${i === index ? "bg-white" : "bg-white/40"}`}
+            {/* Image + controls */}
+            <div className="relative max-h-[90vh] max-w-[92vw]">
+              <img
+                src={images[idx]}
+                alt={`Photo ${idx + 1} of ${images.length}`}
+                className="max-h-[90vh] max-w-[92vw] rounded-xl object-contain shadow-2xl"
               />
-            ))}
-          </div>
-        </div>
-      )}
+
+              <button
+                ref={closeBtnRef}
+                onClick={() => setOpen(false)}
+                className="absolute -top-12 right-0 rounded-lg bg-white/90 px-3 py-1 text-sm font-medium shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              >
+                ✕ Close (Esc)
+              </button>
+
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={prev}
+                    className="absolute left-[-56px] top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    aria-label="Previous image (Left arrow)"
+                  >
+                    ←
+                  </button>
+                  <button
+                    onClick={next}
+                    className="absolute right-[-56px] top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    aria-label="Next image (Right arrow)"
+                  >
+                    →
+                  </button>
+                </>
+              )}
+
+              <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-xs text-white/90">
+                {idx + 1} / {images.length}
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 }
