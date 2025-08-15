@@ -68,7 +68,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (outcode) {
       const pcResp = await fetch(`https://api.postcodes.io/outcodes/${encodeURIComponent(outcode)}`);
       if (pcResp.ok) {
-        const pcJson = await pcResp.json();
+        const pcJson = await pcResp.json() as any;
         const result = pcJson?.result;
         const lat = result?.latitude;
         const lng = result?.longitude;
