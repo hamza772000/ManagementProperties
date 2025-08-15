@@ -436,6 +436,22 @@ export default function AdminPage() {
               )}
             </div>
             <input className={clsInput} placeholder="Area" value={form.area} onChange={e=>setForm(f=>({...f, area: e.target.value}))}/>
+            <select 
+              className={clsInput} 
+              value={form.status} 
+              onChange={e => {
+                const newStatus = e.target.value as "rent" | "sale";
+                setForm(f => ({ 
+                  ...f, 
+                  status: newStatus,
+                  // Reset to appropriate default when switching modes
+                  ...(newStatus === "rent" ? { priceUnit: "pcm" } : { salePriceUnit: "Guide Price" })
+                }));
+              }}
+            >
+              <option value="rent">For Rent</option>
+              <option value="sale">For Sale</option>
+            </select>
             <input className={clsInput} type="number" placeholder="Price" value={form.price || ""} onChange={e=>setForm(f=>({...f, price: Number(e.target.value)}))}/>
             <select 
               className={clsInput} 
@@ -452,22 +468,6 @@ export default function AdminPage() {
                 ? RENT_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)
                 : SALE_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)
               }
-            </select>
-            <select 
-              className={clsInput} 
-              value={form.status} 
-              onChange={e => {
-                const newStatus = e.target.value as "rent" | "sale";
-                setForm(f => ({ 
-                  ...f, 
-                  status: newStatus,
-                  // Reset to appropriate default when switching modes
-                  ...(newStatus === "rent" ? { priceUnit: "pcm" } : { salePriceUnit: "Guide Price" })
-                }));
-              }}
-            >
-              <option value="rent">For Rent</option>
-              <option value="sale">For Sale</option>
             </select>
             <input className={clsInput} type="number" placeholder="Beds" value={form.beds || ""} onChange={e=>setForm(f=>({...f, beds: Number(e.target.value)}))}/>
             <input className={clsInput} type="number" placeholder="Baths" value={form.baths || ""} onChange={e=>setForm(f=>({...f, baths: Number(e.target.value)}))}/>
@@ -633,6 +633,22 @@ export default function AdminPage() {
                 )}
               </div>
               <input className={clsInput} placeholder="Area" value={editing.area} onChange={e=>setEditing(p=>p && ({...p, area: e.target.value}))}/>
+              <select 
+                className={clsInput} 
+                value={editing.status} 
+                onChange={e => {
+                  const newStatus = e.target.value as "rent" | "sale";
+                  setEditing(p => p && ({ 
+                    ...p, 
+                    status: newStatus,
+                    // Reset to appropriate default when switching modes
+                    ...(newStatus === "rent" ? { priceUnit: "pcm" } : { salePriceUnit: "Guide Price" })
+                  }));
+                }}
+              >
+                <option value="rent">For Rent</option>
+                <option value="sale">For Sale</option>
+              </select>
               <input className={clsInput} type="number" placeholder="Price" value={editing.price} onChange={e=>setEditing(p=>p && ({...p, price: Number(e.target.value)}))}/>
               <select 
                 className={clsInput} 
@@ -649,22 +665,6 @@ export default function AdminPage() {
                   ? RENT_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)
                   : SALE_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)
                 }
-              </select>
-              <select 
-                className={clsInput} 
-                value={editing.status} 
-                onChange={e => {
-                  const newStatus = e.target.value as "rent" | "sale";
-                  setEditing(p => p && ({ 
-                    ...p, 
-                    status: newStatus,
-                    // Reset to appropriate default when switching modes
-                    ...(newStatus === "rent" ? { priceUnit: "pcm" } : { salePriceUnit: "Guide Price" })
-                  }));
-                }}
-              >
-                <option value="rent">For Rent</option>
-                <option value="sale">For Sale</option>
               </select>
               <input className={clsInput} type="number" placeholder="Beds" value={editing.beds} onChange={e=>setEditing(p=>p && ({...p, beds: Number(e.target.value)}))}/>
               <input className={clsInput} type="number" placeholder="Baths" value={editing.baths} onChange={e=>setEditing(p=>p && ({...p, baths: Number(e.target.value)}))}/>
