@@ -1,5 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
-import treeLogo from "../../assets/logo.png";
+import logo from "../../assets/logo.png";
 
 export default function Header() {
   const brandGreen = "#8CBF45";
@@ -11,7 +11,7 @@ export default function Header() {
         style={{
           backgroundColor: "white",
           display: "flex",
-          justifyContent: "center", // centers the whole logo block
+          justifyContent: "center",
           padding: "12px 0",
           width: "100%",
         }}
@@ -21,12 +21,11 @@ export default function Header() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "12px",
             textDecoration: "none",
           }}
         >
           <img
-            src={treeLogo}
+            src={logo}
             alt="Management Properties Logo"
             style={{ height: "65px", width: "auto" }}
           />
@@ -37,6 +36,7 @@ export default function Header() {
                 fontSize: "20px",
                 fontWeight: "bold",
                 color: "#9B3D3D",
+                lineHeight: "1.1", // tighter spacing
               }}
             >
               MANAGEMENT PROPERTIES
@@ -48,9 +48,16 @@ export default function Header() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                marginTop: "2px", // reduced gap
               }}
             >
-              <span style={{ fontSize: "14px", color: "#9B3D3D" }}>
+              <span
+                style={{
+                  fontSize: "14px",
+                  color: "#9B3D3D",
+                  lineHeight: "1.1", // tighter spacing
+                }}
+              >
                 SALES, LETTINGS & MANAGEMENT
               </span>
               <div
@@ -59,7 +66,7 @@ export default function Header() {
                   backgroundColor: brandGreen,
                   width: "100%",
                   maxWidth: "220px",
-                  marginTop: "4px",
+                  marginTop: "3px", // slightly smaller underline gap
                 }}
               ></div>
             </div>
