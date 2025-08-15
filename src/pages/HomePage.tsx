@@ -58,7 +58,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="relative h-[360px] md:h-[420px] lg:h-[480px] w-full">
-          <MapContainer center={center} zoom={12} scrollWheelZoom={false} className="h-full w-full">
+          <MapContainer center={center} zoom={11} scrollWheelZoom={false} className="h-full w-full">
             <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {filtered.map((p) => (
               <Marker key={p.id} position={p.coord} icon={markerIcon}>
