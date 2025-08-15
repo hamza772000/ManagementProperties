@@ -262,9 +262,13 @@ export default function PropertyDetailPage() {
                 <div className="text-center mb-6">
                   <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-1">
                     {currency(property.price)}
-                    <span className="text-lg font-medium text-gray-600 ml-1">{property.priceUnit}</span>
+                    <span className="text-lg font-medium text-gray-600 ml-1">
+                      {property.status === "rent" ? property.priceUnit : property.salePriceUnit || "Guide Price"}
+                    </span>
                   </div>
-                  <div className="text-gray-600 text-sm mb-4">Monthly Rate</div>
+                  <div className="text-gray-600 text-sm mb-4">
+                    {property.status === "rent" ? "Monthly Rate" : "Sale Price"}
+                  </div>
 
                   <div className="grid grid-cols-3 gap-2 mb-4">
                     <div className="text-center p-3 rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200">

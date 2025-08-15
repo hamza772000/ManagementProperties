@@ -66,7 +66,7 @@ export default function HomePage() {
                   <Link to={`/property/${p.id}`} className="block">
                     <div className="font-medium">{p.title}</div>
                     <div className="text-xs text-zinc-600 mb-1">{p.address}</div>
-                    <PriceTag value={p.price} unit={p.priceUnit} />
+                    <PriceTag value={p.price} unit={p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price"} />
                     <div className="mt-2 text-sky-600 underline text-xs">View details</div>
                   </Link>
                 </Popup>
@@ -97,14 +97,14 @@ export default function HomePage() {
                     <span className={`text-xs font-semibold rounded px-2 py-1 ${p.status === "rent" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}>
                       {p.status === "rent" ? "For Rent" : "For Sale"}
                     </span>
-                    <PriceTag value={p.price} unit={p.priceUnit} />
+                    <PriceTag value={p.price} unit={p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price"} />
                   </div>
                   <Link to={`/property/${p.id}`} className="mt-2 block font-semibold text-lg hover:underline">{p.title}</Link>
                   <div className="flex items-center gap-1 text-sm text-zinc-600"><MapPin className="h-4 w-4" /> {p.area}, {p.address}</div>
                   <div className="mt-3 flex items-center gap-4">
                     <Stat icon={<BedDouble className="h-4 w-4" />}>{p.beds}</Stat>
                     <Stat icon={<Bath className="h-4 w-4" />}>{p.baths}</Stat>
-                    <Stat icon={<Home className="h-4 w-4" />}>{p.priceUnit.toUpperCase()}</Stat>
+                    <Stat icon={<Home className="h-4 w-4" />}>{(p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price").toUpperCase()}</Stat>
                   </div>
                 </div>
               </motion.article>
@@ -121,7 +121,7 @@ export default function HomePage() {
                   <div className="text-xs text-zinc-500">{p.area}</div>
                   <div className="font-medium leading-tight">{p.title}</div>
                   <div className="text-xs text-zinc-500">{p.address}</div>
-                  <div className="mt-1"><PriceTag value={p.price} unit={p.priceUnit} /></div>
+                  <div className="mt-1"><PriceTag value={p.price} unit={p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price"} /></div>
                 </div>
               </Link>
             ))}

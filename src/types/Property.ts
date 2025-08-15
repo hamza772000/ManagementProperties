@@ -7,6 +7,7 @@ export type Property = {
   area: string;
   price: number;
   priceUnit: "pcm" | "pa";
+  salePriceUnit?: "Guide Price" | "Fixed Price" | "Offers Over" | "OIEO" | "OIRO" | "Starting Bid";
   status: Status;
   beds: number;
   baths: number;
