@@ -41,7 +41,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       throw new Error(`Geocoding service error: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as any[];
     
     if (!data || data.length === 0) {
       return bad(res, 'No coordinates found for this address', 404);
