@@ -48,8 +48,8 @@ const topRow: Card[] = [
 ];
 
 const bottomRow: Card[] = [
-  { title: "Other Landlord Fees", cta: "Click here", to: "#" },
-  { title: "Tenants Fees", cta: "Click here", to: "#" },
+  { title: "Other Landlord Fees", to: "#" },
+  { title: "Tenants Fees", to: "#" },
 ];
 
 const salesCard: Card = {
