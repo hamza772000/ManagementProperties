@@ -44,7 +44,7 @@ export default function HomePage() {
     });
   }, [DATA, mode, q, minBeds, minBaths, priceFrom, priceTo]);
 
-  const center: LatLngTuple = [51.544, -0.23];
+  const center: LatLngTuple = [51.5282744, -0.1975558]; // 15 Malvern Road, NW6 5PS
 
   return (
     <>
@@ -73,7 +73,7 @@ export default function HomePage() {
               </Marker>
             ))}
           </MapContainer>
-          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="hidden lg:block absolute left-20 top-6 z-[1000] w-[320px] rounded-2xl bg-white/95 shadow-xl ring-1 ring-zinc-200 p-4">
+          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="hidden lg:block absolute right-6 top-6 z-[1000] w-[320px] rounded-2xl bg-white/95 shadow-xl ring-1 ring-zinc-200 p-4">
             <FilterForm {...{ mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo }} />
             <div className="mt-3 text-right">
               <span className="text-xs text-zinc-500">{filtered.length} result(s)</span>

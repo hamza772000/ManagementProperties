@@ -1,5 +1,6 @@
 // src/pages/Admin.tsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
+import { useGeocoding } from "../hooks/useGeocoding";
 
 type ApiProperty = {
   id: number;
@@ -111,6 +112,7 @@ function useAdminToken() {
 // ---------- Admin Page ----------
 export default function AdminPage() {
   const { token, authed, checking, err, validate, logout } = useAdminToken();
+  const { geocodeAddress, isGeocoding, geocodeError, geocodeInfo, clearError } = useGeocoding();
 
   const [rows, setRows] = useState<ApiProperty[]>([]);
   const [loading, setLoading] = useState(true);
@@ -122,6 +124,86 @@ export default function AdminPage() {
     beds: 0, baths: 0, lat: 0, lng: 0,
     imagesText: "", featured: false, description: ""
   });
+
+  // Debounced geocoding
+  const [geocodingTimeout, setGeocodingTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [editGeocodingTimeout, setEditGeocodingTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  const handleAddressChange = useCallback((address: string) => {
+    setForm(f => ({ ...f, address }));
+    clearError();
+
+    // Clear existing timeout
+    if (geocodingTimeout) {
+      clearTimeout(geocodingTimeout);
+    }
+
+    // Geocode whenever address is meaningful (removed coordinate check)
+    if (address.trim().length >= 5) {
+      const timeoutId = setTimeout(async () => {
+        const result = await geocodeAddress(address);
+        if (result) {
+          setForm(f => ({
+            ...f,
+            lat: result.lat,
+            lng: result.lng
+          }));
+        } else {
+          // If geocoding fails completely, set coordinates to 0
+          setForm(f => ({
+            ...f,
+            lat: 0,
+            lng: 0
+          }));
+        }
+      }, 800); // 800ms debounce
+
+      setGeocodingTimeout(timeoutId);
+    }
+  }, [geocodeAddress, clearError, geocodingTimeout]);
+
+  const handleEditAddressChange = useCallback((address: string) => {
+    setEditing(p => p && ({ ...p, address }));
+    clearError();
+
+    // Clear existing timeout
+    if (editGeocodingTimeout) {
+      clearTimeout(editGeocodingTimeout);
+    }
+
+    // Geocode whenever address is meaningful (removed coordinate check)
+    if (address.trim().length >= 5) {
+      const timeoutId = setTimeout(async () => {
+        const result = await geocodeAddress(address);
+        if (result) {
+          setEditing(p => p && ({
+            ...p,
+            coord: [result.lat, result.lng] as [number, number]
+          }));
+        } else {
+          // If geocoding fails completely, set coordinates to 0
+          setEditing(p => p && ({
+            ...p,
+            coord: [0, 0] as [number, number]
+          }));
+        }
+      }, 800); // 800ms debounce
+
+      setEditGeocodingTimeout(timeoutId);
+    }
+  }, [geocodeAddress, clearError, editGeocodingTimeout]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (geocodingTimeout) {
+        clearTimeout(geocodingTimeout);
+      }
+      if (editGeocodingTimeout) {
+        clearTimeout(editGeocodingTimeout);
+      }
+    };
+  }, [geocodingTimeout, editGeocodingTimeout]);
 
   // Add form uploads
   const [newImages, setNewImages] = useState<string[]>([]);
@@ -313,10 +395,37 @@ export default function AdminPage() {
       {/* ADD NEW */}
       <section className="mb-8">
         <h2 className="text-lg font-medium mb-3">Add new property</h2>
+        <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="text-sm text-blue-800">
+            💡 <strong>Auto-geocoding:</strong> Coordinates are automatically updated whenever you change the address. If the full address doesn't work, it will try just the postcode. If both fail, coordinates will be set to 0. You can manually override coordinates if needed.
+          </p>
+        </div>
         <form onSubmit={submit} className="grid gap-3 p-4 bg-white rounded-xl ring-1 ring-zinc-200">
           <div className="grid md:grid-cols-2 gap-3">
             <input className={clsInput} placeholder="Title" value={form.title} onChange={e=>setForm(f=>({...f, title: e.target.value}))}/>
-            <input className={clsInput} placeholder="Address" value={form.address} onChange={e=>setForm(f=>({...f, address: e.target.value}))}/>
+            <div className="relative">
+              <input 
+                className={clsInput} 
+                placeholder="Address" 
+                value={form.address} 
+                onChange={e=>handleAddressChange(e.target.value)}
+              />
+              {isGeocoding && (
+                <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                  <div className="w-4 h-4 border-2 border-sky-500 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+              {geocodeError && (
+                <div className="absolute top-full left-0 mt-1 text-xs text-red-600 bg-red-50 px-2 py-1 rounded border border-red-200">
+                  {geocodeError}
+                </div>
+              )}
+              {geocodeInfo && (
+                <div className="absolute top-full left-0 mt-1 text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded border border-emerald-200">
+                  {geocodeInfo}
+                </div>
+              )}
+            </div>
             <input className={clsInput} placeholder="Area" value={form.area} onChange={e=>setForm(f=>({...f, area: e.target.value}))}/>
             <input className={clsInput} type="number" placeholder="Price" value={form.price || ""} onChange={e=>setForm(f=>({...f, price: Number(e.target.value)}))}/>
             <select className={clsInput} value={form.priceUnit} onChange={e=>setForm(f=>({...f, priceUnit: e.target.value as any}))}>
@@ -327,8 +436,36 @@ export default function AdminPage() {
             </select>
             <input className={clsInput} type="number" placeholder="Beds" value={form.beds || ""} onChange={e=>setForm(f=>({...f, beds: Number(e.target.value)}))}/>
             <input className={clsInput} type="number" placeholder="Baths" value={form.baths || ""} onChange={e=>setForm(f=>({...f, baths: Number(e.target.value)}))}/>
-            <input className={clsInput} type="number" placeholder="Lat" value={form.lat || ""} onChange={e=>setForm(f=>({...f, lat: Number(e.target.value)}))}/>
-            <input className={clsInput} type="number" placeholder="Lng" value={form.lng || ""} onChange={e=>setForm(f=>({...f, lng: Number(e.target.value)}))}/>
+            <div className="relative">
+              <input 
+                className={clsInput} 
+                type="number" 
+                step="any"
+                placeholder="Lat" 
+                value={form.lat || ""} 
+                onChange={e=>setForm(f=>({...f, lat: Number(e.target.value)}))}
+              />
+              {form.lat !== 0 && (
+                <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                  <span className="text-xs text-emerald-600">✓</span>
+                </div>
+              )}
+            </div>
+            <div className="relative">
+              <input 
+                className={clsInput} 
+                type="number" 
+                step="any"
+                placeholder="Lng" 
+                value={form.lng || ""} 
+                onChange={e=>setForm(f=>({...f, lng: Number(e.target.value)}))}
+              />
+              {form.lng !== 0 && (
+                <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                  <span className="text-xs text-emerald-600">✓</span>
+                </div>
+              )}
+            </div>
 
             {/* Drag & drop uploader */}
             <div
@@ -437,7 +574,29 @@ export default function AdminPage() {
 
             <div className="grid md:grid-cols-2 gap-3">
               <input className={clsInput} placeholder="Title" value={editing.title} onChange={e=>setEditing(p=>p && ({...p, title: e.target.value}))}/>
-              <input className={clsInput} placeholder="Address" value={editing.address} onChange={e=>setEditing(p=>p && ({...p, address: e.target.value}))}/>
+              <div className="relative">
+                <input 
+                  className={clsInput} 
+                  placeholder="Address" 
+                  value={editing.address} 
+                  onChange={e=>handleEditAddressChange(e.target.value)}
+                />
+                {isGeocoding && (
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                    <div className="w-4 h-4 border-2 border-sky-500 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
+                {geocodeError && (
+                  <div className="absolute top-full left-0 mt-1 text-xs text-red-600 bg-red-50 px-2 py-1 rounded border border-red-200">
+                    {geocodeError}
+                  </div>
+                )}
+                {geocodeInfo && (
+                  <div className="absolute top-full left-0 mt-1 text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded border border-emerald-200">
+                    {geocodeInfo}
+                  </div>
+                )}
+              </div>
               <input className={clsInput} placeholder="Area" value={editing.area} onChange={e=>setEditing(p=>p && ({...p, area: e.target.value}))}/>
               <input className={clsInput} type="number" placeholder="Price" value={editing.price} onChange={e=>setEditing(p=>p && ({...p, price: Number(e.target.value)}))}/>
               <select className={clsInput} value={editing.priceUnit} onChange={e=>setEditing(p=>p && ({...p, priceUnit: e.target.value as any}))}>
@@ -448,8 +607,36 @@ export default function AdminPage() {
               </select>
               <input className={clsInput} type="number" placeholder="Beds" value={editing.beds} onChange={e=>setEditing(p=>p && ({...p, beds: Number(e.target.value)}))}/>
               <input className={clsInput} type="number" placeholder="Baths" value={editing.baths} onChange={e=>setEditing(p=>p && ({...p, baths: Number(e.target.value)}))}/>
-              <input className={clsInput} type="number" placeholder="Lat" value={editing.coord?.[0] ?? 0} onChange={e=>setEditing(p=>p && ({...p, coord: [Number(e.target.value), p!.coord?.[1] ?? 0] as [number,number]}))}/>
-              <input className={clsInput} type="number" placeholder="Lng" value={editing.coord?.[1] ?? 0} onChange={e=>setEditing(p=>p && ({...p, coord: [p!.coord?.[0] ?? 0, Number(e.target.value)] as [number,number]}))}/>
+              <div className="relative">
+                <input 
+                  className={clsInput} 
+                  type="number" 
+                  step="any"
+                  placeholder="Lat" 
+                  value={editing.coord?.[0] ?? 0} 
+                  onChange={e=>setEditing(p=>p && ({...p, coord: [Number(e.target.value), p!.coord?.[1] ?? 0] as [number,number]}))}
+                />
+                {(editing.coord?.[0] ?? 0) !== 0 && (
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                    <span className="text-xs text-emerald-600">✓</span>
+                  </div>
+                )}
+              </div>
+              <div className="relative">
+                <input 
+                  className={clsInput} 
+                  type="number" 
+                  step="any"
+                  placeholder="Lng" 
+                  value={editing.coord?.[1] ?? 0} 
+                  onChange={e=>setEditing(p=>p && ({...p, coord: [p!.coord?.[0] ?? 0, Number(e.target.value)] as [number,number]}))}
+                />
+                {(editing.coord?.[1] ?? 0) !== 0 && (
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                    <span className="text-xs text-emerald-600">✓</span>
+                  </div>
+                )}
+              </div>
               <textarea className={`${clsInput} md:col-span-2`} rows={3} placeholder="Description" value={editing.description ?? ""} onChange={e=>setEditing(p=>p && ({...p, description: e.target.value}))}/>
               <label className="inline-flex items-center gap-2">
                 <input type="checkbox" checked={!!editing.featured} onChange={e=>setEditing(p=>p && ({...p, featured: e.target.checked}))}/>
