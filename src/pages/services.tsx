@@ -9,7 +9,7 @@ const topRow: Card[] = [
     title: "Letting Only",
     items: [
       "Annual Fee",
-      "7%",
+      "7.5%",
       "Sourcing a tenant",
       "Full referencing",
       "Arrangement of EPC’s, Gas Safety Inspections",
@@ -20,7 +20,7 @@ const topRow: Card[] = [
     title: "Rent Collection",
     items: [
       "Fees collected on a Monthly basis",
-      "8%",
+      "8.5%",
       "Monthly rental collection",
       "Pursue non-payment of rent and advice on rent arrears",
       "Sourcing a tenant",
@@ -33,7 +33,7 @@ const topRow: Card[] = [
     title: "Fully Managed",
     items: [
       "Fees collected on a Monthly basis",
-      "10%",
+      "12%",
       "Monthly rental collection",
       "Pursue non-payment of rent and advice on rent arrears",
       "Sourcing a tenant",
