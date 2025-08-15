@@ -37,7 +37,7 @@ export function useGeocoding() {
         const result = await response.json();
         setGeocodeInfo('✓ Found using full address');
         // Clear success message after 3 seconds
-        setTimeout(() => setGeocodeInfo(null), 3000);
+        setTimeout(() => setGeocodeInfo(null), 2000);
         return result;
       }
 
@@ -52,7 +52,7 @@ export function useGeocoding() {
           const result = await response.json();
           setGeocodeInfo(`✓ Found using postcode: ${postcode}`);
           // Clear success message after 3 seconds
-          setTimeout(() => setGeocodeInfo(null), 3000);
+          setTimeout(() => setGeocodeInfo(null), 2000);
           return result;
         }
       }
@@ -65,6 +65,7 @@ export function useGeocoding() {
       console.error('Geocoding error:', error);
       setGeocodeError(error.message);
       setGeocodeInfo(null);
+      setTimeout(() => setGeocodeError(null), 2000);
       return null;
     } finally {
       setIsGeocoding(false);
