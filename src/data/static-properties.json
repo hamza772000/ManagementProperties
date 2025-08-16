@@ -1,0 +1,75 @@
+[
+  {
+    "id": 51,
+    "title": "Spacious 2-Bedroom Flat on Harrow Road, W9 3NF",
+    "address": "Harrow Road, London, W9 3NF",
+    "area": "Maida Hill",
+    "price": 2200,
+    "priceUnit": "pcm",
+    "salePriceUnit": null,
+    "status": "rent",
+    "beds": 2,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      "51.525404",
+      -0.2039523
+    ],
+    "images": [],
+    "img": "",
+    "active": true,
+    "createdAt": "2025-08-11T19:16:28.630Z",
+    "description": "Harrow Road, London, W9 3NF   \n\nManagement Properties are pleased to offer you this Spacious 2-Bedroom Flat with Open Plan Living ; Moments from Westbourne Park Station  This bright and modern 2-bedroom flat offers comfortable living in a prime location, just a minute walk from Westbourne Park Station.   \n\n- Two well-proportioned double bedrooms  \n- A spacious open-plan living room and fully fitted kitchen perfect for relaxing or entertaining  \n- Contemporary bathroom with modern fixtures  - Large windows providing plenty of natural light  \n- Neutral décor throughout   \n\nPerfect for professionals or a small family, this flat offers excellent transport links, with easy access to the Circle and Hammersmith & City lines, and is just a short stroll from the vibrant shops, cafés and restaurants of Portobello Road and Notting Hill.   \n\nEPC: D (65) Ad ID: 1501116970"
+  },
+  {
+    "id": 46,
+    "title": "Bedsit with ensuite shower room on St Pauls Ave, Kingsbury",
+    "address": "St Pauls Ave, Kingsbury, HA3",
+    "area": "Kingsbury",
+    "price": 875,
+    "priceUnit": "pcm",
+    "salePriceUnit": null,
+    "status": "rent",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      "51.593752",
+      -0.3209747081038553
+    ],
+    "images": [],
+    "img": "",
+    "active": true,
+    "createdAt": "2025-08-11T19:14:18.730Z",
+    "description": "St Pauls Ave, Kingsbury, HA3   \n\nManagement Properties are pleased to offer you this delightful bedsit with ensuite shower room. The property is located within easy walking distance to shops and public transport, and has a shared kitchen with washing machine and dryer.  \nAll bills are inclusive plus wifi   \n\nMust See! \nAd ID: 1493424943"
+  },
+  {
+    "id": 39,
+    "title": "3 bedroom flat with carpark space on Wilson Gardens, HA1 4EA",
+    "address": "Twinlock Ct, Wilson Gardens, HA1 4EA",
+    "area": "Harrow, London",
+    "price": 2100,
+    "priceUnit": "pcm",
+    "salePriceUnit": null,
+    "status": "rent",
+    "beds": 3,
+    "baths": 2,
+    "featured": true,
+    "coord": [
+      "51.570000",
+      -0.35
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_9-WXeu9bzOzlbiZ78lCErDYcdF4GANO9-uBHyIlvKZ6ucPbfkRSvpqeqYv5BHYH.JPG",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_2-13dkT6mzW75V0XLQp8wXNlD3a7SQAd.JPG",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_11-YJeQ4h6PcTALlz9Lj0QLOE6VHbrRMD.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_12-agIVJFsz8L8GCuG9L6jnZxHv2n0JfL.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_13-lT8BeTfpr3kcc7QadNny3XRzj1VbOg.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_16-piLYIJA8RFnDTTh0R64xrprcv4U6PS.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_9-WXeu9bzOzlbiZ78lCErDYcdF4GANO9-uBHyIlvKZ6ucPbfkRSvpqeqYv5BHYH.JPG",
+    "active": true,
+    "createdAt": "2025-08-11T19:11:58.796Z",
+    "description": "Management Properties are delighted to present this modern 3-bedroom flat with 2 shower rooms (including 1 en-suite), located on the 2nd floor of a recently developed building.   \nPerfectly positioned just seconds from West Harrow Underground Station and within easy walking distance of local shops, this property offers convenience and contemporary living.   \nKey features:   Spacious open-plan kitchen / reception room   \nThree good-sized bedrooms   \nTwo modern shower rooms (1 en-suite)   \nAllocated parking space   \n\nEPC Rating: C (77)   \n\nA must-see property offering style, comfort, and excellent transport links. \n\n"
+  }
+]

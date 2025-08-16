@@ -11,6 +11,7 @@ import AdminPage from "./pages/admin";
 import ContactPage from "./pages/contact";
 import { DataContext } from "./context/DataContext";
 import { PROPS } from "./data/properties";
+import staticProperties from "./data/static-properties";
 import MembershipStrip from "./components/ui/MembershipStrip";
 
 function AppContent() {
@@ -40,35 +41,84 @@ function AppContent() {
 }
 
 export default function App() {
-  const [live, setLive] = useState(null);
+  // Start with static properties (generated at build time) for instant loading
+  const [live, setLive] = useState(staticProperties.length > 0 ? staticProperties : null);
+  const [isEnhancing, setIsEnhancing] = useState(false);
+  const [lastFetch, setLastFetch] = useState<number>(0);
+  
+  const refetchProperties = async (force = false) => {
+    // Avoid too frequent refetches unless forced
+    if (!force && Date.now() - lastFetch < 5000) return;
+    
+    setIsEnhancing(true);
+    setLastFetch(Date.now());
+    
+    try {
+      // Add cache-busting to ensure fresh data after admin changes
+      const cacheBust = force ? `?t=${Date.now()}` : '';
+      const res = await fetch(`/api/properties${cacheBust}`);
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      
+      // ensure images[] exists for safety
+      const safe = data.map((p: any) => ({
+        ...p,
+        images: p.images?.length ? p.images : p.img ? [p.img] : [],
+      }));
+      setLive(safe);
+    } catch (e) {
+      console.warn("Using fallback PROPS. Live fetch failed:", e);
+      // Only fallback to PROPS if we don't already have static data
+      if (!staticProperties.length) setLive(null);
+    } finally {
+      setIsEnhancing(false);
+    }
+  };
+  
   useEffect(() => {
     let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch("/api/properties");
-        if (!res.ok) throw new Error(await res.text());
-        const data = await res.json();
-        if (!cancelled) {
-          // ensure images[] exists for safety
-          const safe = data.map((p: any) => ({
-            ...p,
-            images: p.images?.length ? p.images : p.img ? [p.img] : [],
-          }));
-          setLive(safe);
-        }
-      } catch (e) {
-        console.warn("Using fallback PROPS. Live fetch failed:", e);
-        if (!cancelled) setLive(null);
+    
+    const doInitialFetch = async () => {
+      await refetchProperties();
+      if (cancelled) return;
+    };
+    
+    doInitialFetch();
+    
+    // Listen for storage events (admin panel can trigger refresh)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'properties_updated') {
+        refetchProperties(true);
+        localStorage.removeItem('properties_updated');
       }
-    })();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
     return () => {
       cancelled = true;
+      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
-  const DATA = live ?? PROPS;
+  
+  // Expose refetch function globally for admin panel
+  useEffect(() => {
+    (window as any).__refetchProperties = () => refetchProperties(true);
+  }, []);
+  
+  // Priority: live data > static data > fallback PROPS
+  const DATA = live ?? (staticProperties.length > 0 ? staticProperties : PROPS);
   return (
     <Router>
       <DataContext.Provider value={DATA}>
+        {isEnhancing && staticProperties.length > 0 && (
+          <div className="fixed top-4 right-4 z-50 bg-blue-50 border border-blue-200 text-blue-800 px-3 py-2 rounded-lg text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              Refreshing data...
+            </div>
+          </div>
+        )}
         <AppContent />
       </DataContext.Provider>
     </Router>

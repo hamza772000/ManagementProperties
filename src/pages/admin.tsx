@@ -122,6 +122,24 @@ export default function AdminPage() {
   const [rows, setRows] = useState<ApiProperty[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Helper to trigger frontend property refresh after changes
+  const triggerFrontendRefresh = () => {
+    try {
+      // Method 1: Call global refresh function if available
+      if (typeof (window as any).__refetchProperties === 'function') {
+        (window as any).__refetchProperties();
+      }
+      
+      // Method 2: Use localStorage to trigger refresh across tabs
+      localStorage.setItem('properties_updated', Date.now().toString());
+      
+      // Method 3: Dispatch custom event
+      window.dispatchEvent(new CustomEvent('properties_updated'));
+    } catch (e) {
+      console.warn('Failed to trigger frontend refresh:', e);
+    }
+  };
+
   // Add form
   const [form, setForm] = useState<NewProp>({
     title: "", address: "", area: "",
@@ -281,6 +299,9 @@ export default function AdminPage() {
     });
     setNewImages([]);
     load();
+    
+    // Trigger frontend refresh
+    triggerFrontendRefresh();
   };
 
   // Toggle active
@@ -296,6 +317,7 @@ export default function AdminPage() {
     });
     if (!res.ok) alert("Failed: " + (await res.text()));
     load();
+    triggerFrontendRefresh();
   };
 
   // Start edit
@@ -350,6 +372,7 @@ export default function AdminPage() {
     if (!res.ok) { alert("Save failed: " + (await res.text())); return; }
     setEditing(null);
     load();
+    triggerFrontendRefresh();
   };
 
   // Ordering (active first -> area -> title)
@@ -372,6 +395,7 @@ export default function AdminPage() {
     });
     if (!res.ok) { alert("Failed: " + (await res.text())); return; }
     load();
+    triggerFrontendRefresh();
   };
   
 

@@ -34,6 +34,17 @@ function normalizeForClient(p: typeof properties.$inferSelect) {
   };
 }
 
+// Helper to trigger static data regeneration after property changes
+async function triggerStaticRegeneration() {
+  try {
+    // In production, you might want to call a webhook or rebuild trigger
+    // For now, we'll just log it - the live API will handle the updates
+    console.log('Property data changed - static data should be regenerated');
+  } catch (error) {
+    console.warn('Failed to trigger static regeneration:', error);
+  }
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
@@ -45,6 +56,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const query = db.select().from(properties).orderBy(desc(properties.createdAt));
     
     const items = all ? await query : await query.where(eq(properties.active, true));
+    
+    // Add caching headers for better performance
+    res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=3600');
     
     return ok(res, items.map(normalizeForClient));
   }
@@ -74,6 +88,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       active: true,
     }).returning();
 
+    // Trigger static data regeneration after adding new property
+    await triggerStaticRegeneration();
+
     return ok(res, { id: newItem.id }, 201);
   }
 
@@ -86,6 +103,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .set({ active: !!active })
       .where(eq(properties.id, id));
 
+    // Trigger static data regeneration after show/hide
+    await triggerStaticRegeneration();
+
     return ok(res, { id, active: !!active });
   }
   
@@ -94,7 +114,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!id) return bad(res, 'missing id');
   
     await db.delete(properties).where(eq(properties.id, id));
-  
+
+    // Trigger static data regeneration after deletion
+    await triggerStaticRegeneration();
+
     return ok(res, { id, deleted: true });
   }
   
@@ -119,7 +142,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       images: u.images,
       description: u.description,
     }).where(eq(properties.id, id));
-  
+
+    // Trigger static data regeneration after update
+    await triggerStaticRegeneration();
+
     return ok(res, { id, updated: true });
   }
 
