@@ -6,7 +6,6 @@ import ImageGallery from "../components/ImageGallery";
 function currency(n: number) {
   return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(n);
 }
-const cover = (p: any) => p.images?.[0] ?? p.img ?? "";
 
 // Enhanced icon components
 const LocationIcon = () => (
@@ -47,7 +46,7 @@ export default function PropertyDetailPage() {
     );
   }
 
-  const imgs = property.images?.length ? property.images : [cover(property)];
+  const imgs = property.images?.length ? property.images : [];
   const statusLabel = property.status === "rent" ? "For Rent" : "For Sale";
 
   return (

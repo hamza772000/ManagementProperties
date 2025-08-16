@@ -5,6 +5,11 @@ import { createPortal } from "react-dom";
 type Props = { images: string[] };
 
 export default function ImageGallery({ images }: Props) {
+  // Don't render anything if there are no images
+  if (!images || images.length === 0) {
+    return null;
+  }
+
   const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState(0);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);

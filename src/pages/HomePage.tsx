@@ -21,7 +21,22 @@ const markerIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-const cover = (p: any) => p.images?.[0] ?? p.img ?? "";
+const cover = (p: any) => {
+  const imageUrl = p.images?.[0] ?? p.img;
+  if (!imageUrl) {
+    // Create a placeholder image with "Pics Coming Soon" text
+    return `data:image/svg+xml;base64,${btoa(`
+      <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="#f3f4f6"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+              font-family="Arial, sans-serif" font-size="18" fill="#6b7280">
+          Pictures Coming Soon
+        </text>
+      </svg>
+    `)}`;
+  }
+  return imageUrl;
+};
 
 export default function HomePage() {
   const DATA = useProperties();
