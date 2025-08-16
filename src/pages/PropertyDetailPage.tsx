@@ -6,6 +6,7 @@ import ImageGallery from "../components/ImageGallery";
 function currency(n: number) {
   return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(n);
 }
+const cover = (p: any) => p.images?.[0] ?? p.img ?? "";
 
 // Enhanced icon components
 const LocationIcon = () => (
@@ -91,27 +92,6 @@ export default function PropertyDetailPage() {
                 <div className="flex items-center gap-2 mb-2">
                   <LocationIcon />
                   <p className="text-emerald-100 text-sm">{property.address}</p>
-                </div>
-
-                {/* Action buttons */}
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setIsFavorited(!isFavorited)}
-                    className={`group flex items-center gap-1 px-2 py-1 rounded text-xs border transition-all duration-200 ${isFavorited
-                        ? 'bg-red-500/20 border-red-400/30 text-red-100 hover:bg-red-500/30'
-                        : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
-                      }`}
-                  >
-                    <HeartIcon filled={isFavorited} />
-                    <span className="font-medium">
-                      {isFavorited ? 'Saved' : 'Save'}
-                    </span>
-                  </button>
-
-                  <button className="group flex items-center gap-1 px-2 py-1 rounded text-xs bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-200">
-                    <ShareIcon />
-                    <span className="font-medium">Share</span>
-                  </button>
                 </div>
               </div>
             </div>
