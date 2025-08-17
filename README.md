@@ -1,6 +1,31 @@
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Static property data generation
+
+During `npm run build` a script (`scripts/generate-properties.mjs`) runs that queries the database for active properties and writes `public/properties-generated.json`. The public site loads this file instead of calling the runtime `/api/properties` endpoint, giving faster first paint & fewer cold starts.
+
+If `DATABASE_URL` is missing at build time the script writes an empty array so builds never fail.
+
+### Updating the static snapshot
+
+1. Use the Admin page to add / edit / hide properties.
+2. Click the "Update latest settings" button (new) which calls `/api/redeploy`.
+3. That endpoint posts to your `DEPLOY_HOOK_URL` (set in environment) triggering a new Vercel deployment.
+4. The new build regenerates `properties-generated.json` and the site serves updated data.
+
+### Required environment variables
+
+* `DATABASE_URL` – Postgres connection string.
+* `ADMIN_TOKEN` – Token protecting admin endpoints.
+* `DEPLOY_HOOK_URL` – Vercel Deploy Hook (Project Settings > Git > Deploy Hooks).
+
+### Local development
+
+`npm run dev` does NOT regenerate automatically on DB changes; re-run `npm run generate:properties` (or a full build) to refresh the JSON locally.
+# React + TypeScript + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
 

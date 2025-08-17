@@ -40,32 +40,23 @@ function AppContent() {
 }
 
 export default function App() {
-  const [live, setLive] = useState(null);
+  const [propsData, setPropsData] = useState<any[] | null>(null);
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/api/properties");
-        if (!res.ok) throw new Error(await res.text());
+        const res = await fetch('/properties-generated.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('static properties not found');
         const data = await res.json();
-        if (!cancelled) {
-          // ensure images[] exists for safety
-          const safe = data.map((p: any) => ({
-            ...p,
-            images: p.images?.length ? p.images : p.img ? [p.img] : [],
-          }));
-          setLive(safe);
-        }
+        if (!cancelled) setPropsData(data);
       } catch (e) {
-        console.warn("Using fallback PROPS. Live fetch failed:", e);
-        if (!cancelled) setLive(null);
+        console.warn('Falling back to bundled PROPS (static generation missing):', e);
+        if (!cancelled) setPropsData(PROPS);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
-  const DATA = live ?? PROPS;
+  const DATA = propsData || PROPS;
   return (
     <Router>
       <DataContext.Provider value={DATA}>

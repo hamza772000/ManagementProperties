@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "generate:properties": "node scripts/generate-properties.mjs",
+    "build": "npm run generate:properties && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

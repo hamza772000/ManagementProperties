@@ -388,17 +388,20 @@ export default function AdminPage() {
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-semibold">Admin — Properties</h1>
           <p className="text-sm text-zinc-500">Add, edit, reorder images, and show/hide properties.</p>
         </div>
-        <button
-          onClick={logout}
-          className="text-sm rounded-lg px-3 py-1.5 ring-1 ring-zinc-300 hover:bg-zinc-50"
-        >
-          Log out
-        </button>
+        <div className="flex items-center gap-2">
+          <RedeployButton token={token} />
+          <button
+            onClick={logout}
+            className="text-sm rounded-lg px-3 py-1.5 ring-1 ring-zinc-300 hover:bg-zinc-50"
+          >
+            Log out
+          </button>
+        </div>
       </div>
 
       {/* ADD NEW */}
@@ -770,6 +773,31 @@ export default function AdminPage() {
         </div>
       )}
     </main>
+  );
+}
+// Trigger redeploy (regenerates properties-generated.json on next build)
+function RedeployButton({ token }: { token: string }) {
+  const [busy, setBusy] = useState(false);
+  const [ok, setOk] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const click = async () => {
+    setBusy(true); setOk(null); setErr(null);
+    try {
+      const r = await fetch('/api/redeploy', { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+      if (!r.ok) throw new Error(await r.text());
+      setOk('Deploy triggered — site will refresh with new data once build completes.');
+    } catch (e: any) {
+      setErr(e.message || 'Failed');
+    } finally { setBusy(false); }
+  };
+  return (
+    <div className="flex flex-col items-stretch">
+      <button onClick={click} disabled={busy} className="text-sm rounded-lg px-3 py-1.5 bg-sky-600 text-white disabled:opacity-60">
+        {busy ? 'Triggering…' : 'Push Latest Changes to Website'}
+      </button>
+      {ok && <span className="mt-1 text-xs text-emerald-600 max-w-[200px]">{ok}</span>}
+      {err && <span className="mt-1 text-xs text-red-600 max-w-[200px]">{err}</span>}
+    </div>
   );
 }
 
