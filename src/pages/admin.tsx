@@ -409,7 +409,7 @@ export default function AdminPage() {
         <h2 className="text-lg font-medium mb-3">Add new property</h2>
         <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-sm text-blue-800">
-            💡 <strong>Auto-geocoding:</strong> Coordinates are automatically updated whenever you change the address. If the full address doesn't work, it will try just the postcode. If both fail, coordinates will be set to 0. You can manually override coordinates if needed.
+            💡 <strong>Note:</strong> After making your changes here, you need to press the "Push Latest Changes to Website" button in the top right to update the main website! It will take about a minute for the main page to update.
           </p>
         </div>
         <form onSubmit={submit} className="grid gap-3 p-4 bg-white rounded-xl ring-1 ring-zinc-200">
