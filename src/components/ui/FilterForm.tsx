@@ -14,8 +14,8 @@ export default function FilterForm({
   return (
     <>
       <div className="flex items-center gap-3 mb-3">
-        <button onClick={() => setMode("rent")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "rent" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>For Rent</button>
-        <button onClick={() => setMode("sale")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "sale" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>For Sale</button>
+        <button onClick={() => setMode("rent")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "rent" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>Rent</button>
+        <button onClick={() => setMode("sale")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "sale" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>Sale</button>
       </div>
       <label className="block text-xs font-medium text-zinc-600">Location</label>
       <div className="relative mt-1 mb-3">

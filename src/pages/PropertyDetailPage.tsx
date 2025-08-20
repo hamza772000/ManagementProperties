@@ -33,7 +33,7 @@ export default function PropertyDetailPage() {
   }
 
   const imgs = property.images?.length ? property.images : [];
-  const statusLabel = property.status === "rent" ? "For Rent" : "For Sale";
+  const statusLabel = property.status === "rent" ? "Rent" : "Sale";
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-teal-100">

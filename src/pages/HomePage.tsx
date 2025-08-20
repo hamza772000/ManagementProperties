@@ -110,7 +110,7 @@ export default function HomePage() {
                 <div className="p-4">
                   <div className="flex items-center justify-between">
                     <span className={`text-xs font-semibold rounded px-2 py-1 ${p.status === "rent" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}>
-                      {p.status === "rent" ? "For Rent" : "For Sale"}
+                      {p.status === "rent" ? "Rent" : "Sale"}
                     </span>
                     <PriceTag value={p.price} unit={p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price"} />
                   </div>

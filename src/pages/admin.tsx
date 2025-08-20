@@ -452,8 +452,8 @@ export default function AdminPage() {
                 }));
               }}
             >
-              <option value="rent">For Rent</option>
-              <option value="sale">For Sale</option>
+              <option value="rent">Rent</option>
+              <option value="sale">Sale</option>
             </select>
             <input className={clsInput} type="number" placeholder="Price" value={form.price || ""} onChange={e=>setForm(f=>({...f, price: Number(e.target.value)}))}/>
             <select 
@@ -649,8 +649,8 @@ export default function AdminPage() {
                   }));
                 }}
               >
-                <option value="rent">For Rent</option>
-                <option value="sale">For Sale</option>
+                <option value="rent">Rent</option>
+                <option value="sale">Sale</option>
               </select>
               <input className={clsInput} type="number" placeholder="Price" value={editing.price} onChange={e=>setEditing(p=>p && ({...p, price: Number(e.target.value)}))}/>
               <select 
