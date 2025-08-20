@@ -89,10 +89,10 @@ export default function Header() {
           Home
         </NavLink>
         <NavLink to="/for-sale" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
-          For Sale
+          Sale
         </NavLink>
         <NavLink to="/for-rent" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
-          For Rent
+          Rent
         </NavLink>
         <NavLink to="/contact" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
           Contact
