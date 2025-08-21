@@ -40,7 +40,7 @@ const cover = (p: any) => {
 
 export default function HomePage() {
   const DATA = useProperties();
-  const [mode, setMode] = useState<Status>("rent");
+  const [mode, setMode] = useState<Status | "all">("all");
   const [q, setQ] = useState<string>("");
   const [minBeds, setMinBeds] = useState<number>(0);
   const [minBaths, setMinBaths] = useState<number>(0);
@@ -49,7 +49,7 @@ export default function HomePage() {
 
   const filtered = useMemo(() => {
     return DATA.filter((p) => {
-      if (p.status !== mode) return false;
+      if (mode !== "all" && p.status !== mode) return false;
       if (q && !(p.area + " " + p.title + " " + p.address).toLowerCase().includes(q.toLowerCase())) return false;
       if (minBeds && p.beds < minBeds) return false;
       if (minBaths && p.baths < minBaths) return false;
@@ -81,7 +81,14 @@ export default function HomePage() {
                   <Link to={`/property/${p.id}`} className="block">
                     <div className="font-medium">{p.title}</div>
                     <div className="text-xs text-zinc-600 mb-1">{p.address}</div>
-                    <PriceTag value={p.price} unit={p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price"} />
+                    <PriceTag
+                      value={p.price}
+                      unit={p.status === "rent"
+                        ? p.priceUnit
+                        : p.status === "sale"
+                        ? p.salePriceUnit || "Guide Price"
+                        : p.priceUnit || p.salePriceUnit || "PCM"}
+                    />
                     <div className="mt-2 text-sky-600 underline text-xs">View details</div>
                   </Link>
                 </Popup>
@@ -109,17 +116,28 @@ export default function HomePage() {
                 </Link>
                 <div className="p-4">
                   <div className="flex items-center justify-between">
-                    <span className={`text-xs font-semibold rounded px-2 py-1 ${p.status === "rent" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}>
-                      {p.status === "rent" ? "Rent" : "Sale"}
+                    <span className={`text-xs font-semibold rounded px-2 py-1 ${p.status === "rent" ? "bg-amber-50 text-amber-700" : p.status === "sale" ? "bg-blue-50 text-blue-700" : "bg-purple-50 text-purple-700"}`}>
+                      {p.status === "rent" ? "Rent" : p.status === "sale" ? "Sale" : "Commercial"}
                     </span>
-                    <PriceTag value={p.price} unit={p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price"} />
+                    <PriceTag
+                      value={p.price}
+                      unit={p.status === "rent"
+                        ? p.priceUnit
+                        : p.status === "sale"
+                        ? p.salePriceUnit || "Guide Price"
+                        : p.priceUnit || p.salePriceUnit || "PCM"}
+                    />
                   </div>
                   <Link to={`/property/${p.id}`} className="mt-2 block font-semibold text-lg hover:underline">{p.title}</Link>
                   <div className="flex items-center gap-1 text-sm text-zinc-600"><MapPin className="h-4 w-4" /> {p.area}, {p.address}</div>
                   <div className="mt-3 flex items-center gap-4">
                     <Stat icon={<BedDouble className="h-4 w-4" />}>{p.beds}</Stat>
                     <Stat icon={<Bath className="h-4 w-4" />}>{p.baths}</Stat>
-                    <Stat icon={<Home className="h-4 w-4" />}>{(p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price").toUpperCase()}</Stat>
+                    <Stat icon={<Home className="h-4 w-4" />}>{(p.status === "rent"
+                      ? p.priceUnit
+                      : p.status === "sale"
+                      ? p.salePriceUnit || "Guide Price"
+                      : p.priceUnit || p.salePriceUnit || "PCM").toUpperCase()}</Stat>
                   </div>
                 </div>
               </motion.article>
@@ -136,7 +154,16 @@ export default function HomePage() {
                   <div className="text-xs text-zinc-500">{p.area}</div>
                   <div className="font-medium leading-tight">{p.title}</div>
                   <div className="text-xs text-zinc-500">{p.address}</div>
-                  <div className="mt-1"><PriceTag value={p.price} unit={p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price"} /></div>
+                  <div className="mt-1">
+                    <PriceTag
+                      value={p.price}
+                      unit={p.status === "rent"
+                        ? p.priceUnit
+                        : p.status === "sale"
+                        ? p.salePriceUnit || "Guide Price"
+                        : p.priceUnit || p.salePriceUnit || "PCM"}
+                    />
+                  </div>
                 </div>
               </Link>
             ))}

@@ -4,7 +4,7 @@ import { Status } from "../../types/Property";
 export default function FilterForm({
   mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo,
 }: {
-  mode: Status; setMode: (s: Status) => void;
+  mode: Status | "all"; setMode: (s: Status | "all") => void;
   q: string; setQ: (v: string) => void;
   minBeds: number; setMinBeds: (n: number) => void;
   minBaths: number; setMinBaths: (n: number) => void;
@@ -14,8 +14,10 @@ export default function FilterForm({
   return (
     <>
       <div className="flex items-center gap-3 mb-3">
+        <button onClick={() => setMode("all")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "all" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>All</button>
         <button onClick={() => setMode("rent")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "rent" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>Rent</button>
         <button onClick={() => setMode("sale")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "sale" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>Sale</button>
+  <button onClick={() => setMode("commercial")} className={`px-3 py-1.5 rounded-full text-sm border ${mode === "commercial" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-zinc-700 border-zinc-300"}`}>Commercial</button>
       </div>
       <label className="block text-xs font-medium text-zinc-600">Location</label>
       <div className="relative mt-1 mb-3">
