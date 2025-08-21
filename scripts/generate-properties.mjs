@@ -36,14 +36,17 @@ async function main() {
       if (!Array.isArray(images)) images = [];
       images = images.filter(x => typeof x === 'string' && x.trim());
       if (!images.length) missingImages++;
+      const isRent = r.status === 'rent';
+      const isSale = r.status === 'sale';
+      const isCommercial = r.status === 'commercial';
       return {
         id: r.id,
         title: r.title,
         address: r.address || '',
         area: r.area || '',
         price: Number(r.price),
-        priceUnit: r.status === 'rent' ? r.price_unit : undefined,
-        salePriceUnit: r.status === 'sale' ? (r.sale_price_unit || undefined) : undefined,
+        priceUnit: isRent ? r.price_unit : isCommercial ? (r.price_unit || undefined) : undefined,
+        salePriceUnit: isSale ? (r.sale_price_unit || undefined) : isCommercial ? (r.sale_price_unit || undefined) : undefined,
         status: r.status,
         beds: Number(r.beds ?? 0),
         baths: Number(r.baths ?? 0),

@@ -1,4 +1,4 @@
-export type Status = "rent" | "sale";
+export type Status = "rent" | "sale" | "commercial";
 
 export type Property = {
   id: number;

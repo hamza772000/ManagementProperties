@@ -8,7 +8,7 @@ export const properties = pgTable('properties', {
   price: decimal('price', { precision: 10, scale: 2 }).notNull(),
   priceUnit: varchar('price_unit', { length: 10 }).notNull(), // 'pcm' | 'pa'
   salePriceUnit: varchar('sale_price_unit', { length: 20 }), // 'Guide Price' | 'Fixed Price' etc.
-  status: varchar('status', { length: 10 }).notNull(), // 'rent' | 'sale'
+  status: varchar('status', { length: 10 }).notNull(), // 'rent' | 'sale' | 'commercial'
   beds: integer('beds').default(0),
   baths: integer('baths').default(0),
   featured: boolean('featured').default(false),

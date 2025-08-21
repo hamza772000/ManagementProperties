@@ -1,9 +1,66 @@
 [
   {
+    "id": 92,
+    "title": "2 bed flat for sale Burnley Road, NW10",
+    "address": "Burnley Road, Dollis Hill, London NW10",
+    "area": "Dollis Hill, London",
+    "price": 450000,
+    "salePriceUnit": "Guide Price",
+    "status": "sale",
+    "beds": 2,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.553137,
+      -0.2426501
+    ],
+    "images": [],
+    "img": "",
+    "description": "A to Z offer this lovely ground floor 2 bedroom garden flat in fantastic location of Dollis Hill, Willesden Green.\nBenefits from 2 double bedrooms with fitted wardrobes, bathroom with additional WC and a large living room/kitchen area, leading out to conservatory and private garden which can also be accessed by side gate. Off street parking also available.\n\nInformation.\nTenure: 999 year lease from 2021.\nPrice: £450,000. (Offers in excess of).\nGround rent: Nil.\nServices charges: Nil.\nEPC rating: C (69).\nCouncil tax: Band C - London Borough of Brent.\nViewing: Strictly by appointment through A to Z Property Services.\n\nManagement Properties have not tested any apparatus, equipment, fitting or services and cannot verify that they are in working order. The buyer is advised to obtain verification from their solicitor or surveyor.\n\nMeasurements are correct to within +/- 6 inches.\n\nNone of these statements contained in these particulars as to this or any of our properties are to relied upon as a statement of representation of fact."
+  },
+  {
+    "id": 91,
+    "title": "One bed flat for sale, Willesden Green",
+    "address": "Lechmere Road, Willesden Green, NW2 5DA",
+    "area": "Willesden Green, London",
+    "price": 325000,
+    "salePriceUnit": "Guide Price",
+    "status": "sale",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.548134,
+      -0.2296812
+    ],
+    "images": [],
+    "img": "",
+    "description": "Calling all investors and first-time buyers!\nWe are delighted to present to the market this ground floor one-bedroom flat with its own private entrance, situated in a popular residential area of Willesden Green.\nThe property offers approximately 420 sq. ft (39 sq. m) of internal accommodation and comprises an open-plan reception room with fitted kitchen, bathroom, double-glazed windows, and gas central heating. The flat benefits from easy access to Willesden Green’s vibrant town centre, underground station (Jubilee Line – Zone 2/3), 24-hour bus services, and the A5 (Edgware Road) with its wide selection of shops and restaurants.\nThe property is offered chain free.\n\nAccommodation:\nEntrance: Double Glazed Door.\nReception room/kitchen: 20'2” (6.15m) x 10'11\" (3.55m) Front and side aspect windows, laminate flooring, storage, radiator, fitted kitchen.\nBathroom: Shower cubicle, wash basin, Low level WC.\nBedroom: 12'2” (3.70m) x 10'11” (3.55m) Rear and side aspect windows, carpets, radiator.\n\nInformation:\nTenure: Leasehold.\nPrice: £325,000.\nLease: 123 years remaining.\nGround rent: £150.00 Per Annum.\nService charge: Approx. £1250.00 Per Annum (includes building insurance & general cleaning and maintenance of common parts).\nManagement fees/admin: £630.00 per annum.\nCouncil tax: Band C, Brent Council.\nEPC rating: D (62).\nViewing: Strictly by appointment through A to Z Property Services.\n\nManagement Properties have not tested any apparatus, equipment, fitting or services and cannot verify that they are in working order. The buyer is advised to obtain verification from their solicitor or surveyor.\n\nMeasurements are correct to within +/- 6 inches.\n\nNone of these statements contained in these particulars as to this or any of our properties are to relied upon as a statement of representation of fact."
+  },
+  {
+    "id": 88,
+    "title": "Studio flat in Paddington, London ",
+    "address": "Westbourne Court-Orsett Way, Paddington, London W2",
+    "area": "Paddington, London",
+    "price": 300000,
+    "salePriceUnit": "Guide Price",
+    "status": "sale",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.515132,
+      -0.18566633303964747
+    ],
+    "images": [],
+    "img": "",
+    "description": "Located just a few minutes’ walk from Paddington Station, this self-contained studio flat measures approximately 245 sq. ft and benefits from a separate kitchen and bathroom with 3-piece suite. The flat is well situated in the much sought-after area of London W2, giving easy access to Notting Hill, Bayswater and Westbourne Grove. Transport links are plentiful, along with Paddington’s array of cafés, bars and restaurants.\nThe studio flat is currently tenanted, producing £18,000 per annum.\n\nTenure: 102 Years Remaining (Leasehold)\nPrice: £300,000\nGround Rent: £100 per annum\nService Charges: £2,500 per annum (approx.), which also includes central heating & hot water\nEPC Rating: D\nCouncil Tax: Band B – Westminster City Council\nViewing: Strictly by appointment\n\nDisclaimer: The seller has not tested any apparatus, equipment, fittings, or services and cannot verify that they are in working order. The buyer is advised to obtain verification from their solicitor or surveyor.\nMeasurements are correct to within +/- 6 inches.\nNone of the statements contained in these particulars are to be relied upon as statements of representation of fact."
+  },
+  {
     "id": 51,
     "title": "Spacious 2-Bedroom Flat on Harrow Road, W9 3NF",
     "address": "Harrow Road, London, W9 3NF",
-    "area": "Maida Hill",
+    "area": "Maida Hill, London",
     "price": 2200,
     "priceUnit": "pcm",
     "status": "rent",
@@ -22,7 +79,7 @@
     "id": 46,
     "title": "Bedsit with ensuite shower room on St Pauls Ave, Kingsbury",
     "address": "St Pauls Ave, Kingsbury, HA3",
-    "area": "Kingsbury",
+    "area": "Kingsbury, London",
     "price": 875,
     "priceUnit": "pcm",
     "status": "rent",

@@ -33,7 +33,7 @@ export default function PropertyDetailPage() {
   }
 
   const imgs = property.images?.length ? property.images : [];
-  const statusLabel = property.status === "rent" ? "Rent" : "Sale";
+  const statusLabel = property.status === "rent" ? "Rent" : property.status === "sale" ? "Sale" : "Commercial";
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-teal-100">
@@ -227,11 +227,15 @@ export default function PropertyDetailPage() {
                   <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-1">
                     {currency(property.price)}
                     <span className="text-lg font-medium text-gray-600 ml-1">
-                      {property.status === "rent" ? property.priceUnit : property.salePriceUnit || "Guide Price"}
+                      {property.status === "rent"
+                        ? property.priceUnit
+                        : property.status === "sale"
+                        ? property.salePriceUnit || "Guide Price"
+                        : property.priceUnit || property.salePriceUnit || "PCM"}
                     </span>
                   </div>
                   <div className="text-gray-600 text-sm mb-4">
-                    {property.status === "rent" ? "Monthly Rate" : "Sale Price"}
+                    {property.status === "rent" ? "Monthly Rate" : property.status === "sale" ? "Sale Price" : "Price"}
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 mb-4">
@@ -248,7 +252,7 @@ export default function PropertyDetailPage() {
                         : 'bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200'
                       }`}>
                       <div className="text-lg font-bold mb-1">
-                        {property.status === 'rent' ? '🏠' : '🏷️'}
+                        {property.status === 'rent' ? '🏠' : property.status === 'sale' ? '🏷️' : '🏢'}
                       </div>
                       <div className={`text-xs font-medium ${property.status === 'rent' ? 'text-green-600' : 'text-orange-600'
                         }`}>

@@ -4,6 +4,7 @@ import Header from "./components/ui/Header";
 import Footer from "./components/ui/Footer";
 import HomePage from "./pages/HomePage";
 import ListingByStatus from "./pages/ListingByStatus";
+import CommercialListing from "./pages/CommercialListing";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import Placeholder from "./pages/Placeholder";
 import ServicesFeesPage from "./pages/services";
@@ -24,6 +25,7 @@ function AppContent() {
           <Route path="/" element={<HomePage />} />
           <Route path="/for-sale" element={<ListingByStatus status="sale" />} />
           <Route path="/for-rent" element={<ListingByStatus status="rent" />} />
+          <Route path="/commercial" element={<CommercialListing />} />
           <Route path="/property/:id" element={<PropertyDetailPage />} />
           <Route path="/landlords" element={<Placeholder text="Landlords page (todo)" />} />
           <Route path="/contact" element={<ContactPage />} />

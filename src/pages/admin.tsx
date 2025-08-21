@@ -10,7 +10,7 @@ type ApiProperty = {
   price: number;
   priceUnit: "pcm" | "pa";
   salePriceUnit?: "Guide Price" | "Fixed Price" | "Offers Over" | "OIEO" | "OIRO" | "Starting Bid";
-  status: "rent" | "sale";
+  status: "rent" | "sale" | "commercial";
   beds: number;
   baths: number;
   featured?: boolean;
@@ -23,7 +23,7 @@ type ApiProperty = {
 
 type NewProp = {
   title: string; address: string; area: string;
-  price: number; priceUnit: "pcm"|"pa"; salePriceUnit?: "Guide Price" | "Fixed Price" | "Offers Over" | "OIEO" | "OIRO" | "Starting Bid"; status: "rent"|"sale";
+  price: number; priceUnit: "pcm"|"pa"; salePriceUnit?: "Guide Price" | "Fixed Price" | "Offers Over" | "OIEO" | "OIRO" | "Starting Bid"; status: "rent"|"sale"|"commercial";
   beds: number; baths: number; lat: number; lng: number;
   imagesText: string;
   featured?: boolean;
@@ -125,7 +125,7 @@ export default function AdminPage() {
   // Add form
   const [form, setForm] = useState<NewProp>({
     title: "", address: "", area: "",
-    price: 0, priceUnit: "pcm", salePriceUnit: "Guide Price", status: "rent",
+  price: 0, priceUnit: "pcm", salePriceUnit: "Guide Price", status: "rent",
     beds: 0, baths: 0, lat: 0, lng: 0,
     imagesText: "", featured: false, description: ""
   });
@@ -443,34 +443,59 @@ export default function AdminPage() {
               className={clsInput} 
               value={form.status} 
               onChange={e => {
-                const newStatus = e.target.value as "rent" | "sale";
+                const newStatus = e.target.value as "rent" | "sale" | "commercial";
                 setForm(f => ({ 
                   ...f, 
                   status: newStatus,
                   // Reset to appropriate default when switching modes
-                  ...(newStatus === "rent" ? { priceUnit: "pcm" } : { salePriceUnit: "Guide Price" })
+                  ...(newStatus === "rent"
+                    ? { priceUnit: "pcm" }
+                    : newStatus === "sale"
+                    ? { salePriceUnit: "Guide Price" }
+                    : { priceUnit: "pcm", salePriceUnit: "Guide Price" })
                 }));
               }}
             >
               <option value="rent">Rent</option>
               <option value="sale">Sale</option>
+              <option value="commercial">Commercial</option>
             </select>
             <input className={clsInput} type="number" placeholder="Price" value={form.price || ""} onChange={e=>setForm(f=>({...f, price: Number(e.target.value)}))}/>
             <select 
               className={clsInput} 
-              value={form.status === "rent" ? form.priceUnit : form.salePriceUnit || "Guide Price"} 
+              value={form.status === "rent" ? form.priceUnit : form.status === "sale" ? (form.salePriceUnit || "Guide Price") : (form.priceUnit || form.salePriceUnit || "pcm")} 
               onChange={e => {
+                const val = e.target.value;
                 if (form.status === "rent") {
-                  setForm(f => ({ ...f, priceUnit: e.target.value as any }));
+                  setForm(f => ({ ...f, priceUnit: val as any }));
+                } else if (form.status === "sale") {
+                  setForm(f => ({ ...f, salePriceUnit: val as any }));
                 } else {
-                  setForm(f => ({ ...f, salePriceUnit: e.target.value as any }));
+                  // commercial: route pcm/pa to priceUnit, others to salePriceUnit
+                  if (val === "pcm" || val === "pa") {
+                    setForm(f => ({ ...f, priceUnit: val as any }));
+                  } else {
+                    setForm(f => ({ ...f, salePriceUnit: val as any }));
+                  }
                 }
               }}
             >
-              {form.status === "rent" 
-                ? RENT_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)
-                : SALE_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)
-              }
+              {form.status === "rent" && (
+                <>
+                  {RENT_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
+                </>
+              )}
+              {form.status === "sale" && (
+                <>
+                  {SALE_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
+                </>
+              )}
+              {form.status === "commercial" && (
+                <>
+                  {RENT_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
+                  {SALE_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
+                </>
+              )}
             </select>
             <input className={clsInput} type="number" placeholder="Beds" value={form.beds || ""} onChange={e=>setForm(f=>({...f, beds: Number(e.target.value)}))}/>
             <input className={clsInput} type="number" placeholder="Baths" value={form.baths || ""} onChange={e=>setForm(f=>({...f, baths: Number(e.target.value)}))}/>
@@ -583,7 +608,7 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <div className="font-medium mt-1">{p.title}</div>
-                <div className="text-sm text-zinc-600">{p.price} {p.status === "rent" ? p.priceUnit : p.salePriceUnit || "Guide Price"} — {p.beds} bed / {p.baths} bath</div>
+                <div className="text-sm text-zinc-600">{p.price} {p.status === "rent" ? p.priceUnit : p.status === "sale" ? (p.salePriceUnit || "Guide Price") : (p.priceUnit || p.salePriceUnit || "")} — {p.beds} bed / {p.baths} bath</div>
                 <div className="mt-3 flex items-center gap-3">
                   <button onClick={() => startEdit(p)} className="rounded px-2 py-1 ring-1 ring-sky-200 text-sky-700 text-sm">Edit</button>
                   {p.active === false ? (
@@ -613,11 +638,11 @@ export default function AdminPage() {
             <div className="grid md:grid-cols-2 gap-3">
               <input className={clsInput} placeholder="Title" value={editing.title} onChange={e=>setEditing(p=>p && ({...p, title: e.target.value}))}/>
               <div className="relative">
-                <input 
-                  className={clsInput} 
-                  placeholder="Address" 
-                  value={editing.address} 
-                  onChange={e=>handleEditAddressChange(e.target.value)}
+                <input
+                  className={clsInput}
+                  placeholder="Address"
+                  value={editing.address}
+                  onChange={e => handleEditAddressChange(e.target.value)}
                 />
                 {isGeocoding && (
                   <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -640,34 +665,58 @@ export default function AdminPage() {
                 className={clsInput} 
                 value={editing.status} 
                 onChange={e => {
-                  const newStatus = e.target.value as "rent" | "sale";
+                  const newStatus = e.target.value as "rent" | "sale" | "commercial";
                   setEditing(p => p && ({ 
                     ...p, 
                     status: newStatus,
                     // Reset to appropriate default when switching modes
-                    ...(newStatus === "rent" ? { priceUnit: "pcm" } : { salePriceUnit: "Guide Price" })
+                    ...(newStatus === "rent"
+                      ? { priceUnit: "pcm" }
+                      : newStatus === "sale"
+                      ? { salePriceUnit: "Guide Price" }
+                      : { priceUnit: "pcm", salePriceUnit: "Guide Price" })
                   }));
                 }}
               >
                 <option value="rent">Rent</option>
                 <option value="sale">Sale</option>
+                <option value="commercial">Commercial</option>
               </select>
               <input className={clsInput} type="number" placeholder="Price" value={editing.price} onChange={e=>setEditing(p=>p && ({...p, price: Number(e.target.value)}))}/>
               <select 
                 className={clsInput} 
-                value={editing.status === "rent" ? editing.priceUnit : editing.salePriceUnit || "Guide Price"} 
+                  value={editing.status === "rent" ? editing.priceUnit : editing.status === "sale" ? (editing.salePriceUnit || "Guide Price") : (editing.priceUnit || editing.salePriceUnit || "pcm")} 
                 onChange={e => {
-                  if (editing.status === "rent") {
-                    setEditing(p => p && ({ ...p, priceUnit: e.target.value as any }));
-                  } else {
-                    setEditing(p => p && ({ ...p, salePriceUnit: e.target.value as any }));
-                  }
+                    const val = e.target.value;
+                    if (editing.status === "rent") {
+                      setEditing(p => p && ({ ...p, priceUnit: val as any }));
+                    } else if (editing.status === "sale") {
+                      setEditing(p => p && ({ ...p, salePriceUnit: val as any }));
+                    } else {
+                      if (val === "pcm" || val === "pa") {
+                        setEditing(p => p && ({ ...p, priceUnit: val as any }));
+                      } else {
+                        setEditing(p => p && ({ ...p, salePriceUnit: val as any }));
+                      }
+                    }
                 }}
               >
-                {editing.status === "rent" 
-                  ? RENT_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)
-                  : SALE_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)
-                }
+                  {editing.status === "rent" && (
+                    <>
+                      {RENT_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
+                    </>
+                  )}
+                  {editing.status === "sale" && (
+                    <>
+                      {SALE_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
+                    </>
+                  )}
+                  {editing.status === "commercial" && (
+                    <>
+                      {RENT_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
+                      {SALE_UNITS.map(unit => <option key={unit} value={unit}>{unit}</option>)}
+                    </>
+                  )}
               </select>
               <input className={clsInput} type="number" placeholder="Beds" value={editing.beds} onChange={e=>setEditing(p=>p && ({...p, beds: Number(e.target.value)}))}/>
               <input className={clsInput} type="number" placeholder="Baths" value={editing.baths} onChange={e=>setEditing(p=>p && ({...p, baths: Number(e.target.value)}))}/>

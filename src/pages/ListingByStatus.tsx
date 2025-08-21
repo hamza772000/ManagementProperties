@@ -27,7 +27,6 @@ export default function ListingByStatus({ status }: { status: string }) {
           ))}
         </div>
       </section>
-      <aside><h2 className="text-xl font-semibold mb-4">Featured Properties</h2></aside>
     </main>
   );
 }
