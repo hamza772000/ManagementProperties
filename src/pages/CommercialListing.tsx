@@ -8,13 +8,13 @@ export default function CommercialListing() {
   const DATA = useProperties();
   const items = useMemo(() => DATA.filter(p => p.status === 'commercial'), [DATA]);
   return (
-    <main className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <section className="lg:col-span-2">
+    <main className="max-w-7xl mx-auto px-4 py-8">
+      <section>
         <h2 className="text-xl font-semibold mb-4">Commercial Properties</h2>
         {items.length === 0 ? (
           <div className="text-sm text-zinc-600">No commercial listings available right now.</div>
         ) : (
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {items.map((p) => (
               <article
                 key={p.id}
@@ -45,9 +45,6 @@ export default function CommercialListing() {
           </div>
         )}
       </section>
-      <aside>
-        <h2 className="text-xl font-semibold mb-4">Featured Properties</h2>
-      </aside>
     </main>
   );
 }
