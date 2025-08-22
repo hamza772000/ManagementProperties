@@ -79,6 +79,11 @@ export default function PropertyDetailPage() {
                   <p className="text-emerald-100 text-sm">{property.address}</p>
                 </div>
               </div>
+              {property.availability && (
+                <span className="inline-flex items-center h-9 px-3 rounded-full bg-white/20 text-white text-xs font-semibold tracking-wide">
+                  {property.availability}
+                </span>
+              )}
             </div>
           </header>
         </div>
@@ -185,7 +190,7 @@ export default function PropertyDetailPage() {
                       </div>
                       <div className="group rounded-2xl border border-gray-100 p-6 hover:border-purple-200 hover:shadow-lg transition-all duration-200 bg-gradient-to-br from-purple-50 to-pink-50">
                         <dt className="flex items-center gap-2 text-xs uppercase tracking-wide text-purple-600 font-semibold mb-2">
-                          💷 Monthly Rate
+                          💷 {property.status === 'rent' ? 'Monthly Rate' : property.status === 'sale' ? 'Sale Price' : 'Price'}
                         </dt>
                         <dd className="text-2xl font-bold text-gray-900">{currency(property.price)}</dd>
                       </div>
@@ -261,9 +266,9 @@ export default function PropertyDetailPage() {
                     </div>
                   </div>
 
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-emerald-500 to-green-500 px-4 py-2 text-sm font-medium text-white shadow-lg">
-                    <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
-                    Available
+                  <span className={`inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold shadow-lg ${property.availability ? 'bg-gradient-to-r from-slate-400 to-slate-500 text-white' : 'bg-gradient-to-r from-emerald-500 to-green-500 text-white'}`}>
+                    <div className={`w-2 h-2 rounded-full mr-2 ${property.availability ? 'bg-white/80' : 'bg-white'} animate-pulse`}></div>
+                    {property.availability ?? 'Available'}
                   </span>
                 </div>
 

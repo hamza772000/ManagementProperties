@@ -6,6 +6,7 @@
     "dev": "vite",
     "generate:properties": "node scripts/generate-properties.mjs",
   "migrate:commercial": "node scripts/migrate-add-commercial-status.mjs",
+    "migrate:availability": "node scripts/migrate-add-availability.mjs",
     "build": "npm run generate:properties && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

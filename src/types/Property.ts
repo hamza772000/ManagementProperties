@@ -9,6 +9,7 @@ export type Property = {
   priceUnit: "pcm" | "pa";
   salePriceUnit?: "Guide Price" | "Fixed Price" | "Offers Over" | "OIEO" | "OIRO" | "Starting Bid";
   status: Status;
+  availability?: "LET" | "SOLD" | "SALE AGREED";
   beds: number;
   baths: number;
   featured?: boolean;

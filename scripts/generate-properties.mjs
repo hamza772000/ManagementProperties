@@ -22,7 +22,7 @@ async function main() {
   try {
     sql = postgres(url, { max: 1, onnotice: () => {} });
     const rows = await sql`
-      SELECT id, title, address, area, price, price_unit, sale_price_unit, status, beds, baths, featured, lat, lng, images, description, active, created_at
+  SELECT id, title, address, area, price, price_unit, sale_price_unit, status, availability, beds, baths, featured, lat, lng, images, description, active, created_at
       FROM properties
       WHERE active = true
       ORDER BY created_at DESC
@@ -48,6 +48,7 @@ async function main() {
         priceUnit: isRent ? r.price_unit : isCommercial ? (r.price_unit || undefined) : undefined,
         salePriceUnit: isSale ? (r.sale_price_unit || undefined) : isCommercial ? (r.sale_price_unit || undefined) : undefined,
         status: r.status,
+        availability: r.availability || undefined,
         beds: Number(r.beds ?? 0),
         baths: Number(r.baths ?? 0),
         featured: !!r.featured,

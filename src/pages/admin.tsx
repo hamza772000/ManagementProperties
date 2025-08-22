@@ -11,6 +11,7 @@ type ApiProperty = {
   priceUnit: "pcm" | "pa";
   salePriceUnit?: "Guide Price" | "Fixed Price" | "Offers Over" | "OIEO" | "OIRO" | "Starting Bid";
   status: "rent" | "sale" | "commercial";
+  availability?: "LET" | "SOLD" | "SALE AGREED";
   beds: number;
   baths: number;
   featured?: boolean;
@@ -24,6 +25,7 @@ type ApiProperty = {
 type NewProp = {
   title: string; address: string; area: string;
   price: number; priceUnit: "pcm"|"pa"; salePriceUnit?: "Guide Price" | "Fixed Price" | "Offers Over" | "OIEO" | "OIRO" | "Starting Bid"; status: "rent"|"sale"|"commercial";
+  availability?: "LET" | "SOLD" | "SALE AGREED";
   beds: number; baths: number; lat: number; lng: number;
   imagesText: string;
   featured?: boolean;
@@ -126,7 +128,8 @@ export default function AdminPage() {
   const [form, setForm] = useState<NewProp>({
     title: "", address: "", area: "",
   price: 0, priceUnit: "pcm", salePriceUnit: "Guide Price", status: "rent",
-    beds: 0, baths: 0, lat: 0, lng: 0,
+  availability: undefined,
+  beds: 0, baths: 0, lat: 0, lng: 0,
     imagesText: "", featured: false, description: ""
   });
 
@@ -254,6 +257,7 @@ export default function AdminPage() {
       priceUnit: form.priceUnit, 
       salePriceUnit: form.salePriceUnit,
       status: form.status,
+  availability: form.availability,
       beds: Number(form.beds), baths: Number(form.baths),
       coord: [Number(form.lat), Number(form.lng)],
       featured: !!form.featured,
@@ -276,7 +280,8 @@ export default function AdminPage() {
     setForm({
       title: "", address: "", area: "",
       price: 0, priceUnit: "pcm", salePriceUnit: "Guide Price", status: "rent",
-      beds: 0, baths: 0, lat: 0, lng: 0,
+  availability: undefined,
+  beds: 0, baths: 0, lat: 0, lng: 0,
       imagesText: "", featured: false, description: ""
     });
     setNewImages([]);
@@ -331,6 +336,7 @@ export default function AdminPage() {
       priceUnit: editing.priceUnit,
       salePriceUnit: editing.salePriceUnit,
       status: editing.status,
+  availability: editing.availability,
       beds: editing.beds,
       baths: editing.baths,
       coord: editing.coord,
@@ -459,6 +465,16 @@ export default function AdminPage() {
               <option value="rent">Rent</option>
               <option value="sale">Sale</option>
               <option value="commercial">Commercial</option>
+            </select>
+            <select
+              className={clsInput}
+              value={form.availability || ""}
+              onChange={e=>setForm(f=>({...f, availability: (e.target.value || undefined) as any}))}
+            >
+              <option value="">Availability (optional)</option>
+              <option value="LET">LET</option>
+              <option value="SOLD">SOLD</option>
+              <option value="SALE AGREED">SALE AGREED</option>
             </select>
             <input className={clsInput} type="number" placeholder="Price" value={form.price || ""} onChange={e=>setForm(f=>({...f, price: Number(e.target.value)}))}/>
             <select 
@@ -605,6 +621,11 @@ export default function AdminPage() {
                     ) : (
                       <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-xs">Active</span>
                     )}
+                    {p.availability ? (
+                      <span className="px-2 py-0.5 rounded bg-sky-50 text-sky-700 text-xs" title="Availability">
+                        {p.availability}
+                      </span>
+                    ) : null}
                   </div>
                 </div>
                 <div className="font-medium mt-1">{p.title}</div>
@@ -681,6 +702,16 @@ export default function AdminPage() {
                 <option value="rent">Rent</option>
                 <option value="sale">Sale</option>
                 <option value="commercial">Commercial</option>
+              </select>
+              <select
+                className={clsInput}
+                value={editing.availability || ""}
+                onChange={e=>setEditing(p=>p && ({...p, availability: (e.target.value || undefined) as any}))}
+              >
+                <option value="">Availability (optional)</option>
+                <option value="LET">LET</option>
+                <option value="SOLD">SOLD</option>
+                <option value="SALE AGREED">SALE AGREED</option>
               </select>
               <input className={clsInput} type="number" placeholder="Price" value={editing.price} onChange={e=>setEditing(p=>p && ({...p, price: Number(e.target.value)}))}/>
               <select 

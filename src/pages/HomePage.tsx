@@ -81,6 +81,11 @@ export default function HomePage() {
                   <Link to={`/property/${p.id}`} className="block">
                     <div className="font-medium">{p.title}</div>
                     <div className="text-xs text-zinc-600 mb-1">{p.address}</div>
+                    <div className="mb-1">
+                      <span className={`inline-block text-[10px] font-semibold rounded px-1.5 py-0.5 ${p.availability ? 'bg-sky-50 text-sky-700' : p.status === 'rent' ? 'bg-amber-50 text-amber-700' : p.status === 'sale' ? 'bg-blue-50 text-blue-700' : 'bg-purple-50 text-purple-700'}`}>
+                        {p.availability ?? (p.status === 'rent' ? 'Rent' : p.status === 'sale' ? 'Sale' : 'Commercial')}
+                      </span>
+                    </div>
                     <PriceTag
                       value={p.price}
                       unit={p.status === "rent"
@@ -110,14 +115,19 @@ export default function HomePage() {
             {filtered.map((p) => (
               <motion.article key={p.id} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200">
                 <Link to={`/property/${p.id}`}>
-                  <div className="aspect-[16/10] w-full overflow-hidden">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden">
+                    {p.availability && (
+                      <div className={`absolute top-0 left-0 right-0 text-center text-[12px] font-semibold tracking-widest uppercase text-white py-1 ${'bg-emerald-600/85'}`}>
+                        {p.availability}
+                      </div>
+                    )}
                     <img src={cover(p)} alt={p.title} className="h-full w-full object-cover" />
                   </div>
                 </Link>
                 <div className="p-4">
                   <div className="flex items-center justify-between">
-                    <span className={`text-xs font-semibold rounded px-2 py-1 ${p.status === "rent" ? "bg-amber-50 text-amber-700" : p.status === "sale" ? "bg-blue-50 text-blue-700" : "bg-purple-50 text-purple-700"}`}>
-                      {p.status === "rent" ? "Rent" : p.status === "sale" ? "Sale" : "Commercial"}
+                    <span className={`text-xs font-semibold rounded px-2 py-1 ${p.availability ? 'bg-sky-50 text-sky-700' : p.status === 'rent' ? 'bg-amber-50 text-amber-700' : p.status === 'sale' ? 'bg-blue-50 text-blue-700' : 'bg-purple-50 text-purple-700'}`}>
+                      {p.availability ?? (p.status === 'rent' ? 'Rent' : p.status === 'sale' ? 'Sale' : 'Commercial')}
                     </span>
                     <PriceTag
                       value={p.price}
@@ -149,7 +159,14 @@ export default function HomePage() {
           <div className="space-y-4">
             {DATA.filter((p) => p.featured).map((p) => (
               <Link key={p.id} to={`/property/${p.id}`} className="flex gap-3 rounded-xl bg-white ring-1 ring-zinc-200 p-2 shadow-sm hover:ring-sky-300">
-                <img src={cover(p)} alt={p.title} className="h-20 w-28 object-cover rounded-lg" />
+                <div className="relative h-20 w-28 rounded-lg overflow-hidden">
+                  {p.availability && (
+                    <div className={`absolute top-0 left-0 right-0 text-center text-[10px] font-semibold tracking-widest uppercase text-white py-0.5 ${'bg-emerald-600/85'}`}>
+                      {p.availability}
+                    </div>
+                  )}
+                  <img src={cover(p)} alt={p.title} className="h-full w-full object-cover" />
+                </div>
                 <div className="flex-1">
                   <div className="text-xs text-zinc-500">{p.area}</div>
                   <div className="font-medium leading-tight">{p.title}</div>

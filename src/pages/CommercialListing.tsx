@@ -21,7 +21,12 @@ export default function CommercialListing() {
                 className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200"
               >
                 <Link to={`/property/${p.id}`}>
-                  <div className="aspect-[16/10] w-full overflow-hidden">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden">
+                    {p.availability && (
+                      <div className="absolute top-0 left-0 right-0 text-center text-[11px] font-semibold tracking-widest uppercase text-white py-1 bg-emerald-600/85">
+                        {p.availability}
+                      </div>
+                    )}
                     <img
                       src={cover(p)}
                       alt={p.title}
@@ -39,6 +44,9 @@ export default function CommercialListing() {
                   <div className="text-sm text-zinc-600">
                     {p.area}, {p.address}
                   </div>
+                  {p.availability && (
+                    <div className="mt-1"><span className="inline-block text-[10px] font-semibold rounded px-1.5 py-0.5 bg-sky-50 text-sky-700">{p.availability}</span></div>
+                  )}
                 </div>
               </article>
             ))}

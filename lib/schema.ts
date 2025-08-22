@@ -9,6 +9,7 @@ export const properties = pgTable('properties', {
   priceUnit: varchar('price_unit', { length: 10 }).notNull(), // 'pcm' | 'pa'
   salePriceUnit: varchar('sale_price_unit', { length: 20 }), // 'Guide Price' | 'Fixed Price' etc.
   status: varchar('status', { length: 10 }).notNull(), // 'rent' | 'sale' | 'commercial'
+  availability: varchar('availability', { length: 20 }), // 'LET' | 'SOLD' | 'SALE AGREED'
   beds: integer('beds').default(0),
   baths: integer('baths').default(0),
   featured: boolean('featured').default(false),
