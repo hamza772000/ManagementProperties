@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import type { Status } from "../types/Property";
 import type { LatLngTuple } from "leaflet";
 import { Link } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import { motion } from "framer-motion";
 import { MapPin, Home, Bath, BedDouble } from "lucide-react";
@@ -37,6 +37,40 @@ const cover = (p: any) => {
   }
   return imageUrl;
 };
+
+// Only allow scroll-zoom when Ctrl/Cmd is pressed by toggling Leaflet's handler.
+function CtrlWheelZoom() {
+  const map = useMap();
+  useEffect(() => {
+    // Start disabled; we temporarily enable when Ctrl/Cmd is held during wheel
+    map.scrollWheelZoom.disable();
+    const container = map.getContainer();
+    let disableTimer: number | undefined;
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        map.scrollWheelZoom.enable();
+        if (disableTimer) window.clearTimeout(disableTimer);
+        disableTimer = window.setTimeout(() => {
+          map.scrollWheelZoom.disable();
+        }, 600);
+      } else {
+        map.scrollWheelZoom.disable();
+      }
+    };
+    const onLeave = () => {
+      map.scrollWheelZoom.disable();
+    };
+    container.addEventListener("wheel", onWheel, { passive: true });
+    container.addEventListener("mouseleave", onLeave);
+    return () => {
+      if (disableTimer) window.clearTimeout(disableTimer);
+      container.removeEventListener("wheel", onWheel as any);
+      container.removeEventListener("mouseleave", onLeave as any);
+      map.scrollWheelZoom.disable();
+    };
+  }, [map]);
+  return null;
+}
 
 export default function HomePage() {
   const DATA = useProperties();
@@ -74,6 +108,7 @@ export default function HomePage() {
         </div>
         <div className="relative h-[360px] md:h-[420px] lg:h-[480px] w-full">
           <MapContainer center={center} zoom={11} scrollWheelZoom={false} className="h-full w-full">
+            <CtrlWheelZoom />
             <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {filtered.map((p) => (
               <Marker key={p.id} position={p.coord} icon={markerIcon}>
@@ -100,6 +135,12 @@ export default function HomePage() {
               </Marker>
             ))}
           </MapContainer>
+          {/* Hint: how to zoom */}
+          <div className="absolute left-3 bottom-3 z-[1000] pointer-events-none">
+            <div className="rounded-md bg-white/90 backdrop-blur-sm shadow ring-1 ring-zinc-200 px-2 py-0.5 text-[11px] text-zinc-700">
+              Ctrl+scroll to zoom
+            </div>
+          </div>
           <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="hidden lg:block absolute right-6 top-6 z-[1000] w-[320px] rounded-2xl bg-white/95 shadow-xl ring-1 ring-zinc-200 p-4">
             <FilterForm {...{ mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo }} />
             <div className="mt-3 text-right">
