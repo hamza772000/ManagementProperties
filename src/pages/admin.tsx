@@ -219,7 +219,7 @@ export default function AdminPage() {
     setUploading(true);
     try {
       const urls = await uploadFiles(Array.from(files), token);
-      setNewImages(prev => [...prev, ...urls].slice(0, 6));
+  setNewImages(prev => [...prev, ...urls]);
     } catch (e: any) {
       alert("Upload failed: " + e.message);
     } finally {
@@ -246,7 +246,7 @@ export default function AdminPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const urlImages = form.imagesText.split(/[,|\n]/).map(s => s.trim()).filter(Boolean);
-    const images = [...newImages, ...urlImages].slice(0, 6);
+  const images = [...newImages, ...urlImages];
 
     const payload = {
       title: form.title, address: form.address, area: form.area,
@@ -310,7 +310,7 @@ export default function AdminPage() {
     setSaving(true);
     try {
       const urls = await uploadFiles(Array.from(files), token);
-      setEditImages(prev => [...prev, ...urls].slice(0, 6));
+  setEditImages(prev => [...prev, ...urls]);
     } catch (e: any) {
       alert("Upload failed: " + e.message);
     } finally {
@@ -565,7 +565,7 @@ export default function AdminPage() {
               )}
 
               <p className="text-xs text-zinc-500 mt-2">
-                You can also paste image URLs below. We’ll combine both (max 6).
+                You can also paste image URLs below. We’ll combine both. The first image becomes the cover.
               </p>
             </div>
 
@@ -773,7 +773,7 @@ export default function AdminPage() {
                   await onDropFiles(e.dataTransfer.files);
                 }}
               >
-                Drag & drop images here (or use the file picker). Max 6 images.
+                Drag & drop images here (or use the file picker). Add as many as you like; the first is the cover.
               </div>
 
               <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-2">
