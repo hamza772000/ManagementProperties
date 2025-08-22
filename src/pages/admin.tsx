@@ -468,10 +468,13 @@ export default function AdminPage() {
             </select>
             <select
               className={clsInput}
-              value={form.availability || ""}
-              onChange={e=>setForm(f=>({...f, availability: (e.target.value || undefined) as any}))}
+              value={form.availability ?? "Available"}
+              onChange={e => {
+                const v = e.target.value;
+                setForm(f => ({ ...f, availability: v === "Available" ? undefined : (v as any) }));
+              }}
             >
-              <option value="">Availability (optional)</option>
+              <option value="Available">Available</option>
               <option value="LET">LET</option>
               <option value="SOLD">SOLD</option>
               <option value="SALE AGREED">SALE AGREED</option>
@@ -705,10 +708,10 @@ export default function AdminPage() {
               </select>
               <select
                 className={clsInput}
-                value={editing.availability || ""}
-                onChange={e=>setEditing(p=>p && ({...p, availability: (e.target.value || undefined) as any}))}
+                value={editing.availability ?? "Available"}
+                onChange={e => setEditing(p => p && ({ ...p, availability: e.target.value === "Available" ? undefined : (e.target.value as any) }))}
               >
-                <option value="">Availability (optional)</option>
+                <option value="Available">Available</option>
                 <option value="LET">LET</option>
                 <option value="SOLD">SOLD</option>
                 <option value="SALE AGREED">SALE AGREED</option>
