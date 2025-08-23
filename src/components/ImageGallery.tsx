@@ -13,6 +13,10 @@ export default function ImageGallery({ images }: Props) {
   const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState(0);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+  const swipeStart = useRef<{ x: number; y: number; time: number } | null>(
+    null
+  );
+  const didSwipe = useRef(false);
 
   const openAt = (i: number) => {
     setIdx(i);
@@ -62,6 +66,47 @@ export default function ImageGallery({ images }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open, images.length]);
 
+  // Pointer swipe handlers (left/right)
+  const onPointerDown = (e: React.PointerEvent) => {
+    // Only primary button / touch
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    didSwipe.current = false;
+    swipeStart.current = {
+      x: e.clientX,
+      y: e.clientY,
+      time: Date.now(),
+    };
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!swipeStart.current) return;
+    const dx = e.clientX - swipeStart.current.x;
+    const dy = e.clientY - swipeStart.current.y;
+    // If horizontal move dominates and exceeds threshold, mark as swipe
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      didSwipe.current = true;
+    }
+  };
+
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (!swipeStart.current) return;
+    const dx = e.clientX - swipeStart.current.x;
+    const dy = e.clientY - swipeStart.current.y;
+    const dt = Date.now() - swipeStart.current.time;
+    swipeStart.current = null;
+
+    // Consider it a swipe if quick or sufficiently long horizontal gesture
+    const horizontal = Math.abs(dx) > Math.abs(dy);
+    const longEnough = Math.abs(dx) > 60 || (Math.abs(dx) > 35 && dt < 350);
+    if (horizontal && longEnough) {
+      if (dx < 0) {
+        next();
+      } else {
+        prev();
+      }
+    }
+  };
+
   return (
     <>
       {/* Inline gallery */}
@@ -100,17 +145,24 @@ export default function ImageGallery({ images }: Props) {
             />
 
             {/* Image + controls */}
-            <div className="relative max-h-[90vh] max-w-[92vw]">
+            <div
+              className="relative max-h-[90vh] max-w-[92vw] select-none"
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              // Allow vertical gestures (for potential pull-down UI) but handle horizontal swipes
+              style={{ touchAction: "pan-y" }}
+            >
               <img
                 src={images[idx]}
                 alt={`Photo ${idx + 1} of ${images.length}`}
-                className="max-h-[90vh] max-w-[92vw] rounded-xl object-contain shadow-2xl"
+                className="max-h-[90vh] max-w-[92vw] rounded-xl object-contain shadow-2xl pointer-events-none"
               />
 
               <button
                 ref={closeBtnRef}
                 onClick={() => setOpen(false)}
-                className="absolute -top-12 right-0 rounded-lg bg-white/90 px-3 py-1 text-sm font-medium shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="absolute right-3 top-3 md:right-0 md:-top-12 rounded-lg bg-white/90 px-3 py-1 text-sm font-medium shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
                 ✕ Close (Esc)
               </button>
@@ -119,14 +171,14 @@ export default function ImageGallery({ images }: Props) {
                 <>
                   <button
                     onClick={prev}
-                    className="absolute left-[-56px] top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     aria-label="Previous image (Left arrow)"
                   >
                     ←
                   </button>
                   <button
                     onClick={next}
-                    className="absolute right-[-56px] top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="absolute right-2 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     aria-label="Next image (Right arrow)"
                   >
                     →
