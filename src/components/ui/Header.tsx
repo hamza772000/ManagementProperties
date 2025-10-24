@@ -97,8 +97,20 @@ export default function Header() {
         <NavLink to="/commercial" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
           Commercial
         </NavLink>
+        <NavLink to="/buying" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          Buying
+        </NavLink>
+        <NavLink to="/selling" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          Selling
+        </NavLink>
+        <NavLink to="/landlords" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          Landlords
+        </NavLink>
         <NavLink to="/contact" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
           Contact
+        </NavLink>
+        <NavLink to="/about" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
+          About
         </NavLink>
         <NavLink to="/services" className={({ isActive }) => (isActive ? "underline" : "hover:underline")}>
           Services & Fees

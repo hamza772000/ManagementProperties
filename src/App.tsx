@@ -10,6 +10,10 @@ import Placeholder from "./pages/Placeholder";
 import ServicesFeesPage from "./pages/services";
 import AdminPage from "./pages/admin";
 import ContactPage from "./pages/contact";
+import AboutPage from "./pages/about";
+import LandlordsPage from "./pages/landlords";
+import BuyingPage from "./pages/buying";
+import SellingPage from "./pages/selling";
 import { DataContext } from "./context/DataContext";
 import { PROPS } from "./data/properties";
 import MembershipStrip from "./components/ui/MembershipStrip";
@@ -24,10 +28,13 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/for-sale" element={<ListingByStatus status="sale" />} />
+          <Route path="/buying" element={<BuyingPage />} />
+          <Route path="/selling" element={<SellingPage />} />
           <Route path="/for-rent" element={<ListingByStatus status="rent" />} />
           <Route path="/commercial" element={<CommercialListing />} />
           <Route path="/property/:id" element={<PropertyDetailPage />} />
-          <Route path="/landlords" element={<Placeholder text="Landlords page (todo)" />} />
+          <Route path="/landlords" element={<LandlordsPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/services" element={<ServicesFeesPage />} />
           <Route path="/list" element={<Placeholder text="List your property form (todo)" />} />
