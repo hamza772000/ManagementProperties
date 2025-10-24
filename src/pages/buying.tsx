@@ -16,9 +16,9 @@ export default function BuyingPage() {
           The new Government backed Help to Buy scheme has now made it even easier to buy your next home.
         </p>
 
-        <h3 className="text-md font-medium">Open till 7pm on weekdays</h3>
+        <h3 className="text-md font-medium">Open till 6pm on weekdays</h3>
         <p className="text-zinc-800 leading-relaxed">
-          We’ve also made it easier for you to contact us. Our staff are available up to 7pm on weekdays and 2pm on Saturday too.
+          We’ve also made it easier for you to contact us. Our staff are available up to 6pm on weekdays and 1pm on Saturday too.
         </p>
 
         <h3 className="text-md font-medium">Market Intelligence</h3>
