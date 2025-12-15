@@ -31,6 +31,7 @@ function normalizeForClient(p: typeof properties.$inferSelect) {
     img: images[0] || '',
     active: p.active,
     createdAt: p.createdAt?.toISOString() || new Date().toISOString(),
+    updatedAt: (p as any).updatedAt?.toISOString() || p.createdAt?.toISOString() || new Date().toISOString(),
     description: p.description || '',
   };
 }
@@ -57,6 +58,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!payload.title || !payload.price || !payload.status || !payload.priceUnit)
       return bad(res, 'missing required fields: title, price, status, priceUnit');
 
+    const now = new Date();
     const [newItem] = await db.insert(properties).values({
       title: payload.title,
       address: payload.address,
@@ -74,6 +76,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       images: payload.images || [],
       description: payload.description,
       active: true,
+      createdAt: now,
+      updatedAt: now,
     }).returning();
 
     return ok(res, { id: newItem.id }, 201);
@@ -85,7 +89,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!id) return bad(res, 'missing id');
 
     await db.update(properties)
-      .set({ active: !!active })
+      .set({ active: !!active, updatedAt: new Date() })
       .where(eq(properties.id, id));
 
     return ok(res, { id, active: !!active });
@@ -121,6 +125,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       lng: String(u.coord?.[1] ?? 0),
       images: u.images,
       description: u.description,
+      updatedAt: new Date(),
     }).where(eq(properties.id, id));
   
     return ok(res, { id, updated: true });

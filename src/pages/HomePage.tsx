@@ -93,6 +93,19 @@ export default function HomePage() {
     });
   }, [DATA, mode, q, minBeds, minBaths, priceFrom, priceTo]);
 
+  // Only show the 4 most recent properties in the "Recent Properties" section.
+  // Prefer an explicit timestamp if present (updatedAt, createdAt, lastUpdated).
+  const recent = [...filtered]
+    .sort((a, b) => {
+      const getTime = (p: any) => {
+        const t = p.updatedAt ?? p.createdAt ?? p.lastUpdated ?? 0;
+        const parsed = typeof t === "number" ? t : Date.parse(String(t) || "");
+        return Number.isFinite(parsed) ? parsed : 0;
+      };
+      return getTime(b) - getTime(a);
+    })
+    .slice(0, 4);
+
   const center: LatLngTuple = [51.5282744, -0.1975558]; // 15 Malvern Road, NW6 5PS
 
   return (
@@ -153,7 +166,7 @@ export default function HomePage() {
         <section className="lg:col-span-2">
           <h2 className="text-xl font-semibold mb-4">Recent Properties</h2>
           <div className="grid sm:grid-cols-2 gap-6">
-            {filtered.map((p) => (
+            {recent.map((p) => (
               <motion.article key={p.id} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200">
                 <Link to={`/property/${p.id}`}>
                   <div className="relative aspect-[16/10] w-full overflow-hidden">
