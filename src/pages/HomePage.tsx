@@ -24,11 +24,10 @@ const markerIcon = L.icon({
 const cover = (p: any) => {
   const imageUrl = p.images?.[0] ?? p.img;
   if (!imageUrl) {
-    // Create a placeholder image with "Pics Coming Soon" text
     return `data:image/svg+xml;base64,${btoa(`
       <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
         <rect width="100%" height="100%" fill="#f3f4f6"/>
-        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
               font-family="Arial, sans-serif" font-size="18" fill="#6b7280">
           Pictures Coming Soon
         </text>
@@ -42,26 +41,25 @@ const cover = (p: any) => {
 function CtrlWheelZoom() {
   const map = useMap();
   useEffect(() => {
-    // Start disabled; we temporarily enable when Ctrl/Cmd is held during wheel
     map.scrollWheelZoom.disable();
     const container = map.getContainer();
     let disableTimer: number | undefined;
+
     const onWheel = (e: WheelEvent) => {
       if (e.ctrlKey || e.metaKey) {
         map.scrollWheelZoom.enable();
         if (disableTimer) window.clearTimeout(disableTimer);
-        disableTimer = window.setTimeout(() => {
-          map.scrollWheelZoom.disable();
-        }, 600);
+        disableTimer = window.setTimeout(() => map.scrollWheelZoom.disable(), 600);
       } else {
         map.scrollWheelZoom.disable();
       }
     };
-    const onLeave = () => {
-      map.scrollWheelZoom.disable();
-    };
+
+    const onLeave = () => map.scrollWheelZoom.disable();
+
     container.addEventListener("wheel", onWheel, { passive: true });
     container.addEventListener("mouseleave", onLeave);
+
     return () => {
       if (disableTimer) window.clearTimeout(disableTimer);
       container.removeEventListener("wheel", onWheel as any);
@@ -69,6 +67,7 @@ function CtrlWheelZoom() {
       map.scrollWheelZoom.disable();
     };
   }, [map]);
+
   return null;
 }
 
@@ -93,8 +92,6 @@ export default function HomePage() {
     });
   }, [DATA, mode, q, minBeds, minBaths, priceFrom, priceTo]);
 
-  // Only show the 4 most recent properties in the "Recent Properties" section.
-  // Prefer an explicit timestamp if present (updatedAt, createdAt, lastUpdated).
   const recent = [...filtered]
     .sort((a, b) => {
       const getTime = (p: any) => {
@@ -119,10 +116,14 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
         <div className="relative h-[360px] md:h-[420px] lg:h-[480px] w-full">
           <MapContainer center={center} zoom={11} scrollWheelZoom={false} className="h-full w-full">
             <CtrlWheelZoom />
-            <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
             {filtered.map((p) => (
               <Marker key={p.id} position={p.coord} icon={markerIcon}>
                 <Popup>
@@ -130,17 +131,29 @@ export default function HomePage() {
                     <div className="font-medium">{p.title}</div>
                     <div className="text-xs text-zinc-600 mb-1">{p.address}</div>
                     <div className="mb-1">
-                      <span className={`inline-block text-[10px] font-semibold rounded px-1.5 py-0.5 ${p.availability ? 'bg-sky-50 text-sky-700' : p.status === 'rent' ? 'bg-amber-50 text-amber-700' : p.status === 'sale' ? 'bg-blue-50 text-blue-700' : 'bg-purple-50 text-purple-700'}`}>
-                        {p.availability ?? (p.status === 'rent' ? 'Rent' : p.status === 'sale' ? 'Sale' : 'Commercial')}
+                      <span
+                        className={`inline-block text-[10px] font-semibold rounded px-1.5 py-0.5 ${
+                          p.availability
+                            ? "bg-sky-50 text-sky-700"
+                            : p.status === "rent"
+                            ? "bg-amber-50 text-amber-700"
+                            : p.status === "sale"
+                            ? "bg-blue-50 text-blue-700"
+                            : "bg-purple-50 text-purple-700"
+                        }`}
+                      >
+                        {p.availability ?? (p.status === "rent" ? "Rent" : p.status === "sale" ? "Sale" : "Commercial")}
                       </span>
                     </div>
                     <PriceTag
                       value={p.price}
-                      unit={p.status === "rent"
-                        ? p.priceUnit
-                        : p.status === "sale"
-                        ? p.salePriceUnit || "Guide Price"
-                        : p.priceUnit || p.salePriceUnit || "PCM"}
+                      unit={
+                        p.status === "rent"
+                          ? p.priceUnit
+                          : p.status === "sale"
+                          ? p.salePriceUnit || "Guide Price"
+                          : p.priceUnit || p.salePriceUnit || "PCM"
+                      }
                     />
                     <div className="mt-2 text-sky-600 underline text-xs">View details</div>
                   </Link>
@@ -148,13 +161,18 @@ export default function HomePage() {
               </Marker>
             ))}
           </MapContainer>
-          {/* Hint: how to zoom */}
+
           <div className="absolute left-3 bottom-3 z-[1000] pointer-events-none">
             <div className="rounded-md bg-white/90 backdrop-blur-sm shadow ring-1 ring-zinc-200 px-2 py-0.5 text-[11px] text-zinc-700">
               Ctrl+scroll to zoom
             </div>
           </div>
-          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="hidden lg:block absolute right-6 top-6 z-[1000] w-[320px] rounded-2xl bg-white/95 shadow-xl ring-1 ring-zinc-200 p-4">
+
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="hidden lg:block absolute right-6 top-6 z-[1000] w-[320px] rounded-2xl bg-white/95 shadow-xl ring-1 ring-zinc-200 p-4"
+          >
             <FilterForm {...{ mode, setMode, q, setQ, minBeds, setMinBeds, minBaths, setMinBaths, priceFrom, setPriceFrom, priceTo, setPriceTo }} />
             <div className="mt-3 text-right">
               <span className="text-xs text-zinc-500">{filtered.length} result(s)</span>
@@ -162,65 +180,108 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
+
       <main className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         <section className="lg:col-span-2">
           <h2 className="text-xl font-semibold mb-4">Recent Properties</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {recent.map((p) => (
-              <motion.article key={p.id} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200">
-                <Link to={`/property/${p.id}`}>
+              <motion.article
+                key={p.id}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200"
+              >
+                <Link to={`/property/${p.id}`} className="block">
                   <div className="relative aspect-[16/10] w-full overflow-hidden">
+                    {/* ✅ Ribbon (fixed) */}
                     {p.availability && (
-                      <div className={`absolute top-0 left-0 right-0 text-center text-[12px] font-semibold tracking-widest uppercase text-white py-1 ${'bg-emerald-600/85'}`}>
-                        {p.availability}
-                      </div>
+                      <div className="pointer-events-none absolute top-2 left-2 h-32 w-32">
+                          <div className="absolute top-7 left-[-54px] w-56 rotate-[-45deg] bg-emerald-600 text-white text-[11px] font-semibold tracking-[0.22em] uppercase text-center py-1 shadow-md ring-1 ring-white/25">
+                            {p.availability}
+                          </div>
+                        </div>
                     )}
-                    <img src={cover(p)} alt={p.title} className="h-full w-full object-cover" />
+                    <img src={cover(p)} alt={p.title} className="h-full w-full object-cover" loading="lazy" />
                   </div>
                 </Link>
+
                 <div className="p-4">
                   <div className="flex items-center justify-between">
-                    <span className={`text-xs font-semibold rounded px-2 py-1 ${p.availability ? 'bg-sky-50 text-sky-700' : p.status === 'rent' ? 'bg-amber-50 text-amber-700' : p.status === 'sale' ? 'bg-blue-50 text-blue-700' : 'bg-purple-50 text-purple-700'}`}>
-                      {p.availability ?? (p.status === 'rent' ? 'Rent' : p.status === 'sale' ? 'Sale' : 'Commercial')}
+                    <span
+                      className={`text-xs font-semibold rounded px-2 py-1 ${
+                        p.availability
+                          ? "bg-sky-50 text-sky-700"
+                          : p.status === "rent"
+                          ? "bg-amber-50 text-amber-700"
+                          : p.status === "sale"
+                          ? "bg-blue-50 text-blue-700"
+                          : "bg-purple-50 text-purple-700"
+                      }`}
+                    >
+                      {p.availability ?? (p.status === "rent" ? "Rent" : p.status === "sale" ? "Sale" : "Commercial")}
                     </span>
                     <PriceTag
                       value={p.price}
-                      unit={p.status === "rent"
-                        ? p.priceUnit
-                        : p.status === "sale"
-                        ? p.salePriceUnit || "Guide Price"
-                        : p.priceUnit || p.salePriceUnit || "PCM"}
+                      unit={
+                        p.status === "rent"
+                          ? p.priceUnit
+                          : p.status === "sale"
+                          ? p.salePriceUnit || "Guide Price"
+                          : p.priceUnit || p.salePriceUnit || "PCM"
+                      }
                     />
                   </div>
-                  <Link to={`/property/${p.id}`} className="mt-2 block font-semibold text-lg hover:underline">{p.title}</Link>
-                  <div className="flex items-center gap-1 text-sm text-zinc-600"><MapPin className="h-4 w-4" /> {p.area}, {p.address}</div>
+
+                  <Link to={`/property/${p.id}`} className="mt-2 block font-semibold text-lg hover:underline">
+                    {p.title}
+                  </Link>
+
+                  <div className="flex items-center gap-1 text-sm text-zinc-600">
+                    <MapPin className="h-4 w-4" /> {p.area}, {p.address}
+                  </div>
+
                   <div className="mt-3 flex items-center gap-4">
                     <Stat icon={<BedDouble className="h-4 w-4" />}>{p.beds}</Stat>
                     <Stat icon={<Bath className="h-4 w-4" />}>{p.baths}</Stat>
-                    <Stat icon={<Home className="h-4 w-4" />}>{(p.status === "rent"
-                      ? p.priceUnit
-                      : p.status === "sale"
-                      ? p.salePriceUnit || "Guide Price"
-                      : p.priceUnit || p.salePriceUnit || "PCM").toUpperCase()}</Stat>
+                    <Stat icon={<Home className="h-4 w-4" />}>
+                      {(
+                        p.status === "rent"
+                          ? p.priceUnit
+                          : p.status === "sale"
+                          ? p.salePriceUnit || "Guide Price"
+                          : p.priceUnit || p.salePriceUnit || "PCM"
+                      ).toUpperCase()}
+                    </Stat>
                   </div>
                 </div>
               </motion.article>
             ))}
           </div>
         </section>
+
         <aside>
           <h2 className="text-xl font-semibold mb-4">Featured Properties</h2>
           <div className="space-y-4">
             {DATA.filter((p) => p.featured).map((p) => (
-              <Link key={p.id} to={`/property/${p.id}`} className="flex gap-3 rounded-xl bg-white ring-1 ring-zinc-200 p-2 shadow-sm hover:ring-sky-300">
+              <Link
+                key={p.id}
+                to={`/property/${p.id}`}
+                className="flex gap-3 rounded-xl bg-white ring-1 ring-zinc-200 p-2 shadow-sm hover:ring-sky-300"
+              >
                 <div className="relative h-20 w-28 rounded-lg overflow-hidden">
+                  {/* ✅ Ribbon (fixed) */}
                   {p.availability && (
-                    <div className={`absolute top-0 left-0 right-0 text-center text-[10px] font-semibold tracking-widest uppercase text-white py-0.5 ${'bg-emerald-600/85'}`}>
-                      {p.availability}
-                    </div>
+                      <div className="pointer-events-none absolute top-2 left-2 h-32 w-32">
+                          <div className="absolute top-7 left-[-54px] w-56 rotate-[-45deg] bg-emerald-600 text-white text-[11px] font-semibold tracking-[0.22em] uppercase text-center py-1 shadow-md ring-1 ring-white/25">
+                            {p.availability}
+                          </div>
+                        </div>
                   )}
-                  <img src={cover(p)} alt={p.title} className="h-full w-full object-cover" />
+                  <img src={cover(p)} alt={p.title} className="h-full w-full object-cover" loading="lazy" />
                 </div>
+
                 <div className="flex-1">
                   <div className="text-xs text-zinc-500">{p.area}</div>
                   <div className="font-medium leading-tight">{p.title}</div>
@@ -228,11 +289,13 @@ export default function HomePage() {
                   <div className="mt-1">
                     <PriceTag
                       value={p.price}
-                      unit={p.status === "rent"
-                        ? p.priceUnit
-                        : p.status === "sale"
-                        ? p.salePriceUnit || "Guide Price"
-                        : p.priceUnit || p.salePriceUnit || "PCM"}
+                      unit={
+                        p.status === "rent"
+                          ? p.priceUnit
+                          : p.status === "sale"
+                          ? p.salePriceUnit || "Guide Price"
+                          : p.priceUnit || p.salePriceUnit || "PCM"
+                      }
                     />
                   </div>
                 </div>
