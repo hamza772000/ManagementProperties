@@ -26,7 +26,7 @@ export default function ListingByStatus({ status }: { status: string }) {
                   {/* Corner ribbon (won't get cut off) */}
                     {p.availability && (
                       <div className="pointer-events-none absolute top-2 left-2 h-32 w-32">
-                        <div className="absolute top-7 left-[-54px] w-56 rotate-[-45deg] bg-emerald-600 text-white text-[11px] font-semibold tracking-[0.22em] uppercase text-center py-1 shadow-md ring-1 ring-white/25">
+                        <div className="absolute top-7 left-[-58px] w-64 rotate-[-45deg] bg-emerald-600 text-white text-[11px] font-semibold tracking-[0.22em] uppercase text-center py-2 shadow-md ring-1 ring-white/25">
                           {p.availability}
                         </div>
                       </div>

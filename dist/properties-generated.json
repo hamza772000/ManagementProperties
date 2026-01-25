@@ -1,5 +1,99 @@
 [
   {
+    "id": 106,
+    "title": " Charming 3-bedroom, 2-bathroom flat on Wilson Gardens",
+    "address": "Twinlock Ct, HA1 4EA",
+    "area": "West Harrow",
+    "price": 2100,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "beds": 3,
+    "baths": 2,
+    "featured": true,
+    "coord": [
+      51.580365,
+      -0.33863619667013495
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_9-bKVzR4zTM96DOP38jMtH0OVBaHQIvM.JPG",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_10-MORSylebgTwidWrYbyFncWA2uJeEZr.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_11-mSuNDT1BZRajAHB1L9LKhlIwlvIDV1.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_12-IlwVGMzXGIiprDAwRlNe0vOfOGqMnc.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_13-H5WPrV1hqJUUcz1oST9Fi86CxBA2BF.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_14-YIA8PppKKadEu6XJQ0N6ZL4ld3Sm48.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_16-94csYmqaLNLgba4rLmEQNCRJv7cKpO.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_18-B0SZKy474VIk7zRSl3Oxjg68FzZ63L.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_19-Nm3yWlS9ECqVFuGAewUUOYXdmgtOQT.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_20-GfMSerFIcCd8D0lKycVwAd3oWARBG1.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_21-pMmARz2hDVdOlhdC7UR16sQaXExeDC.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_22-8i79AP6Wa2d9N4X93BeLuCbShxy4tJ.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_23-99nazOEymnWE4hF1KS1r4HWodgQdgP.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_25-iY3MTAfEvgaUaWN7oJVzEIZzj6ByVs.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_9-bKVzR4zTM96DOP38jMtH0OVBaHQIvM.JPG",
+    "description": "Management Properties is delighted to present this charming three-bedroom, two-bathroom flat set within a recently built development. The property boasts full carpeting throughout, a sleek modern open-plan kitchen, and a bright, spacious reception area ideal for family living. All bedrooms benefit from fitted wardrobes, while the two contemporary bathrooms add comfort and convenience.\n\nFurther advantages include an allocated parking space and an excellent location just moments from West Harrow Station, with local shops, amenities, and bus links all within easy walking distance. An ideal home for a family seeking modern living with superb transport connections."
+  },
+  {
+    "id": 105,
+    "title": "Delightful Double en-suite Room with all Bills included",
+    "address": "Park Gardens, NW9 0EN",
+    "area": "",
+    "price": 875,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.592281,
+      -0.2699102
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607871-jaR8oNdsaVnQN7FKVhhyx4EZKpVMaq.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607904-2v7JbW526m6BMFYiFruR6B0i1UY0Oe.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607874-TuCo6Bq0LSAR6egRbFSB9SWG9d3scZ.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607873-gqRk4fDDKQ7NeddLw1586Q3SA33bFD.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607867-8ekJQh3xIowHrygs9Ud0X4FarKCb0H.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607870-Tl5ueH6ixjaQ35yMmzgXSDbsf1CcN5.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607869-LrQxzM8eE39hIcPB01XXKoGjMUfjZw.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607872-NbZnpxwTzmGffzqh3uYJHGfEDVQDC5.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607868-vHsRMYUZX729R1lmzs8zW0Sx3uuzoW.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607871-jaR8oNdsaVnQN7FKVhhyx4EZKpVMaq.jpg",
+    "description": "Management Properties are proud to present this Double ensuite room situated on Park Gardens, NW9\n\nAll Bills Included – Ensuite Room in NW9 (Single Occupancy)\n\nA clean, quiet, and well-maintained home offering a comfortable and hassle-free living experience, ideal for a single professional or student.\n\nWhat’s Included\n\nAll bills covered: gas, electricity, water, council tax & Wi-Fi\n\nSingle occupancy only (HMO property)\n\nRoom & Property Features\n\nPrivate ensuite bathroom\n\nFully equipped shared kitchen\n\nShared washing machine & tumble dryer\n\nAccess to a shared garden\n\nFriendly, respectful household\n\nWell-kept property in a peaceful residential area\n\nLocation\n\nConvenient NW London location (NW9)\n\nExcellent transport links\n\nClose to local shops and amenities\n\nPerfect for someone looking for a comfortable, well-located home with no extra bills to worry about."
+  },
+  {
+    "id": 104,
+    "title": "Lovely En-suite Double room on Brenthurst Rd",
+    "address": "Brenthurst Road, NW10 2DU",
+    "area": "",
+    "price": 900,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "availability": "LET",
+    "beds": 1,
+    "baths": 1,
+    "featured": false,
+    "coord": [
+      51.541178,
+      -0.24817176028138507
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd9-Uk42jyaULvPzMVTSOGKv9S5GNrhdZt.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd1-v8rukiYqjq2eaNMBYqeyyr4cPh2lPQ.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd2-Z6qY9a1RREGnfjO1umPQlYtUoGf9HJ.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd3-L0ACHfvU0qkuLOXHpPVsaTMg0A7qH5.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd6-3gPUQyGoij5ARGs2E0c9X2vIZwq3WU.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd7-PPVDO1HyYBjT4udRDZAnfHVU7z2qm8.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd10-Q6TiSeLPah0MXEqkGOAQ2MjQlfCccI.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd11-g65YFuvgCTaKNB82YVxjwYeZB0WaGU.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd12-rPINHuYMmCOdB3mb2qo9rJwdW6OKMy.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd13-1WlO7uKfyCvRKjLxcVa2kNeExLLW2B.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_1_60_Brenthurst_Rd9-Uk42jyaULvPzMVTSOGKv9S5GNrhdZt.jpg",
+    "description": "Management Properties is pleased to offer a spacious double bedroom featuring its own ensuite shower room and W/C. The rent includes all utility bills, providing excellent value and convenience.\n\nThe property benefits from a communal garden, as well as a large shared kitchen/diner. It is also ideally located within easy walking distance of Willesden’s shopping amenities and transport links, making it perfect for comfortable and well-connected living.\n\nMust See!"
+  },
+  {
     "id": 102,
     "title": "Extremely Large bedsit with all bills included",
     "address": "Oakington Ave, HA9 8HX",
@@ -7,6 +101,7 @@
     "price": 1050,
     "priceUnit": "pcm",
     "status": "rent",
+    "availability": "LET",
     "beds": 1,
     "baths": 1,
     "featured": false,
@@ -15,6 +110,7 @@
       -0.2868158
     ],
     "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474578-esnsHKu4zJk3FS5qG01oCd0H8hVNEB.jpg",
       "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474570-odsQ6VS0LXWPKqW8f12LXoEW6KImM9.jpg",
       "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474566-AZNRlRvGKdb7uIFq1GMhLu6JTKXDA2.jpg",
       "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474564-b7hhFWzvng7cPHt1GbNeExyDDc2ni1.jpg",
@@ -23,10 +119,9 @@
       "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474560-dqcbfQmWYonWX42kBU5j5nSH03DVUh.jpg",
       "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474577-eHT9G2eQrKPHvXakTCki9zbCktXGRN.jpg",
       "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474558-qPO5vrQLe3DugXRcaUAsjoKvxw9WPY.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474557-zqWEPLFZeF4p0KULCGuBezd3F5N6AW.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474578-esnsHKu4zJk3FS5qG01oCd0H8hVNEB.jpg"
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474557-zqWEPLFZeF4p0KULCGuBezd3F5N6AW.jpg"
     ],
-    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474570-odsQ6VS0LXWPKqW8f12LXoEW6KImM9.jpg",
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98474578-esnsHKu4zJk3FS5qG01oCd0H8hVNEB.jpg",
     "description": "Oakington Ave, HA9 8HX\n\nManagement Properties is delighted to offer this bright and spacious double room, with all bills included in the rent. Situated just a short walk from Wembley Park Tube Station and Wembley Retail Park, the area provides excellent transport links and a vibrant selection of bars, restaurants, shops, and supermarkets.\n\nFantastic location — highly recommended viewing!"
   },
   {
@@ -37,6 +132,7 @@
     "price": 1850,
     "priceUnit": "pcm",
     "status": "rent",
+    "availability": "LET",
     "beds": 2,
     "baths": 1,
     "featured": true,
@@ -280,7 +376,7 @@
     "title": "Opportunity to acquire Freehold Investment property in the Maida Vale area.",
     "address": "Malvern Road, Maida Hill NW6 5PS",
     "area": "London",
-    "price": 1250000,
+    "price": 1300000,
     "salePriceUnit": "Guide Price",
     "status": "sale",
     "beds": 0,
@@ -299,7 +395,7 @@
       "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Floorplan-Building-1024x714-c8rPwxci6la0tP02EG4UPaZymXQR09.jpg"
     ],
     "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/IMG_20250513_113629-1024x768-zylt9YAP0yYsRot2zpTzlDmCCfoAEQ.jpg",
-    "description": "Opportunity to acquire Freehold Investment property in the Maida Vale area. Passing rent just under £70,000 per annum!\n\nThe premises benefits from basement & ground floor commercial unit, currently running as Post Office but soon to be vacated. The upper parts are split over first and second floor and comprise of 2 x 2 bedroom flats, both in excellent condition and subject to ASTs.\nCurrent rents:\nShop (including basement): £20,000 per annum.\nFlat 1 (First floor): £24,000 per annum.\nFlat 2 (2nd floor): £25,200 per annum.\n\nThe property is situated on Malvern Road with good access to local shops and an array of amenities, including the open space of Paddington Recreation Ground and a great choice of transport links are provided by Maida Vale underground station (Bakerloo line) and Queen’s Park rail station, as well as 24 hour bus services. Easy access to A404 (Harrow Road) and A40 (Westway).\n\nINFORMATION.\nTENURE: FREEHOLD.\nPRICE: £1,300,000.\nLOCAL AUTHORITY: London Borough of Brent.\nVIEWING: Strictly by appointment through Management Properties\n\nManagement Properties have not tested any apparatus, equipment, fitting or services and cannot verify that they are in working order. The buyer is advised to obtain verification from their solicitor or surveyor.\n\nMeasurements are correct to within +/- 6 inches.\n\nNone of these statements contained in these particulars as to this or any of our properties are to relied upon as a statement of representation of fact."
+    "description": "Opportunity to acquire Freehold Investment property in the Maida Vale area. Passing rent just under £70,000 per annum!\n\nThe premises benefits from basement & ground floor commercial unit, currently running as Post Office but soon to be vacated. The upper parts are split over first and second floor and comprise of 2 x 2 bedroom flats, both in excellent condition and subject to ASTs.\nCurrent rents:\nShop (including basement): £20,000 per annum.\nFlat 1 (First floor): £24,000 per annum.\nFlat 2 (2nd floor): £25,200 per annum.\n\nThe property is situated on Malvern Road with good access to local shops and an array of amenities, including the open space of Paddington Recreation Ground and a great choice of transport links are provided by Maida Vale underground station (Bakerloo line) and Queen’s Park rail station, as well as 24 hour bus services. Easy access to A404 (Harrow Road) and A40 (Westway).\n\nINFORMATION.\nTENURE: FREEHOLD.\nPRICE: £1,350,000.\nLOCAL AUTHORITY: London Borough of Brent.\nVIEWING: Strictly by appointment through Management Properties\n\nManagement Properties have not tested any apparatus, equipment, fitting or services and cannot verify that they are in working order. The buyer is advised to obtain verification from their solicitor or surveyor.\n\nMeasurements are correct to within +/- 6 inches.\n\nNone of these statements contained in these particulars as to this or any of our properties are to relied upon as a statement of representation of fact."
   },
   {
     "id": 92,
