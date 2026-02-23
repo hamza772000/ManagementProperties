@@ -9,6 +9,7 @@ import PropertyDetailPage from "./pages/PropertyDetailPage";
 import Placeholder from "./pages/Placeholder";
 import ServicesFeesPage from "./pages/services";
 import AdminPage from "./pages/admin";
+import FootballPage from "./pages/admin/football";
 import ContactPage from "./pages/contact";
 import AboutPage from "./pages/about";
 import LandlordsPage from "./pages/landlords";
@@ -39,6 +40,7 @@ function AppContent() {
           <Route path="/services" element={<ServicesFeesPage />} />
           <Route path="/list" element={<Placeholder text="List your property form (todo)" />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/football" element={<FootballPage />} />
           <Route path="*" element={<Placeholder text="404 – Page not found" />} />
         </Routes>
       </div>
