@@ -128,7 +128,7 @@ export default function FootballPage() {
                 ✅ Added for <strong>{result.date}</strong> — £{result.total?.toFixed(2)}
                 <br />
                 <a
-                  href="https://legacyleisure.legendonlineservices.co.uk/Willesden/universalbasket"
+                  href="https://legacyleisure.legendonlineservices.co.uk/willesden/universalbasket/summary"
                   target="_blank"
                   rel="noreferrer"
                   className="underline mt-1 inline-block"
