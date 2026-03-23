@@ -1,5 +1,432 @@
 [
   {
+    "id": 121,
+    "title": "Woodman Mews",
+    "address": "Woodman Mews, W12 0HX",
+    "area": "White City",
+    "price": 320000,
+    "salePriceUnit": "Guide Price",
+    "status": "sale",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.477688,
+      -0.2768051
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_132247989.MP-wRegnwtcVkPX4qM9W6l0U6kIOgBdu8.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/28_Woodmans_Mews_London_W12_0HX_1_-L3p02MwIMMX3PS5dfryJ1sC8Ox76Zf.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260207_133944429-kHK9pqsWJ5yQ9VHpgzy6PU6bWTQejG.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_131307432-Dp5v0sStk3tNDoaDRGeqCdmMRj39he.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_131437103-8QzTlTvXOV4qCKHa9rW6y1fuL3ER7B.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_131515269-OYT0ibXAG562yOraXv8rHAwlRrtlCo.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_131606259-6KoF2X7QBNqfP7V6pFrEnFAY6G4kLZ.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_131640948-FgCC0M5tHKBtRXqxFiUknM5dLDJXWt.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_131719860-0lAn1Kq8UfRkXsgEE1doj4is3rRlIe.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_131747937-RGuzdIg1E0r2FkEInNSyyrztKz7sXL.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_131841471-6vAhvSAF2IzjJ77Ixgije1j2DC0Jef.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_131925340-4QitJ9U9e4yxshlXWx57JW4sWb1LNI.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_132042165-knUN5cu2BgSGnMMrt0CsmUJ7Mall1o.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_132348916-gSxvOGg6iuAz63DhRBSPV1qy2ny79q.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260321_132247989.MP-wRegnwtcVkPX4qM9W6l0U6kIOgBdu8.jpg",
+    "description": "Management Properties are pleased to offer this one-bedroom first-floor flat, situated on a former council estate. The property is conveniently located within easy walking distance of local shops and public transport, and is also close to Westfield Shopping Centre, offering excellent retail and leisure amenities.\n\nReception Room: 16'2 x 12 With wooden flooring, built in cupboards and door to balcony\nKitchen: 10'4 x 5'1 Fitted wall and base units, plumbed for washing machine and wooden flooring\nBedroom: 15'8 x 7'6 Wooden flooring\nBathroom: 6'8 x 5'2 3 piece white bathroom suite and wooden flooring\nLease: 90 years\nService Charge: £3,000pa (includes hot water and heating)\n"
+  },
+  {
+    "id": 120,
+    "title": "Delightful 1 bedroom first floor flat with 1 car park space on West Hendon Broadway",
+    "address": "West Hendon Broadway, NW9 6AE",
+    "area": "West Hendon",
+    "price": 1450,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.579472,
+      -0.2417607
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122116739-aWToS9IpuwfiGK7gZkCmqVRHej4EpV.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122130312-pB0Y8IIkydfWAroL7kqXQLUUbDLd8c.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122158188-edG2sDkxz0o5Os20KglAcD76lmh7UP.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122213022-hwDn5MlJtiFULBxRAtg8jJ3zYMcwbf.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122237970-oG8kski3csmS7Rl20jRm31Z3rQ2ZrF.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122254889-UUypPg3iHow4lg7tinxr5RJZ8IX0zB.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122317542-fUp84vFIPxba5Cn0dNppUhVs0gKksx.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122341495-R4DSYONxZCfSjBLIwEXW8pAaYuUEak.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122407323-zMDeMbG28p1Tft4PHC3wqzjvQ8jgEI.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122116739-aWToS9IpuwfiGK7gZkCmqVRHej4EpV.jpg",
+    "description": "West Hendon Broadway, NW9\n\nManagement Properties are delighted to present this well-maintained first-floor one-bedroom flat, ideally located on West Hendon Broadway.\n\nThe property features wooden flooring throughout, a bright open-plan kitchen and living area, and includes one allocated parking space. Conveniently situated just seconds from the bus stop and only minutes from local shops and Sainsbury’s supermarket, it offers excellent transport links and amenities right on your doorstep.\n\nThis property is ideal for a couple.\n\nEarly viewing is highly recommended!\n\nEPC: B (81)"
+  },
+  {
+    "id": 119,
+    "title": "Double Room with En-Suite | Princes Avenue, NW9 | All Amenities Nearby",
+    "address": "Princes Ave, NW9 9JG",
+    "area": "Kingsbury",
+    "price": 875,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "availability": "LET",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.589781,
+      -0.2766858
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-1-1024x1024-TgCg6A0DSr4HAbLJyuoTjuMHEschhT.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-0-1024x1024-UUq0PlGO3wfTbQT1eL3KaWazK4d6T0.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-2-1024x1024-0Vn9OSOafF4g7cy5079CrbukGh3mg1.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-3-1024x1024-TJYHJfnJfHOqWyUr8XlFm2RSFnc3Yc.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-4-1024x1024-6NOgyEgu1XjX9kQdYGxuCaxtKlLegi.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-5-1024x1024-wh1L0tO67iWlnQYA4ETRJswetU2Ojm.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-6-1024x1024-I47b9gGxoHQUmHZNDDgg6zuEW5zkRr.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-7-1024x1024-XUee3qjnkcBIzxWATSr1KFwjdc7Ida.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-8-1024x1024-Z73hpU1RHgrA9y3lDl2GNJoqSiHUvE.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-9-1024x1024-fPif0qziT0XQyO3Fpp6alTEOnzs9Oj.jpeg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-1-1024x1024-TgCg6A0DSr4HAbLJyuoTjuMHEschhT.jpeg",
+    "description": "Double Room with En-Suite | Princes Avenue, NW9 | All Amenities Nearby\n\nManagement Properties are delighted to present this well-proportioned double bedroom with a private en-suite shower room, set within a well-maintained property in the heart of Kingsbury.\n\nThe room is fully carpeted and offers comfortable, low-maintenance living, ideal for a working professional. The property is conveniently located within walking distance of Kingsbury’s wide range of shops, supermarkets, restaurants, and excellent transport links, providing easy access into Central London and surrounding areas.\n\n\n\n✔ Private en-suite shower room\n\n✔ Fully carpeted double room\n\n✔ Excellent location\n\n✔ Close to transport & local amenities\n\nSingle occupants only."
+  },
+  {
+    "id": 118,
+    "title": "Double Room with En-Suite | St Pauls Ave | All Amenities Nearby",
+    "address": "St Pauls Ave, HA3 9PR",
+    "area": "Kingsbury",
+    "price": 875,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "beds": 1,
+    "baths": -1,
+    "featured": true,
+    "coord": [
+      51.549061,
+      -0.2244977
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-0-1024x1024-CvSJUucsJEYKb42cRZUZlAdGDhWKvy.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-1-1024x1024-sJsAfZyrUH9f6bF8SdCpMLTS9j2AnI.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-2-1024x1024-lGKsJgpCTfq6iGKVCyaGzRBuBZ9mWm.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-3-1024x1024-ElnAVjCPu9TuQ9bMqJDD40qImLTxsJ.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-4-1024x1024-Jnk5DjLU0rFR341UycbvKwHfD9jaaB.jpeg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-0-1024x1024-CvSJUucsJEYKb42cRZUZlAdGDhWKvy.jpeg",
+    "description": "Double Room with En-Suite | St Pauls Ave | All Amenities Nearby\n\nManagement Properties are delighted to present this well-proportioned double bedroom with a private en-suite shower room, set within a well-maintained property in the heart of Kingsbury.\n\nThe room is fully carpeted and offers comfortable, low-maintenance living, ideal for a working professional. The property is conveniently located within walking distance of Kingsbury’s wide range of shops, supermarkets, restaurants, and excellent transport links, providing easy access into Central London and surrounding areas.\n\n\n\n✔ Private en-suite shower room\n\n✔ Fully carpeted double room\n\n✔ Excellent location\n\n✔ Close to transport & local amenities\n\nSingle occupants only."
+  },
+  {
+    "id": 117,
+    "title": "Ground floor flat with access to a shared garden on Chapter Rd, NW2",
+    "address": "Chapter Road, NW2 5LJ",
+    "area": "Willesden",
+    "price": 1450,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "availability": "LET",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.4855,
+      -0.100905
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-13_at_16.58.48-bTBD2bfmQDqBPIrGex5nxhEvaFkSNq.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-13_at_16.58.48R-WxdasnMnVdEH3Elen3maEBHocI42UB.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-13_at_16.58.481-Txb7rYmoAR4ixajPmMAQOJit4V6Ybt.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-13_at_16.58.482-WeQnO532UI8lxFwbh1nmuk5OMUT6Q3.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-13_at_16.58.485-UGEBbmdnoaOwRmb15sk3KK96R8PFD4.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-13_at_16.58.486-8V8S4RT8p4OnprTht4pNCL4mcwwR44.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-13_at_16.58.487-knuIb6VqBTVpvTqAfk9ApKYrusNiXe.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-13_at_16.58.489-cAU7dyHXUUZoRg7VBHftYpyLyeok7N.jpeg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-13_at_16.58.48-bTBD2bfmQDqBPIrGex5nxhEvaFkSNq.jpeg",
+    "description": "Chapter Road, NW2\n\nManagement Properties is pleased to offer this ground floor flat with access to a shared garden.\n\nThe property is ideally located close to Dollis Hill Station and within easy walking distance of Willesden Green Station. It benefits from excellent transport links and convenient access to Willesden’s local shops, transport facilities, and supermarkets.\n\nIdeal for a couple"
+  },
+  {
+    "id": 116,
+    "title": "Large & spacious ensuite bedsit on Bolton Gardens",
+    "address": "Bolton Gardens, London, NW10 5RD",
+    "area": "Kensal Rise",
+    "price": 1000,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.49077,
+      -0.1868783
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_2_2_Bolton_Gdns2-QcybaNGTulmPtE03xwyOvXyR3vs9kx.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_2_2_Bolton_Gdns4-Uv2vQi9el1Rw7FGP3M7ShiOIySSPm8.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_2_2_Bolton_Gdns2-QcybaNGTulmPtE03xwyOvXyR3vs9kx.jpg",
+    "description": "Bolton Gardens, Kensal Rise, NW10 5RD\n\nManagement Properties are pleased to offer this ground-floor double room with private en-suite shower and toilet.\n\nThe property is conveniently located just off Chamberlayne Road, within minutes of local shops, restaurants, and bus links, making it ideal for easy daily commuting.\n\nAll bills are included in the rent.\n\nSingle occupants only."
+  },
+  {
+    "id": 115,
+    "title": "Delightful 1 bedroom 2nd floor flat with 1 car park space ",
+    "address": "West Hendon Broadway, NW9 6AE",
+    "area": "West Hendon",
+    "price": 1450,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.579472,
+      -0.2417607
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122116739-4X9z3M1tmt115n3O6eAddIpZn6Vpgk.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122130312-CLy7K5sFWEFJiB1ovxERKcpAXKSwJA.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122158188-Ch5QfzWXwjuxYErJeMeGxcaN2d06mj.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122213022-6mYWxPfZsfARpHrLA2kUX0k0g6fkzA.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122237970-SPDzNN1SqT7oU46JXtuPQ0l154KOVq.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122254889-LThTf7Ecr1i0RLCURfXDaMp0MUCER5.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122317542-B164PgyZwwBChuVeMG9f8UkNpH9H37.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122341495-1ZdEKwDxeRjZ1KvWA2ti67BoFyrAfy.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122407323-ATutwVBnLIVq5HtIUjkg5JBxT82Zyr.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/PXL_20260304_122116739-4X9z3M1tmt115n3O6eAddIpZn6Vpgk.jpg",
+    "description": "West Hendon Broadway, NW9\n\nManagement Properties are delighted to present this well-maintained first-floor one-bedroom flat, ideally located on West Hendon Broadway.\n\nThe property features wooden flooring throughout, a bright open-plan kitchen and living area, and includes one allocated parking space. Conveniently situated just seconds from the bus stop and only minutes from local shops and Sainsbury’s supermarket, it offers excellent transport links and amenities right on your doorstep.\n\nThis property is ideal for a couple.\n\nEarly viewing is highly recommended!\n\nEPC: B (81)"
+  },
+  {
+    "id": 114,
+    "title": "Lovely 3-bed mid-terraced house on Ripon Rd",
+    "address": "Ripon Road, SG1 4NF",
+    "area": "Stevenage",
+    "price": 1600,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "beds": 3,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.925795,
+      -0.1831198
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86-fded8LxQJXGmU5HAajOWMP1t1bHThz.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_1_-JJbXpIilr7qAqrRIpM0SqLIt5sf1BG.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_2_-7mXEm7jeTRXi6LshfHOWeoNTfTFV2R.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_3_-6has6jMV3hzQvnccknc9ZMNDxreA6l.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_4_-4oF9XvNwsDvpEq7L8tzNcSpULJqRcV.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_5_-dxybJC3pK1BURR91oSoIT2Gvn7GxvU.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_6_-hzFi480KLuyL2ovJLMubBIZYxdQ4uF.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_7_-oabEhUjGTrxgGt2SIuMdYqeF3mR7Yy.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_8_-hdZRAx7Vo0lOsPoCEGxnZQYY9guFfZ.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_9_-OFQI2eoc5BvqWphaDRGpj1J7WUwOV2.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_10_-q04iWtPksBYMyBBiIHQQdwxpEpLI71.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_11_-oJJNAtvGUmXBc3H3nehD1BGrhhyRMx.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_12_-H7vwN0x3sMrxbDVedoRNHgjSBykFEe.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_13_-dUemieL2cAD1SbIwOe8cEW5GgGjMnX.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_14_-wAw262Ty6Y1dHsQdNsA4nCKgUXYhL5.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_15_-raeZLJA8KwmsHVuG30HToRxgO5Jz2G.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86-fded8LxQJXGmU5HAajOWMP1t1bHThz.jpg",
+    "description": "Ripon Rd, SG1 4NF\n\nManagement Properties are pleased to offer this lovely three-bedroom mid-terraced house, located in a quiet residential area of Stevenage, Hertfordshire.\n\nThe property features a welcoming reception room leading through to a good-sized kitchen and dining area/second living space, complete with skylights providing plenty of natural light. The ground floor also benefits from a cloakroom and access to a private rear garden.\n\nUpstairs, the property offers three bedrooms and a family bathroom. Flooring is mostly carpeted, with laminate flooring in some rooms. Further benefits include central heating and double-glazed windows throughout.\n\nIdeally located, the house is within a short walk of local bus stops, providing easy access to Stevenage Town Centre and Stevenage Station. The station is served by Great Northern, LNER, and Thameslink, offering excellent transport links to London and other UK cities. There is also convenient road access, with Junction 8 of the A1(M) just a short drive away.\n\nUnfurnished"
+  },
+  {
+    "id": 113,
+    "title": "Large & spacious ensuite bedsit on Tanfield Ave",
+    "address": "Tanfield Ave, London, NW2 7RT",
+    "area": "Neasen",
+    "price": 950,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.562088,
+      -0.2460879
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/99019335-n6j6GJbGdhdxxiqnuecIv7h0Hf5sQZ.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/99019337-iejchR0FextOOGNRU0yYq0ek3PmBHL.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/99019341-mR2Me5dYRLMK1MEGkQqZwQcTLGf69q.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/99019342-36XmVDZSox9JUtiZ6fbPUtdlIrPSbS.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/99019346-PDS1bPYU16oDkc7FMv6RF0f9SnHBy1.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/99019335-n6j6GJbGdhdxxiqnuecIv7h0Hf5sQZ.jpg",
+    "description": "Tanfield Avenue, NW2 7RT\n\nManagement Properties are pleased to offer this spacious en-suite double room located on the first floor of a well-maintained property.\n\nThe kitchen is shared with only two other rooms, making it ideal for comfortable, low-occupancy living. The property benefits from all bills included, free Wi-Fi, and a convenient location.\n\nSituated within easy walking distance of Neasden Tube Station and Neasden Shopping Centre, the property is also close to Gladstone Park, offering excellent transport links and local amenities.\n\nMust see – highly recommended."
+  },
+  {
+    "id": 112,
+    "title": "Selection of well-presented office suites on Kingsbury Road",
+    "address": "Kingsbury Road, Kingsbury, NW9 8XG",
+    "area": "Kingsbury",
+    "price": 600,
+    "priceUnit": "pcm",
+    "salePriceUnit": "Guide Price",
+    "status": "commercial",
+    "beds": 0,
+    "baths": 0,
+    "featured": true,
+    "coord": [
+      51.582915,
+      -0.26191
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-11_at_12.12.111-kooG9ybMbeNd9G0oILc9ljW05GytZv.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-11_at_12.12.09-C9Xng4Ajds0Eenoa1bFcc7lz93zvoF.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-11_at_12.12.32-vTk7GHOffBn51s75plCJEiG4QJOGqb.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/0c5950347714209f77d7f60ceeea93dcc892c9d5-BUc1LaaYRawRivHWkCtVu022FO5Nqg.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/3b92da1950b005e540b45234ef0f84b262ff2877-ntgF8i1RrLSmACfb9LRGoEWpHU34wO.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/5d992fd1d6c8da123b90a9cdbcf55ba4babc430d-HNpAwkKyrcNqCjnTRk92Rmt3B2jbCP.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/7c61e5db73f605f9cc03099ba11091344dbb62e9-8GzRLoxmwo8s83D70Mg33XgkmTHYyM.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/8e28264a5b637ae2ad689f9debee44c08d9f287e-Qu22jO9fCDWQDpIBdhwO9rzUlLvw8i.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/09bed012b8ea3a8d6d17fdb4602e263391396124-SpqABRZK2xSrSahnCtzXqLkyZVsB9d.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/66dbada4af9110ec4b11bd33253d6339287d4710-i05CquORKpwwNtXtN1jRUqDxa6m0Ia.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/14938e7d3385ddeeca58aa3fd047123416999056-bpCPVopQRzCuW0DtIG3h05QvCw76p5.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/31839ccff3dbb280103c9c61da4bb3e9f9d45bae-0nuhlXihcpLYJSRq7Btg1zDMifys8C.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/88936676ef06198a6253384285af55faaa89abeb-zpuVc3K1euYdOgKrm8g2Qp8LdRdOM2.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/a6804a2167234f93f1c8b4c40f9cb4f3a58c4600-xLgiyfUA8E0YVIEbMaUaXEss3IVeys.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/c6ae4901a996f1ee5aeb2ca921cff2ea131fbb9e-7VynHI7NM6CIq0tKOJBNEPCH6Apec5.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/c7f0befff5b5a9440309a74aa76286d1eff41fee-9A0Z3V7ZstQaeqANwAHxcUj5stzzz8.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/c86b7d533c4a3301c7df5abe68c552a3852a189d-7Bp4unkCqs1sy69fLjJVtd2a211sUx.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/c749a25dbc07a48e2c1f2ced8ea2549d46e8972c-jAf7qvoIRmKoeZcnUMrcYLue5Cef9H.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/ca7c1d143c38b531fd69f01c59788a8200ed9b38-YNCI4OXfY1xJyTT2mHnoZVeLGDmk0m.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/cc07de1164571c7a644b8a62eb600a7255e97553-MZ1aObdoze6hk9A56JRVrGl18vpWaA.webp",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-11_at_12.12.09-9WW66mcLpld2SUNEmW4VNL3RDHZI09.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-11_at_12.12.32-gjjTkafguWhVpTBBd3JMSsnGvYF5Cs.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-11_at_12.12.111-QBF9vrHixbEKPvKub0MVg7zNc3L2fA.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/3fdabca0a70e242c1a9e10d39fed883d0c4904ca-S0QBPG38mF1kOdcFRSYVDv7hFXl8MG.webp"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-02-11_at_12.12.111-kooG9ybMbeNd9G0oILc9ljW05GytZv.jpeg",
+    "description": "Kingsbury Road, London, NW9\n\nManagement Properties is pleased to offer a selection of well-presented office suites to rent in Kingsbury, NW9.\n\nRanging in size from 10 sq m to 15.5 sq m, these offices are ideal for businesses requiring administrative space or a professional environment to meet clients.\n\nEach office benefits from:\n\nLaminate flooring\n\nPower sockets\n\nLighting\n\nClean and well-maintained interiors\n\nThe property is prominently located on Kingsbury Road, NW9, close to a large industrial estate, local shops, and excellent TfL bus links, providing convenient access for both staff and visitors.\n\nAvailable Offices & Rents (per calendar month):\n\nOffice 1 – £600 pcm\n\nOffice 2 – £650 pcm\n\nOffice 3 – £675 pcm\n\nOffice 4 – £750 pcm\n\nOffice 5 – £725 pcm\n\nOffice 6 – £800 pcm\n\nPLUS 20% VAT\n\nFor further information or to arrange a viewing, please contact Management Properties.\n\nAvailable now.\n\nEPC: Awaiting report.\n\nEarly viewing is recommended."
+  },
+  {
+    "id": 110,
+    "title": "Delightful Double en-suite Room with all Bills included on Park Gardens",
+    "address": "Park Gardens, Kingsbury, NW9 0EN",
+    "area": "",
+    "price": 875,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.592281,
+      -0.2699102
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns1-xk0YlksYfN0WTW8VD2u1WeigqgKzMJ.JPG",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns2-kbnzfA855hPSbAXNgCCraEelf7axZX.JPG",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns3-wN4Z6Zlul7n47QUJu61C1yAsPdA7i1.JPG",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns4-iKsjxTAudbO464hWjYRCKZ7fOOIjSa.JPG",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns5-RWqz7EkpKidZolpmB99CzeDyZ5VcWO.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns6-A3iN5Yyk98Z9Pk4nHxxAfzeltvxDef.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns7-0eTvsj5Odpjr9QSEqfbi54fNXZrs7s.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns8-jYQNhykohcoUGSkCsKskE672CBsCd0.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns9-MaOxv8Jo1EnU8FMc1s1MZSu5fCwdc0.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86-bxqqb2AGR9GYGlDqGoye1pu05VOzfg.jpg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/Room_4_5_Park_Gdns1-xk0YlksYfN0WTW8VD2u1WeigqgKzMJ.JPG",
+    "description": "Park Gardens, Kingsbury, NW9\n\nManagement Properties are proud to present this Double ensuite room situated on Park Gardens, NW9\nAll Bills Included – Ensuite Room in NW9 (Single Occupancy)\nA clean, quiet, and well-maintained home offering a comfortable and hassle-free living experience, ideal for a single professional or student.\nWhat’s Included\nAll bills covered: gas, electricity, water, council tax & Wi-Fi\nSingle occupancy only (HMO property)\nRoom & Property Features\nPrivate ensuite bathroom\nFully equipped shared kitchen\nShared washing machine & tumble dryer\nAccess to a shared garden\nFriendly, respectful household\nWell-kept property in a peaceful residential area\nLocation\nConvenient NW London location (NW9)\nExcellent transport links\nClose to local shops and amenities\nPerfect for someone looking for a comfortable, well-located home with no extra bills to worry about."
+  },
+  {
+    "id": 109,
+    "title": "Spacious studio flat located on Harlesden High Street",
+    "address": "Bank Building, High Street, NW10 4LT ",
+    "area": "",
+    "price": 1150,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "availability": "LET",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.152653,
+      1.1109449
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86-eD516q7qzyVm7DiyFt6tX6ukXpiyNp.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_1_-yaFH6rQwY9w1RsNnNYkRmUNx2OtypD.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_2_-XWr16lDxAbum9LxWNcMHnF0kqMg2OE.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_3_-3fzmQClrV15ySr3oc47sOpwejrAo1g.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_4_-ufZzpwHLQsiPpxtq37TBEibLpRoi7j.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_5_-UPGhNFFpX9jC9OHrECXKZBFDt5vaSJ.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_6_-kNP2ovjAAHlFetydcWOE0n7PrNT0aY.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86_7_-RWXoIRGrEzAKcjOXvxLVHQviYkflg7.jpg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86-NMpJFRgQRySpF5ZfL0UHjL6yXVWdSx.png"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/86-eD516q7qzyVm7DiyFt6tX6ukXpiyNp.jpg",
+    "description": "Bank Building, Harlesden, NW10\n\nManagement Properties are pleased to offer this spacious studio flat, located on the third floor above a shop on Harlesden High Street.\nThe property comprises a separate kitchen, a spacious hallway, a separate bathroom, and laminated flooring throughout.\nIdeally situated within easy walking distance of Harlesden Underground Station, the flat is also just seconds away from local bus routes, shops, and amenities.\n\nIdeal for a couple."
+  },
+  {
+    "id": 108,
+    "title": "Choice of 3 bedsits with en-suite shower rooms on Acton Lane",
+    "address": "Acton Lane, Harlesden, NW10 8TU",
+    "area": "",
+    "price": 1000,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "availability": "LET",
+    "beds": 1,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.537221,
+      -0.2542058
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-0-1024x1024-fU5tnadB5II2SpZ0mdrQFudqoIkZWV.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-1-1024x1024-ASuQMbmFHK3xSIiXRsIDCTuu7CJ9cg.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-2-1024x1024-dtaNQ0m8JcyZDkdi91wi4JGDWaksXP.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-3-1024x1024-wMmFGv5nohJcmeRpMTSGTKivyfuPur.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-4-1024x1024-mnLRE7tZpMKsU6CwZRef1236fly1zd.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-5-1024x1024-xx0LVKC7HgZqlJKC7bWz4ofgCdzmDb.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-6-1024x1024-6noIbOjpFaUjxTGUL4PdnVXeeDJ08u.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-8-1024x1024-fRA6ZCzI9BqZlvAIOMy0p3kRUIhyUw.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-9-1024x1024-PLBjD3TRiXpiDvfYr6MyUoghNA1YBC.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/WhatsApp_Image_2026-01-19_at_10.25.02-vvRtTXeI4hJ7QINhAWOW8zRQo3Q8oU.jpeg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-0-1024x1024-fU5tnadB5II2SpZ0mdrQFudqoIkZWV.jpeg",
+    "description": "High Street, NW10 8TU\n\nManagement Properties are pleased to offer a choice of three bedsits with en-suite shower rooms, located within this ground floor property.\nActon Lane, London, NW10 8TU\nThe property is ideally situated just minutes from Harlesden Underground Station and within easy walking distance of local bus routes and amenities.\nAll bills are included in the rent, except for one of the bedsits, where the incoming tenant will be responsible for paying gas usage for their room only."
+  },
+  {
+    "id": 107,
+    "title": "Splendid two-bedroom garden flat on Burnley Rd",
+    "address": "Burnley Road, Dollis Hill, NW10 1EE",
+    "area": "",
+    "price": 2000,
+    "priceUnit": "pcm",
+    "status": "rent",
+    "availability": "LET",
+    "beds": 2,
+    "baths": 1,
+    "featured": true,
+    "coord": [
+      51.55284,
+      -0.2405773
+    ],
+    "images": [
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-0-1024x1024-SF8rMAFavmJHDOUXMLbuEvcRm2IC3a.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/epc-0-1024x1024-yoq1RO3wZXgNOPfY7zxWxrozze9bNw.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-1-1024x1024-3QdDGXu9Led8xp2zwpzjG0caUlPYaM.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-2-1024x1024-uDjqnjn7Y1beLA9HyJWFUAgFCTQezw.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-3-1024x1024-v9V0xJsLPmXLFprX1fdPh17J926rcR.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-4-1024x1024-hfLL1KOBpZkUJfnX3jdGsGTnIlsBkz.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-6-1024x1024-HVibo6c7u5NCxYQyOhxkGDRggXHMhc.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-7-1024x1024-ByBJJj6VSS116RmNP8s4GFm2Ir8fVZ.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-8-1024x1024-QBZJ3hGAR3tiSITYHtTlw7sqDgKHqR.jpeg",
+      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-9-1024x1024-JEDuRxEIaonisR7nUj0mIIuqwFKkr9.jpeg"
+    ],
+    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/image-0-1024x1024-SF8rMAFavmJHDOUXMLbuEvcRm2IC3a.jpeg",
+    "description": "Burnley Road, London, NW10 1EE\nManagement Properties are delighted to present this splendid two-bedroom garden flat.\nThe property features stylish wooden flooring throughout, a bright open-plan kitchen and reception area, a conservatory, a modern shower room, and a separate WC.\nIdeally located just minutes from Dollis Hill Underground Station, the flat also benefits from excellent access to local bus routes, shops, and supermarkets.\nThis lovely home is ideal for a family and must be seen to be fully appreciated.\nEPC: C (69)"
+  },
+  {
     "id": 106,
     "title": " Charming 3-bedroom, 2-bathroom flat on Wilson Gardens",
     "address": "Twinlock Ct, HA1 4EA",
@@ -32,35 +459,6 @@
     ],
     "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/13_Twinlock_Ct_9-bKVzR4zTM96DOP38jMtH0OVBaHQIvM.JPG",
     "description": "Management Properties is delighted to present this charming three-bedroom, two-bathroom flat set within a recently built development. The property boasts full carpeting throughout, a sleek modern open-plan kitchen, and a bright, spacious reception area ideal for family living. All bedrooms benefit from fitted wardrobes, while the two contemporary bathrooms add comfort and convenience.\n\nFurther advantages include an allocated parking space and an excellent location just moments from West Harrow Station, with local shops, amenities, and bus links all within easy walking distance. An ideal home for a family seeking modern living with superb transport connections."
-  },
-  {
-    "id": 105,
-    "title": "Delightful Double en-suite Room with all Bills included",
-    "address": "Park Gardens, NW9 0EN",
-    "area": "",
-    "price": 875,
-    "priceUnit": "pcm",
-    "status": "rent",
-    "beds": 1,
-    "baths": 1,
-    "featured": true,
-    "coord": [
-      51.592281,
-      -0.2699102
-    ],
-    "images": [
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607871-jaR8oNdsaVnQN7FKVhhyx4EZKpVMaq.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607904-2v7JbW526m6BMFYiFruR6B0i1UY0Oe.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607874-TuCo6Bq0LSAR6egRbFSB9SWG9d3scZ.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607873-gqRk4fDDKQ7NeddLw1586Q3SA33bFD.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607867-8ekJQh3xIowHrygs9Ud0X4FarKCb0H.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607870-Tl5ueH6ixjaQ35yMmzgXSDbsf1CcN5.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607869-LrQxzM8eE39hIcPB01XXKoGjMUfjZw.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607872-NbZnpxwTzmGffzqh3uYJHGfEDVQDC5.jpg",
-      "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607868-vHsRMYUZX729R1lmzs8zW0Sx3uuzoW.jpg"
-    ],
-    "img": "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/98607871-jaR8oNdsaVnQN7FKVhhyx4EZKpVMaq.jpg",
-    "description": "Management Properties are proud to present this Double ensuite room situated on Park Gardens, NW9\n\nAll Bills Included – Ensuite Room in NW9 (Single Occupancy)\n\nA clean, quiet, and well-maintained home offering a comfortable and hassle-free living experience, ideal for a single professional or student.\n\nWhat’s Included\n\nAll bills covered: gas, electricity, water, council tax & Wi-Fi\n\nSingle occupancy only (HMO property)\n\nRoom & Property Features\n\nPrivate ensuite bathroom\n\nFully equipped shared kitchen\n\nShared washing machine & tumble dryer\n\nAccess to a shared garden\n\nFriendly, respectful household\n\nWell-kept property in a peaceful residential area\n\nLocation\n\nConvenient NW London location (NW9)\n\nExcellent transport links\n\nClose to local shops and amenities\n\nPerfect for someone looking for a comfortable, well-located home with no extra bills to worry about."
   },
   {
     "id": 104,
@@ -164,6 +562,7 @@
     "price": 900,
     "priceUnit": "pcm",
     "status": "rent",
+    "availability": "LET",
     "beds": 0,
     "baths": 0,
     "featured": true,
@@ -316,7 +715,7 @@
   {
     "id": 95,
     "title": "Splendid 3 Bedroom Detached house",
-    "address": "Elliott Road, NW4 3DS",
+    "address": "Elliot Road, NW4 3DS",
     "area": "Hendon",
     "price": 3600,
     "priceUnit": "pcm",
@@ -326,8 +725,8 @@
     "baths": 1,
     "featured": false,
     "coord": [
-      51.493577,
-      -0.2559851
+      51.578839,
+      -0.2293611
     ],
     "images": [
       "https://0gm6jxcg3fsohd85.public.blob.vercel-storage.com/properties/15_Elliott_Rd2-vA7OEkgZ9D79laG50CGXci08OI6gYr.jpg",
@@ -510,10 +909,9 @@
     "price": 2100,
     "priceUnit": "pcm",
     "status": "rent",
-    "availability": "LET",
     "beds": 3,
     "baths": 2,
-    "featured": false,
+    "featured": true,
     "coord": [
       51.57,
       -0.35

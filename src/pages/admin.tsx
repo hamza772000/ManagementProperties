@@ -20,6 +20,7 @@ type ApiProperty = {
   img?: string;
   description?: string;
   active?: boolean; // used for show/hide
+  reference?: string;
 };
 
 type NewProp = {
@@ -30,6 +31,7 @@ type NewProp = {
   imagesText: string;
   featured?: boolean;
   description?: string;
+  reference?: string;
 };
 
 // ---------- UI utils ----------
@@ -124,13 +126,15 @@ export default function AdminPage() {
   const [rows, setRows] = useState<ApiProperty[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [search, setSearch] = useState("");
+
   // Add form
   const [form, setForm] = useState<NewProp>({
     title: "", address: "", area: "",
   price: 0, priceUnit: "pcm", salePriceUnit: "Guide Price", status: "rent",
   availability: undefined,
   beds: 0, baths: 0, lat: 0, lng: 0,
-    imagesText: "", featured: false, description: ""
+    imagesText: "", featured: false, description: "", reference: ""
   });
 
   // Debounced geocoding
@@ -253,8 +257,8 @@ export default function AdminPage() {
 
     const payload = {
       title: form.title, address: form.address, area: form.area,
-      price: Number(form.price), 
-      priceUnit: form.priceUnit, 
+      price: Number(form.price),
+      priceUnit: form.priceUnit,
       salePriceUnit: form.salePriceUnit,
       status: form.status,
   availability: form.availability,
@@ -262,6 +266,7 @@ export default function AdminPage() {
       coord: [Number(form.lat), Number(form.lng)],
       featured: !!form.featured,
       description: form.description || "",
+      reference: form.reference || "",
       images,
     };
 
@@ -282,7 +287,7 @@ export default function AdminPage() {
       price: 0, priceUnit: "pcm", salePriceUnit: "Guide Price", status: "rent",
   availability: undefined,
   beds: 0, baths: 0, lat: 0, lng: 0,
-      imagesText: "", featured: false, description: ""
+      imagesText: "", featured: false, description: "", reference: ""
     });
     setNewImages([]);
     load();
@@ -342,6 +347,7 @@ export default function AdminPage() {
       coord: editing.coord,
       featured: !!editing.featured,
       description: editing.description || "",
+      reference: editing.reference || "",
       images: editImages
     };
     const res = await fetch("/api/properties", {
@@ -358,17 +364,28 @@ export default function AdminPage() {
     load();
   };
 
-  // Ordering (active first -> area -> title)
+  // Ordering (active first -> area -> title) + search filter
   const sorted = useMemo(() => {
-    return rows.slice().sort((a, b) => {
-      const aActive = a.active !== false ? 0 : 1;
-      const bActive = b.active !== false ? 0 : 1;
-      if (aActive !== bActive) return aActive - bActive;
-      const byArea = String(a.area).localeCompare(String(b.area));
-      if (byArea !== 0) return byArea;
-      return String(a.title).localeCompare(String(b.title));
-    });
-  }, [rows]);
+    const q = search.trim().toLowerCase();
+    return rows
+      .filter(p => {
+        if (!q) return true;
+        return (
+          (p.reference || "").toLowerCase().includes(q) ||
+          (p.address || "").toLowerCase().includes(q) ||
+          (p.area || "").toLowerCase().includes(q) ||
+          (p.title || "").toLowerCase().includes(q)
+        );
+      })
+      .sort((a, b) => {
+        const aActive = a.active !== false ? 0 : 1;
+        const bActive = b.active !== false ? 0 : 1;
+        if (aActive !== bActive) return aActive - bActive;
+        const byArea = String(a.area).localeCompare(String(b.area));
+        if (byArea !== 0) return byArea;
+        return String(a.title).localeCompare(String(b.title));
+      });
+  }, [rows, search]);
 
   const deleteProp = async (id: number) => {
     if (!confirm("Delete permanently? This cannot be undone.")) return;
@@ -421,6 +438,7 @@ export default function AdminPage() {
         <form onSubmit={submit} className="grid gap-3 p-4 bg-white rounded-xl ring-1 ring-zinc-200">
           <div className="grid md:grid-cols-2 gap-3">
             <input className={clsInput} placeholder="Title" value={form.title} onChange={e=>setForm(f=>({...f, title: e.target.value}))}/>
+            <input className={clsInput} placeholder="Reference (e.g. 1/SPA, REF001)" value={form.reference || ""} onChange={e=>setForm(f=>({...f, reference: e.target.value}))}/>
             <div className="relative">
               <input 
                 className={clsInput} 
@@ -604,45 +622,57 @@ export default function AdminPage() {
 
       {/* LIST */}
       <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-medium">All properties</h2>
-          <span className="text-sm text-zinc-500">{rows.length} total</span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-3">
+            <h2 className="text-lg font-medium">All properties</h2>
+            <span className="text-sm text-zinc-500">{sorted.length}{search ? ` of ${rows.length}` : ""} total</span>
+          </div>
+          <input
+            className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-sky-500"
+            placeholder="Search by reference, postcode, address…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
         </div>
 
         {loading ? (
           <div>Loading…</div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex flex-col gap-2">
             {sorted.map((p) => (
-              <div key={p.id} className="rounded-xl bg-white ring-1 ring-zinc-200 p-3">
-                <div className="flex items-center justify-between">
-                  <div className="text-xs text-zinc-500">{p.area}</div>
-                  <div className="flex items-center gap-2">
-                    {p.featured ? <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-700 text-xs">Featured</span> : null}
-                    {p.active === false ? (
-                      <span className="px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 text-xs">Hidden</span>
-                    ) : (
-                      <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-xs">Active</span>
+              <div key={p.id} className="rounded-xl bg-white ring-1 ring-zinc-200 px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3">
+                {/* Reference + title */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {p.reference && (
+                      <span className="font-mono text-xs px-2 py-0.5 rounded bg-violet-50 text-violet-700 ring-1 ring-violet-200">{p.reference}</span>
                     )}
-                    {p.availability ? (
-                      <span className="px-2 py-0.5 rounded bg-sky-50 text-sky-700 text-xs" title="Availability">
-                        {p.availability}
-                      </span>
-                    ) : null}
+                    <span className="font-medium truncate">{p.title}</span>
                   </div>
+                  <div className="text-xs text-zinc-500 mt-0.5 truncate">{p.address}{p.area && p.address ? ` · ${p.area}` : p.area}</div>
+                  <div className="text-xs text-zinc-500 mt-0.5">£{p.price} {p.status === "rent" ? p.priceUnit : p.status === "sale" ? (p.salePriceUnit || "Guide Price") : (p.priceUnit || p.salePriceUnit || "")} — {p.beds} bed / {p.baths} bath</div>
                 </div>
-                <div className="font-medium mt-1">{p.title}</div>
-                <div className="text-sm text-zinc-600">{p.price} {p.status === "rent" ? p.priceUnit : p.status === "sale" ? (p.salePriceUnit || "Guide Price") : (p.priceUnit || p.salePriceUnit || "")} — {p.beds} bed / {p.baths} bath</div>
-                <div className="mt-3 flex items-center gap-3">
+                {/* Badges */}
+                <div className="flex items-center gap-1.5 flex-wrap shrink-0">
+                  {p.featured ? <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-700 text-xs">Featured</span> : null}
+                  {p.active === false ? (
+                    <span className="px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 text-xs">Hidden</span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-xs">Active</span>
+                  )}
+                  {p.availability ? (
+                    <span className="px-2 py-0.5 rounded bg-sky-50 text-sky-700 text-xs">{p.availability}</span>
+                  ) : null}
+                </div>
+                {/* Actions */}
+                <div className="flex items-center gap-2 shrink-0">
                   <button onClick={() => startEdit(p)} className="rounded px-2 py-1 ring-1 ring-sky-200 text-sky-700 text-sm">Edit</button>
                   {p.active === false ? (
                     <button onClick={() => setActive(p.id, true)} className="rounded px-2 py-1 ring-1 ring-emerald-200 text-emerald-700 text-sm">Show</button>
                   ) : (
                     <button onClick={() => setActive(p.id, false)} className="rounded px-2 py-1 ring-1 ring-red-200 text-red-700 text-sm">Hide</button>
                   )}
-                <button onClick={() => deleteProp(p.id)} className="rounded px-2 py-1 ring-1 ring-red-300 text-red-700 text-sm">
-                    Delete
-                </button>
+                  <button onClick={() => deleteProp(p.id)} className="rounded px-2 py-1 ring-1 ring-red-300 text-red-700 text-sm">Delete</button>
                 </div>
               </div>
             ))}
@@ -661,6 +691,7 @@ export default function AdminPage() {
 
             <div className="grid md:grid-cols-2 gap-3">
               <input className={clsInput} placeholder="Title" value={editing.title} onChange={e=>setEditing(p=>p && ({...p, title: e.target.value}))}/>
+              <input className={clsInput} placeholder="Reference (e.g. 1/SPA, REF001)" value={editing.reference || ""} onChange={e=>setEditing(p=>p && ({...p, reference: e.target.value}))}/>
               <div className="relative">
                 <input
                   className={clsInput}

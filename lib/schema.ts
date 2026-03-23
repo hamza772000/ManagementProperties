@@ -17,6 +17,7 @@ export const properties = pgTable('properties', {
   lng: decimal('lng', { precision: 10, scale: 7 }).default('0'),
   images: json('images').$type<string[]>().default([]),
   description: varchar('description', { length: 2000 }),
+  reference: varchar('reference', { length: 100 }),
   active: boolean('active').default(true),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),

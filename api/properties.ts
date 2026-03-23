@@ -11,9 +11,9 @@ function authed(req: VercelRequest) {
   return t && t === process.env.ADMIN_TOKEN;
 }
 
-function normalizeForClient(p: typeof properties.$inferSelect) {
+function normalizeForClient(p: typeof properties.$inferSelect, includeReference = false) {
   const images = p.images || [];
-  return {
+  const base = {
     id: p.id,
     title: p.title,
     address: p.address || '',
@@ -34,6 +34,10 @@ function normalizeForClient(p: typeof properties.$inferSelect) {
     updatedAt: (p as any).updatedAt?.toISOString() || p.createdAt?.toISOString() || new Date().toISOString(),
     description: p.description || '',
   };
+  if (includeReference) {
+    return { ...base, reference: (p as any).reference || '' };
+  }
+  return base;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -47,8 +51,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const query = db.select().from(properties).orderBy(desc(properties.createdAt));
     
     const items = all ? await query : await query.where(eq(properties.active, true));
-    
-    return ok(res, items.map(normalizeForClient));
+
+    return ok(res, items.map(p => normalizeForClient(p, all)));
   }
 
   if (!authed(req)) return bad(res, 'unauthorized', 401);
@@ -75,6 +79,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       lng: String(payload.coord?.[1] ?? 0),
       images: payload.images || [],
       description: payload.description,
+      reference: payload.reference || null,
       active: true,
       createdAt: now,
       updatedAt: now,
@@ -125,6 +130,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       lng: String(u.coord?.[1] ?? 0),
       images: u.images,
       description: u.description,
+      reference: u.reference ?? null,
       updatedAt: new Date(),
     }).where(eq(properties.id, id));
   
