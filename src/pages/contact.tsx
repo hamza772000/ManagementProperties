@@ -1,19 +1,42 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { ChevronDown, Mail, Phone, MapPin, Send, X } from "lucide-react";
+import { useProperties } from "../context/DataContext";
 
 export default function ContactPage() {
+  const properties = useProperties();
   const [params] = useSearchParams();
-  const ref = params.get("ref") || ""; // e.g. property id or title passed as ?ref=...
+  const legacyRef = params.get("ref") || "";
+  const initialPropertyIds = params
+    .getAll("property")
+    .map(Number)
+    .filter(Number.isFinite);
+  const [selectedPropertyIds, setSelectedPropertyIds] = useState<number[]>(initialPropertyIds);
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    message: ref ? `I'm interested in property: ${ref}` : "",
+    message: legacyRef ? `I'm interested in property: ${legacyRef}` : "",
     honeypot: "", // spam trap
   });
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<null | "ok" | "err">(null);
+
+  const propertyOptions = useMemo(
+    () => [...properties].sort((a, b) => a.title.localeCompare(b.title)),
+    [properties],
+  );
+  const selectedProperties = selectedPropertyIds
+    .map((propertyId) => properties.find((property) => property.id === propertyId))
+    .filter((property): property is NonNullable<typeof property> => Boolean(property));
+
+  function toggleProperty(propertyId: number) {
+    setSelectedPropertyIds((current) =>
+      current.includes(propertyId)
+        ? current.filter((id) => id !== propertyId)
+        : [...current, propertyId],
+    );
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,7 +54,14 @@ export default function ContactPage() {
         const r = await fetch("/api/contact", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, message: form.message, ref }),
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            message: form.message,
+            ref: legacyRef,
+            properties: selectedProperties.map(({ id, title, address }) => ({ id, title, address })),
+          }),
         });
       
         if (!r.ok) {
@@ -40,9 +70,9 @@ export default function ContactPage() {
         }
       
         setDone("ok");
-        setForm({ name: "", email: "", phone: "", message: ref ? `I'm interested in property: ${ref}` : "", honeypot: "" });
-      } catch (e: any) {
-        console.error("GOT THIS ERROR",e);
+        setForm({ name: "", email: "", phone: "", message: legacyRef ? `I'm interested in property: ${legacyRef}` : "", honeypot: "" });
+      } catch (error: unknown) {
+        console.error("Contact form submission failed", error);
         setDone("err");
       }finally {
       setBusy(false);
@@ -91,9 +121,18 @@ export default function ContactPage() {
         {/* Right: form */}
         <section className="lg:col-span-2">
           <form onSubmit={submit} className="rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200 p-5 space-y-4">
-            {ref && (
+            {(selectedProperties.length > 0 || legacyRef) && (
               <div className="rounded-md bg-emerald-50 text-emerald-800 text-sm px-3 py-2">
-                Enquiry reference: <span className="font-medium">{ref}</span>
+                {selectedProperties.length > 0 ? (
+                  <>
+                    Enquiring about:{" "}
+                    <span className="font-medium">
+                      {selectedProperties.map((property) => property.title).join(", ")}
+                    </span>
+                  </>
+                ) : (
+                  <>Enquiry reference: <span className="font-medium">{legacyRef}</span></>
+                )}
               </div>
             )}
             <div>
@@ -125,6 +164,59 @@ export default function ContactPage() {
                   placeholder="Optional"
                 />
               </div>
+            </div>
+            <div>
+              <label className={label}>Properties you’re enquiring about</label>
+              <details className="group relative mt-1">
+                <summary className={`${input} flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden`}>
+                  <span className={selectedPropertyIds.length ? "text-zinc-900" : "text-zinc-500"}>
+                    {selectedPropertyIds.length
+                      ? `${selectedPropertyIds.length} ${selectedPropertyIds.length === 1 ? "property" : "properties"} selected`
+                      : "Select one or more properties"}
+                  </span>
+                  <ChevronDown className="h-4 w-4 shrink-0 text-zinc-500 transition-transform group-open:rotate-180" />
+                </summary>
+                <fieldset className="absolute z-20 mt-2 max-h-72 w-full overflow-y-auto rounded-xl border border-zinc-200 bg-white p-2 shadow-xl">
+                  <legend className="sr-only">Select properties</legend>
+                  {propertyOptions.length > 0 ? propertyOptions.map((property) => (
+                    <label
+                      key={property.id}
+                      className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2 hover:bg-zinc-50"
+                    >
+                      <input
+                        type="checkbox"
+                        className="mt-1 h-4 w-4 rounded border-zinc-300 text-sky-600 focus:ring-sky-500"
+                        checked={selectedPropertyIds.includes(property.id)}
+                        onChange={() => toggleProperty(property.id)}
+                      />
+                      <span className="min-w-0 text-sm">
+                        <span className="block font-medium text-zinc-800">{property.title}</span>
+                        <span className="block text-xs text-zinc-500">{property.address} · Ref {property.id}</span>
+                      </span>
+                    </label>
+                  )) : (
+                    <p className="px-3 py-2 text-sm text-zinc-500">Properties are loading…</p>
+                  )}
+                </fieldset>
+              </details>
+              {selectedProperties.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2" aria-label="Selected properties">
+                  {selectedProperties.map((property) => (
+                    <span key={property.id} className="inline-flex max-w-full items-center gap-1 rounded-full bg-sky-50 px-3 py-1 text-xs text-sky-800 ring-1 ring-inset ring-sky-200">
+                      <span className="truncate">{property.title}</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleProperty(property.id)}
+                        className="rounded-full p-0.5 hover:bg-sky-100"
+                        aria-label={`Remove ${property.title}`}
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+              <p className="mt-1 text-xs text-zinc-500">You can select more than one property.</p>
             </div>
             <div>
               <label className={label}>Message *</label>

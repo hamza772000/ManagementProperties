@@ -15,19 +15,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { name, email, phone, message, ref } = req.body || {};
+    const { name, email, phone, message, ref, properties } = req.body || {};
 
     if (!name || (!email && !phone) || !message) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const subject = ref ? `Enquiry about ${ref} — ${name}` : `New enquiry — ${name}`;
+    const selectedProperties = Array.isArray(properties)
+      ? properties
+          .filter((property) => property && typeof property === "object")
+          .map((property) => ({
+            id: String(property.id ?? "").trim(),
+            title: String(property.title ?? "").trim(),
+            address: String(property.address ?? "").trim(),
+          }))
+          .filter((property) => property.id && property.title)
+          .slice(0, 20)
+      : [];
+
+    const subject = selectedProperties.length === 1
+      ? `Enquiry about ${selectedProperties[0].title} — ${name}`
+      : selectedProperties.length > 1
+        ? `Enquiry about ${selectedProperties.length} properties — ${name}`
+        : ref
+          ? `Enquiry about ${ref} — ${name}`
+          : `New enquiry — ${name}`;
+    const propertyLines = selectedProperties.length
+      ? [
+          "Properties:",
+          ...selectedProperties.map((property) =>
+            `- ${property.title}${property.address ? ` — ${property.address}` : ""} (Reference: ${property.id})`,
+          ),
+          "",
+        ]
+      : ref
+        ? [`Reference: ${ref}`, ""]
+        : [];
     const textLines = [
       `Name: ${name}`,
       email ? `Email: ${email}` : "",
       phone ? `Phone: ${phone}` : "",
-      ref ? `Reference: ${ref}` : "",
       "",
+      ...propertyLines,
       "Message:",
       message
     ].filter(Boolean);
@@ -42,7 +71,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (error) return res.status(500).json({ error: error.message });
     return res.status(200).json({ ok: true, id: data?.id });
-  } catch (e: any) {
-    return res.status(500).json({ error: e?.message || "Unexpected error" });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unexpected error";
+    return res.status(500).json({ error: message });
   }
 }

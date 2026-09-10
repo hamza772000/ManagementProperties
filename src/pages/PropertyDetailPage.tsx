@@ -119,14 +119,14 @@ export default function PropertyDetailPage() {
               {/* Tab Navigation */}
               <div className="border-b border-gray-200">
                 <nav className="flex space-x-8 px-8 pt-6" aria-label="Tabs">
-                  {[
+                  {([
                     { key: 'overview', label: 'Overview', icon: '📋' },
                     { key: 'details', label: 'Details', icon: '📊' },
                     { key: 'location', label: 'Location', icon: '📍' }
-                  ].map(tab => (
+                  ] as const).map(tab => (
                     <button
                       key={tab.key}
-                      onClick={() => setActiveTab(tab.key as any)}
+                      onClick={() => setActiveTab(tab.key)}
                       className={`group flex items-center gap-2 px-1 py-4 border-b-2 font-medium text-sm transition-all duration-200 ${activeTab === tab.key
                           ? 'border-emerald-500 text-emerald-600'
                           : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -283,11 +283,11 @@ export default function PropertyDetailPage() {
 
                 <div className="space-y-3">
                   <Link
-                    to="/contact"
+                    to={`/contact?property=${encodeURIComponent(String(property.id))}`}
                     className="group relative inline-flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 px-4 py-3 font-semibold text-white shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105"
                   >
                     <span className="flex items-center gap-2 text-sm">
-                      📅 Book Viewing
+                      ✉️ Enquire about this property
                     </span>
                   </Link>
 
