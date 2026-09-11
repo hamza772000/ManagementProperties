@@ -42,6 +42,67 @@ const clsInput =
 const RENT_UNITS = ["pcm", "pa"];
 const SALE_UNITS = ["Guide Price", "Fixed Price", "Offers Over", "OIEO", "OIRO", "Starting Bid"];
 
+// ---------- Price field ----------
+// Prices are stored as whole pounds, so this takes "449,950", "449950" or
+// "449950.40" and always hands the form a rounded integer. Commas are treated
+// as thousand separators; the field re-formats with them when you tab away.
+const formatPrice = (n: number) => (n ? n.toLocaleString("en-GB") : "");
+
+function PriceInput({
+  value,
+  onChange,
+  className,
+  placeholder = "Price",
+}: {
+  value: number;
+  onChange: (n: number) => void;
+  className?: string;
+  placeholder?: string;
+}) {
+  const [text, setText] = useState(() => formatPrice(value));
+  const [typing, setTyping] = useState(false);
+
+  // Re-sync when the value arrives from outside (e.g. opening the edit modal)
+  useEffect(() => {
+    if (!typing) setText(formatPrice(value));
+  }, [value, typing]);
+
+  const handleChange = (raw: string) => {
+    // Digits, commas and at most one dot
+    let cleaned = raw.replace(/[^\d.,]/g, "");
+    const dot = cleaned.indexOf(".");
+    if (dot !== -1) {
+      cleaned = cleaned.slice(0, dot + 1) + cleaned.slice(dot + 1).replace(/\./g, "");
+    }
+    setText(cleaned);
+    const n = Number(cleaned.replace(/,/g, ""));
+    onChange(Number.isFinite(n) ? Math.round(n) : 0);
+  };
+
+  // A dot is a decimal point, so "449.950" means £450, not £449,950 — say so
+  const showsDecimal = /\.\d/.test(text);
+
+  return (
+    <div className="relative">
+      <input
+        className={className}
+        type="text"
+        inputMode="numeric"
+        placeholder={placeholder}
+        value={text}
+        onFocus={() => setTyping(true)}
+        onChange={e => handleChange(e.target.value)}
+        onBlur={() => { setTyping(false); setText(formatPrice(value)); }}
+      />
+      {showsDecimal && (
+        <div className="absolute top-full left-0 z-10 mt-1 text-xs text-amber-700 bg-amber-50 px-2 py-1 rounded border border-amber-200">
+          Will save as £{formatPrice(value)} — for thousands use a comma, e.g. 449,950
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ---------- Upload helper (Vercel Blob) ----------
 async function uploadFiles(files: File[], token: string) {
   const out: string[] = [];
@@ -497,7 +558,7 @@ export default function AdminPage() {
               <option value="SOLD">SOLD</option>
               <option value="SALE AGREED">SALE AGREED</option>
             </select>
-            <input className={clsInput} type="number" placeholder="Price" value={form.price || ""} onChange={e=>setForm(f=>({...f, price: Number(e.target.value)}))}/>
+            <PriceInput className={clsInput} value={form.price} onChange={n=>setForm(f=>({...f, price: n}))}/>
             <select 
               className={clsInput} 
               value={form.status === "rent" ? form.priceUnit : form.status === "sale" ? (form.salePriceUnit || "Guide Price") : (form.priceUnit || form.salePriceUnit || "pcm")} 
@@ -747,7 +808,7 @@ export default function AdminPage() {
                 <option value="SOLD">SOLD</option>
                 <option value="SALE AGREED">SALE AGREED</option>
               </select>
-              <input className={clsInput} type="number" placeholder="Price" value={editing.price} onChange={e=>setEditing(p=>p && ({...p, price: Number(e.target.value)}))}/>
+              <PriceInput className={clsInput} value={editing.price} onChange={n=>setEditing(p=>p && ({...p, price: n}))}/>
               <select 
                 className={clsInput} 
                   value={editing.status === "rent" ? editing.priceUnit : editing.status === "sale" ? (editing.salePriceUnit || "Guide Price") : (editing.priceUnit || editing.salePriceUnit || "pcm")} 
