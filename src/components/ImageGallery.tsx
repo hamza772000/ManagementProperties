@@ -1,30 +1,36 @@
 // components/ImageGallery.tsx
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 type Props = { images: string[] };
 
 export default function ImageGallery({ images }: Props) {
-  // Don't render anything if there are no images
-  if (!images || images.length === 0) {
-    return null;
-  }
-
   const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const reduceMotion = useReducedMotion();
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const swipeStart = useRef<{ x: number; y: number; time: number } | null>(
     null
   );
-  const didSwipe = useRef(false);
 
   const openAt = (i: number) => {
+    setDirection(1);
     setIdx(i);
     setOpen(true);
   };
 
-  const next = () => setIdx((i) => (i + 1) % images.length);
-  const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
+  const next = useCallback(() => {
+    if (images.length < 2) return;
+    setDirection(1);
+    setIdx((i) => (i + 1) % images.length);
+  }, [images.length]);
+  const prev = useCallback(() => {
+    if (images.length < 2) return;
+    setDirection(-1);
+    setIdx((i) => (i - 1 + images.length) % images.length);
+  }, [images.length]);
 
   // lock body scroll + focus management
   useEffect(() => {
@@ -55,37 +61,30 @@ export default function ImageGallery({ images }: Props) {
         setOpen(false);
       } else if (e.key === "Home") {
         e.preventDefault();
+        setDirection(-1);
         setIdx(0);
       } else if (e.key === "End") {
         e.preventDefault();
+        setDirection(1);
         setIdx(images.length - 1);
       }
     };
 
     window.addEventListener("keydown", onKey, { passive: false });
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, images.length]);
+  }, [open, images.length, next, prev]);
 
   // Pointer swipe handlers (left/right)
   const onPointerDown = (e: React.PointerEvent) => {
     // Only primary button / touch
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    didSwipe.current = false;
+    if (!e.isPrimary || (e.target as HTMLElement).closest("button")) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
     swipeStart.current = {
       x: e.clientX,
       y: e.clientY,
       time: Date.now(),
     };
-  };
-
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (!swipeStart.current) return;
-    const dx = e.clientX - swipeStart.current.x;
-    const dy = e.clientY - swipeStart.current.y;
-    // If horizontal move dominates and exceeds threshold, mark as swipe
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-      didSwipe.current = true;
-    }
   };
 
   const onPointerUp = (e: React.PointerEvent) => {
@@ -106,6 +105,8 @@ export default function ImageGallery({ images }: Props) {
       }
     }
   };
+
+  if (!images || images.length === 0) return null;
 
   return (
     <>
@@ -135,7 +136,7 @@ export default function ImageGallery({ images }: Props) {
             aria-modal="true"
             role="dialog"
             aria-label="Image viewer"
-            className="fixed inset-0 z-[9999] flex items-center justify-center"
+            className="fixed left-0 top-0 z-[9999] flex h-[100dvh] w-screen items-center justify-center"
           >
             {/* Backdrop */}
             <button
@@ -146,18 +147,33 @@ export default function ImageGallery({ images }: Props) {
 
             {/* Image + controls */}
             <div
-              className="relative max-h-[90vh] max-w-[92vw] select-none"
+              className="relative h-[80vh] w-[92vw] max-w-6xl select-none"
               onPointerDown={onPointerDown}
-              onPointerMove={onPointerMove}
               onPointerUp={onPointerUp}
-              // Allow vertical gestures (for potential pull-down UI) but handle horizontal swipes
+              onPointerCancel={() => { swipeStart.current = null; }}
               style={{ touchAction: "pan-y" }}
             >
-              <img
-                src={images[idx]}
-                alt={`Photo ${idx + 1} of ${images.length}`}
-                className="max-h-[90vh] max-w-[92vw] rounded-xl object-contain shadow-2xl pointer-events-none"
-              />
+              <div className="absolute inset-0 overflow-hidden rounded-xl">
+                <AnimatePresence initial={false} custom={direction}>
+                  <motion.img
+                    key={idx}
+                    custom={direction}
+                    src={images[idx]}
+                    alt={`Photo ${idx + 1} of ${images.length}`}
+                    draggable={false}
+                    variants={{
+                      enter: (d: number) => ({ x: reduceMotion ? 0 : `${d * 100}%` }),
+                      center: { x: 0 },
+                      exit: (d: number) => ({ x: reduceMotion ? 0 : `${-d * 100}%` }),
+                    }}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: reduceMotion ? 0 : 0.32, ease: [0.22, 0.61, 0.36, 1] }}
+                    className="pointer-events-none absolute inset-0 h-full w-full object-contain"
+                  />
+                </AnimatePresence>
+              </div>
 
               <button
                 ref={closeBtnRef}
@@ -186,7 +202,7 @@ export default function ImageGallery({ images }: Props) {
                 </>
               )}
 
-              <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-xs text-white/90">
+              <div aria-live="polite" aria-atomic="true" className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-xs text-white/90">
                 {idx + 1} / {images.length}
               </div>
             </div>
